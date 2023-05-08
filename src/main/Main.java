@@ -16,5 +16,7 @@ public class Main {
         m.attack(p);
 
         System.out.println(p.getStats());
+
+
     }
 }

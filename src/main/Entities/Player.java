@@ -1,9 +1,12 @@
 package main.Entities;
 
+import main.Items.Armour;
 import main.Items.Item;
+import main.Items.Rarity;
+import main.Items.Weapon;
 import main.TextConstants;
-import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends Entity {
@@ -12,13 +15,17 @@ public class Player extends Entity {
     protected int experience = 0;
 
     protected List<Item> inventory; //MAX SIZE?
-
+    protected Weapon equipedWeapon;
+    protected Armour equipedArmour;
 
 
     private final int MAX_BASE_EXPERIENCE = 100;
 
     public Player(){
         super(50,0,5,5, "Player");
+        this.equipedWeapon = new Weapon(Rarity.COMMON,"FISTS",0);
+
+        this.inventory = new ArrayList<>();
 
     }
 
@@ -45,7 +52,7 @@ public class Player extends Entity {
         }
     }
 
-
+    //BATTLE NECESSITIES
 
     public int takeDamage(int incomingDamage) {
         /*
@@ -81,8 +88,61 @@ public class Player extends Entity {
         return s;
     }
 
+    public int attack(Monster monster){
+        return strength + equipedWeapon.getStrengthBuff();
+    }
+
+    public boolean take(Item t){
+        if(inventory.size() > 30){
+            System.out.println("INVETORY is full!");
+            return false;
+        }
+        return inventory.add(t);
+    }
+
+    public boolean switchWeapon(Weapon w){
+        if(inventory.contains(w)){
+
+            if(!equipedWeapon.equals(new Weapon(Rarity.COMMON,"FISTS",0))){
+                inventory.add(equipedWeapon);
+            }
+             //FLAG: Potentially could cause problem where it doesn't duplicate the equiped weapon but instead your current weapon gets overwritten by the new one
+            equipedWeapon = w;
+            inventory.remove(w);
+            return true;
+        }
+        return false;
+    }
+
+
+    //STANDARDS
+
     @Override
     public String toString() {
         return this.getStats();
+    }
+
+    public List<Item> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(List<Item> inventory) {
+        this.inventory = inventory;
+    }
+
+    public Weapon getEquipedWeapon() {
+        return equipedWeapon;
+    }
+
+    public void setEquipedWeapon(Weapon equipedWeapon) {
+        this.equipedWeapon = equipedWeapon;
+    }
+
+    public Armour getEquipedArmour() {
+        return equipedArmour;
+    }
+
+    public void setEquipedArmour(Armour equipedArmour) {
+        this.equipedArmour = equipedArmour;
     }
 }

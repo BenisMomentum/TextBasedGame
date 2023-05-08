@@ -1,9 +1,10 @@
 package main.Items;
 
+import main.Entities.Entity;
 import main.Entities.Monster;
 import main.Entities.Player;
 
-public abstract class Item {
+public abstract class Item<T extends Entity> {
     protected Rarity rarity;
     protected String name;
 
@@ -12,20 +13,8 @@ public abstract class Item {
         this.name = n;
     }
 
-    public abstract void use();
-    public abstract void use(Player p);
-    public abstract void use(Monster m);
+    public abstract void use(T... entity); //FLAG: Heap pollution possible
+    //NOTE: Trying to find a better way to be able to use one method for multiple
 
 }
 
-enum Rarity{
-    COMMON(50.0),
-    UNCOMMON(25.0),
-    RARE(12.5),
-    EPIC(5.0),
-    LEGENDARY(1.5);
-
-
-    Rarity(double v) {
-    }
-}
