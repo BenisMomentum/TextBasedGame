@@ -1,6 +1,8 @@
 package main.Entities;
 
 import main.Items.Item;
+import main.TextConstants;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -9,7 +11,9 @@ public class Player extends Entity {
     protected int level = 0;
     protected int experience = 0;
 
-    protected List<Item> inventory;
+    protected List<Item> inventory; //MAX SIZE?
+
+
 
     private final int MAX_BASE_EXPERIENCE = 100;
 
@@ -53,8 +57,32 @@ public class Player extends Entity {
      */
         if(incomingDamage <= 0) return 0;
 
-        int actualDamage = incomingDamage * ((armour % 51) / 100);
+        double armourCalc = ((double) (armour % 51) / 100.0); //Setting a variable is much easier than re-doing that calc again for the sake of the short if-else
+
+        int actualDamage = Math.toIntExact(Math.round(
+
+                (double) incomingDamage * ( armourCalc== 0.0 ? 1.0 : armourCalc)
+
+                ));
+        System.out.println("You get hit for [" + actualDamage + "] DMG!");
 
         return actualDamage;
+    }
+
+    public String getStats(){
+        String s = TextConstants.EQUALS_SEPERATOR + "\nPLAYER STATS: \n" + TextConstants.EQUALS_SEPERATOR + "\n"
+                + "HEALTH - " + this.hp + "HP\n"
+                + "STRENGTH - " + this.strength + "STR\n"
+                + "LEVEL/EXPERIENCE - " + this.level + "LVL / " + this.experience + "XP\n"
+                + "ARMOUR - " + this.armour + "/50 ARM\n"
+                + "INITIATIVE - " + this.initiative + "INIT\n"
+                + TextConstants.EQUALS_SEPERATOR;
+
+        return s;
+    }
+
+    @Override
+    public String toString() {
+        return this.getStats();
     }
 }

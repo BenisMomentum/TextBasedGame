@@ -7,7 +7,8 @@ public class Monster extends Entity{
     }
 
     public void attack(Player p){
-        p.takeDamage(strength);
+        System.out.println(name + " attacks player!");
+        p.hp -= p.takeDamage(strength);
     }
 
 }
