@@ -1,8 +1,6 @@
 package main.Items;
 
 import main.Entities.Entity;
-import main.Entities.Monster;
-import main.Entities.Player;
 
 public abstract class Item<T extends Entity> {
     protected Rarity rarity;
@@ -16,5 +14,19 @@ public abstract class Item<T extends Entity> {
     public abstract void use(T... entity); //FLAG: Heap pollution possible
     //NOTE: Trying to find a better way to be able to use one method for multiple
 
+    public Rarity getRarity() {
+        return rarity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "ITEM " + this.name
+                + " " + this.rarity
+                + " ";
+    }
 }
 

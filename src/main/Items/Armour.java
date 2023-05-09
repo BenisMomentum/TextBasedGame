@@ -1,7 +1,6 @@
 package main.Items;
 
 import main.Entities.Entity;
-import main.Entities.Player;
 
 public class Armour extends Item{
     protected int armour;
@@ -13,5 +12,13 @@ public class Armour extends Item{
     @Override
     public void use(Entity[] entity) {
 
+    }
+
+    @Override
+    public String toString() {
+        return "ARMOUR " + this.name
+                + " " + this.rarity
+                + " " + this.armour
+                + " ";
     }
 }

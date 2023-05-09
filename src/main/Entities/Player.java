@@ -88,8 +88,13 @@ public class Player extends Entity {
         return s;
     }
 
-    public int attack(Monster monster){
-        return strength + equipedWeapon.getStrengthBuff();
+    public void attack(Monster monster){
+
+        int actualDamage = this.strength + this.equipedWeapon.getStrengthBuff();
+
+        System.out.println("YOU attack " + monster.getName() + " for [" + actualDamage + "] DMG with [" + this.equipedWeapon.getName() + "]!");
+
+        monster.takeDamage(actualDamage);
     }
 
     public boolean take(Item t){

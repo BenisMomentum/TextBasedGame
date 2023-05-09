@@ -13,7 +13,19 @@ public class Monster extends Entity{
 
     public void takeDamage(int damage){
         if(damage <= 0) return;
+        if(damage - hp <= 0){
+            hp = 0;
+            return;
+        }
 
+        hp -= damage;
     }
 
+    @Override
+    public String toString() {
+        return "MONSTER/"
+                + this.name + "/" + this.hp + "/"
+                + this.strength + "/" + this.armour + "/"
+                + this.initiative;
+    }
 }

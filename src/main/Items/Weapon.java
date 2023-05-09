@@ -19,4 +19,12 @@ public class Weapon extends Item{
     public int getStrengthBuff() {
         return strengthBuff;
     }
+
+    @Override
+    public String toString() {
+        return "WEAPON " + this.name
+                + " " + this.rarity
+                + " " + this.strengthBuff
+                + " ";
+    }
 }

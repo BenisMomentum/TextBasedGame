@@ -55,4 +55,12 @@ public abstract class Entity {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "ENTITY/"
+                + this.name + "/" + this.hp + "/"
+                + this.strength + "/" + this.armour + "/"
+                + this.initiative;
+    }
 }
