@@ -2,11 +2,10 @@ package main.Location;
 
 import main.Entities.Monster;
 import main.Items.Item;
+import main.TextConstants;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
 
 public class Location {
     private final int locationID;
@@ -62,28 +61,50 @@ public class Location {
 
         StringBuilder sB = new StringBuilder();
 
-        final String seperator = " | ";
+        final String seperator = TextConstants.LOCATION_BIG_REGEX;
 
         sB.append(this.locationID + seperator + this.description + seperator);
 
         String[] cardinalDirection = exits.keySet().toArray(new String[0]);
         Integer[] exitLead = exits.values().toArray(new Integer[0]);
 
-        for(String c : cardinalDirection){
-            for(int e : exitLead){
-                sB.append(c + e + " ");
+        //The following If-Else statements reduce program efficiency of the toWriteable function
+        //It is used so that there are less trails to parse out.
+
+        if(cardinalDirection.length == 1){
+
+            sB.append(cardinalDirection[0] + TextConstants.EXIT_REGEX + exitLead[0]);
+
+        }else{
+            //Format is --> [DIRECTION]-[LOCATION ID]
+            for(int i = 0; i < cardinalDirection.length - 1; i++){
+                sB.append(cardinalDirection[i] + TextConstants.EXIT_REGEX + exitLead[i]);
+                sB.append(" ");
             }
+            sB.append(cardinalDirection[cardinalDirection.length - 1] + TextConstants.EXIT_REGEX + exitLead[exitLead.length - 1]);
         }
 
         sB.append(seperator);
 
-        for(Item i : items){
-            sB.append(i);
-            sB.append(" / ");
+        if(items.size() == 1){
+            sB.append(items.get(0));
+        } else{
+            for(int i = 0; i < items.size() - 1; i++){
+                sB.append(items.get(i));
+                sB.append(TextConstants.ITEM_REGEX);
+            }
+            sB.append(items.get(items.size() - 1));
         }
 
         sB.append(seperator + m);
 
         return sB.toString();
     }
+
+    public void read(String rawInput){ //supposed to read from file
+        //EMPTY FOR NOW
+        //FUNCTION IS BEING MOVED TO SINGLETON Locations.java
+
+    }
+
 }

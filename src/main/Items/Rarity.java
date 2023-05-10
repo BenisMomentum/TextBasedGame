@@ -10,4 +10,15 @@ public enum Rarity {
 
     Rarity(double v) {
     }
+
+    public static Rarity parse(String input){
+        return switch (input) {
+            case "COMMON" -> COMMON;
+            case "UNCOMMON" -> UNCOMMON;
+            case "RARE" -> RARE;
+            case "EPIC" -> EPIC;
+            case "LEGENDARY" -> LEGENDARY;
+            default -> null;
+        };
+    }
 }

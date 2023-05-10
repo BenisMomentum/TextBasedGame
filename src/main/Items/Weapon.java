@@ -12,7 +12,7 @@ public class Weapon extends Item{
     }
 
     @Override
-    public void use(Entity[] entity) {
+    public void use(Entity entity) {
 
     }
 
@@ -22,9 +22,9 @@ public class Weapon extends Item{
 
     @Override
     public String toString() {
-        return "WEAPON " + this.name
-                + " " + this.rarity
-                + " " + this.strengthBuff
-                + " ";
+        return "WEAPON/\"" + this.name
+                + "\"/" + this.rarity
+                + "/" + this.strengthBuff
+                + "";
     }
 }

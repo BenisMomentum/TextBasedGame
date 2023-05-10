@@ -2,7 +2,7 @@ package main.Entities;
 
 public class Monster extends Entity{
 
-    public Monster(int hp, int armour, int strength, int initiative, String name) {
+    public Monster(String name, int hp, int armour, int strength, int initiative) {
         super(hp, armour, strength, initiative, name);
     }
 
@@ -25,7 +25,7 @@ public class Monster extends Entity{
     public String toString() {
         return "MONSTER/"
                 + this.name + "/" + this.hp + "/"
-                + this.strength + "/" + this.armour + "/"
+                + this.armour + "/" + this.strength + "/"
                 + this.initiative;
     }
 }

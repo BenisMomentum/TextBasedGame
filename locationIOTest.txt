@@ -1,0 +1,2 @@
+0 | You are sitting in front of a computer learning Java | EAST-1 | WEAPON/"cringeSword"/EPIC/10 | MONSTER/Lizard Warrior/20/0/10/12
+1 | You are outside on the sidewalk | NORTH-3 SOUTH-2 | WEAPON/"cringeSword"/EPIC/10 / ARMOUR/Level 2 Bulletproof Vest/COMMON/10 | null

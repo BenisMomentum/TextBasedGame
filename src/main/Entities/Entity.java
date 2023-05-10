@@ -58,8 +58,8 @@ public abstract class Entity {
 
     @Override
     public String toString() {
-        return "ENTITY/"
-                + this.name + "/" + this.hp + "/"
+        return "ENTITY/\""
+                + this.name + "/\"" + this.hp + "/"
                 + this.strength + "/" + this.armour + "/"
                 + this.initiative;
     }
