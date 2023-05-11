@@ -54,6 +54,10 @@ public class Location {
         return exits;
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
     public String toWriteable(){
         /*
         NOTE: You will have to call String.trim() just to protect against trailing spaces.
@@ -88,6 +92,8 @@ public class Location {
 
         if(items.size() == 1){
             sB.append(items.get(0));
+        }else if(items.size() == 0){
+            sB.append("null");
         } else{
             for(int i = 0; i < items.size() - 1; i++){
                 sB.append(items.get(i));
@@ -106,5 +112,4 @@ public class Location {
         //FUNCTION IS BEING MOVED TO SINGLETON Locations.java
 
     }
-
 }
