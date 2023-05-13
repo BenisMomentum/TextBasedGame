@@ -22,8 +22,8 @@ public class Weapon extends Item{
 
     @Override
     public String toString() {
-        return "WEAPON/\"" + this.name
-                + "\"/" + this.rarity
+        return "WEAPON/" + this.name
+                + "/" + this.rarity
                 + "/" + this.strengthBuff
                 + "";
     }

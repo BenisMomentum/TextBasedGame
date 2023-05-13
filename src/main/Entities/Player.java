@@ -102,6 +102,22 @@ public class Player extends Entity {
             System.out.println("INVETORY is full!");
             return false;
         }
+
+        try {
+            System.out.println("Getting " + t.getName());
+            System.out.print("Almost.");
+
+            Thread.sleep(500L);
+            System.out.print(".");
+            Thread.sleep(500L);
+            System.out.print(".");
+            Thread.sleep(500L);
+            System.out.println("Got it!");
+            Thread.sleep(500L);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return inventory.add(t);
     }
 
