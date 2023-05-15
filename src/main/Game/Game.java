@@ -1,7 +1,9 @@
 package main.Game;
 
 import main.Entities.Player;
+import main.Items.Armour;
 import main.Items.Item;
+import main.Items.Weapon;
 import main.Location.Location;
 import main.Location.Locations;
 import main.TextConstants;
@@ -27,7 +29,7 @@ public class Game {
             gameLoop();
         }
 
-        Locations.getInstance().saveLocations();
+        //Locations.getInstance().saveLocations(); //Why save the locations?
     }
 
     private void gameLoop() {
@@ -108,6 +110,14 @@ public class Game {
             }
             
             case HELP -> handleHELPCommand();
+
+            case EQUIP -> {
+                if(command == null){
+                    System.out.println("No item name specified!");
+                }else{
+                    handleEQUIPCommand(command[1]);
+                }
+            }
             
             case INVENTORY -> handleInvetoryView();
                     
@@ -179,6 +189,28 @@ public class Game {
 
     private void handleHELPCommand(){
         Commands.useHelpCommand();
+    }
+
+    private void handleEQUIPCommand(String itemName){
+
+        /*
+        Essentially scans for the correct item that needs to be equipped.
+        Checks if its a piece of Armour or Weaponry (Instance of Armour or Weapon)
+        Then calls the equip function correspondingly.
+         */
+
+        for(int i = 0; i < p.getInventory().size(); i++){
+            if(p.getInventory().get(i).getName().equals(itemName)
+                    && p.getInventory().get(i) instanceof Weapon){
+                p.equip((Weapon) p.getInventory().get(i));
+                return;
+
+            } else if(p.getInventory().get(i).getName().equals(itemName)
+                    && p.getInventory().get(i) instanceof Armour){
+                p.equip((Armour) p.getInventory().get(i));
+                return;
+            }
+        }
     }
 
 }

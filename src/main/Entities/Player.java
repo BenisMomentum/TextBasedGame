@@ -24,6 +24,7 @@ public class Player extends Entity {
     public Player(){
         super(50,0,5,5, "Player");
         this.equipedWeapon = new Weapon(Rarity.COMMON,"FISTS",0);
+        this.equipedArmour = new Armour(Rarity.COMMON, "NONE",0);
 
         this.inventory = new ArrayList<>();
 
@@ -121,7 +122,7 @@ public class Player extends Entity {
         return inventory.add(t);
     }
 
-    public boolean switchWeapon(Weapon w){
+    public boolean equip(Weapon w){
         if(inventory.contains(w)){
 
             if(!equipedWeapon.equals(new Weapon(Rarity.COMMON,"FISTS",0))){
@@ -130,6 +131,18 @@ public class Player extends Entity {
              //FLAG: Potentially could cause problem where it doesn't duplicate the equiped weapon but instead your current weapon gets overwritten by the new one
             equipedWeapon = w;
             inventory.remove(w);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean equip(Armour a){
+        if(inventory.contains(a)){
+            if(!equipedArmour.equals(new Armour(Rarity.COMMON, "NONE",0))){
+                inventory.add(equipedArmour);
+            }
+            equipedArmour = a;
+            inventory.remove(a);
             return true;
         }
         return false;
