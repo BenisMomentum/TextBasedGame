@@ -1,3 +1,6 @@
 0 | You are sitting in on your couch. The TV in front of you as usual is displaying the latest news. Chaos...Social Decay...the norm. | EAST-1 | WEAPON/knife/COMMON/15 | null
 1 | You are outside on the sidewalk | NORTH-3 SOUTH-2 | null | null
-2 | You are in the Slums. A derilict place of rampant crime and degeneracy, forgotten by most and avoided by all. | NORTH-1 SOUTH-3 | null | MONSTER/Homeless Man/5/0/10/10
+2 | You are in the Slums. A derilict place of rampant crime and degeneracy, forgotten by most and avoided by all. | NORTH-1 | null | MONSTER/Homeless Man/5/0/10/10
+3 | You are in the Park. Admittedly a very run down one, like your apartment complex, but on the bright side, it's sunny. | WEST-4 | null | null
+4 | You're in a small plaza. Nothing Special. Just some stores, fast-food, drycleaning and a | EAST-3 NORTH-5 | null | null
+5 | You are on a small bus stop. Leads to the City or the Slums. | EAST-2 WEST-10 | null null
