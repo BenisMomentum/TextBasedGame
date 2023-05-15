@@ -19,6 +19,7 @@ public class Game {
     Player p = new Player();
 
     //Locations locations;
+    int previousLocationID;
     int locationID;
 
     public Game(){
@@ -39,11 +40,19 @@ public class Game {
         System.out.println("==================BEGIN==================");
 
         String input = "";
+
         locationID = 0;
+        previousLocationID = 0;
 
         while(!input.equals("EXIT")){
+            try{
+                System.out.println(Locations.getInstance().getLocations().get(locationID).getDescription());
+            } catch(IndexOutOfBoundsException e){
+                System.out.println("\n" + "That exit seems to be blocked upon further inspection...");
 
-            System.out.println(Locations.getInstance().getLocations().get(locationID).getDescription());
+                this.locationID = previousLocationID; //Rolls back to previous location
+                continue;
+            }
 
             System.out.println("\n What do you do?");
 
@@ -168,7 +177,10 @@ public class Game {
         //Basically checks if the locationID is valid to be set
 
         if(Locations.getInstance().getLocations().get(locationID).getExits().get(direction) != null){
+
+            previousLocationID = this.locationID; //Updates previous location
             this.locationID = Locations.getInstance().getLocations().get(locationID).getExits().get(direction);
+
         }else{
             System.out.println("[NOT A VALID COMMAND]");
         }
