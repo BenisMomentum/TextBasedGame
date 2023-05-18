@@ -104,7 +104,9 @@ public class Game {
 
         System.out.println("START? " + TextConstants.EQUALS_SEPERATOR + " EXIT?");
 
-        return sc.next().equals("START");
+        String input = sc.next();
+
+        return input.trim().equalsIgnoreCase("START");
     }
 
 
@@ -118,7 +120,10 @@ public class Game {
 
         if(input.contains(" ")){
             command = input.split(" ");
+            command[0] = command[0].toUpperCase();
             multiParamCommand = true;
+        }else{
+            input = input.toUpperCase();
         }
 
         switch(Commands.parse(( //Checks if its a multiple command thing
@@ -207,6 +212,8 @@ public class Game {
 
     private void enterRoom(String direction){
         //Basically checks if the locationID is valid to be set
+
+        direction = direction.toUpperCase();
 
         if(Locations.getInstance().getLocations().get(locationID).getExits().get(direction) != null){
 

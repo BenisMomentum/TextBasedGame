@@ -81,6 +81,8 @@ public class Battle {
     private void attackCommandParser(String input) {
         boolean commandLock = true;
 
+        input = input.trim().toUpperCase();
+
         while(commandLock){
             switch(BattleCommands.parse(input)){
                 case ATTACK -> {
