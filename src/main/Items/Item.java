@@ -11,7 +11,7 @@ public abstract class Item{
         this.name = n;
     }
 
-    public abstract void use(Entity entity); //FLAG: Heap pollution possible
+    public abstract void use(Entity entity);
     //NOTE: Found a better way, just use Entity
 
     public Rarity getRarity() {

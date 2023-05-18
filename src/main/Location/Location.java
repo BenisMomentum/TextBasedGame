@@ -12,7 +12,7 @@ public class Location {
     private final String description;
     private final Map<String,Integer> exits;
     private final List<Item> items;
-    private final Monster m;
+    private Monster m;
 
 
     /*
@@ -111,5 +111,13 @@ public class Location {
         //EMPTY FOR NOW
         //FUNCTION IS BEING MOVED TO SINGLETON Locations.java
 
+    }
+
+    public Monster getM() {
+        return m;
+    }
+
+    public void setM(Monster m) {
+        this.m = m;
     }
 }

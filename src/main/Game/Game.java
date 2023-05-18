@@ -1,15 +1,15 @@
 package main.Game;
 
 import main.Entities.Player;
+import main.Game.BattleExceptions.PlayerLostException;
+import main.Game.BattleExceptions.PlayerWonException;
 import main.Items.Armour;
 import main.Items.Item;
 import main.Items.Weapon;
 import main.Location.Location;
 import main.Location.Locations;
 import main.TextConstants;
-import org.w3c.dom.ls.LSOutput;
 
-import java.util.Comparator;
 import java.util.Scanner;
 
 public class Game {
@@ -18,19 +18,22 @@ public class Game {
 
     Player p = new Player();
 
-    //Locations locations;
+
     int previousLocationID;
     int locationID;
 
     public Game(){
-        Locations.getInstance().loadLocations();
+        Locations.getInstance().loadLocations(); //Loads locations from the locations.txt file that encompasses most game data regarding area.
+        //Locations.getInstance().saveLocations(); //Why save the locations?
 
+        startGame();
+    }
+
+    public void startGame(){
         if(startMessage()){
             System.out.println("TYPE \"HELP\" FOR A LIST OF COMMANDS");
             gameLoop();
         }
-
-        //Locations.getInstance().saveLocations(); //Why save the locations?
     }
 
     private void gameLoop() {
@@ -59,8 +62,37 @@ public class Game {
             input = sc.nextLine();
 
             try{
+
+                if(Locations.getInstance().getLocations().get(locationID).getM() != null){
+                    System.out.println("Before you could do anything something comes up behind you...\n");
+
+                    try{
+                        Battle b = new Battle(this.p, Locations.getInstance().getLocations().get(locationID).getM(),this);
+                    }catch(PlayerLostException e){
+                        System.out.println(e.message);
+
+                        Thread.sleep(500L);
+
+                        standardCommandHandler("EXIT",Locations.getInstance().getLocations().get(locationID));
+
+                    }catch(PlayerWonException e){
+                        System.out.println(e.message);
+
+                        Thread.sleep(500L);
+
+                        Locations.getInstance().getLocations().get(locationID).setM(null);
+
+                        System.out.println("Anyways, as you were...\n");
+
+                        Thread.sleep(500L);
+
+                        System.out.println("LAST COMMAND: " + input);
+
+                    }
+                }
+
                 standardCommandHandler(input, Locations.getInstance().getLocations().get(locationID));
-            } catch(NullPointerException e){
+            } catch(NullPointerException | IllegalArgumentException | InterruptedException e){
                 System.out.println("\n" + "Incorrect Command!");
             }
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Player extends Entity {
 
-    protected int level = 0;
+    protected int level = 1;
     protected int experience = 0;
 
     protected List<Item> inventory; //MAX SIZE?
@@ -39,7 +39,7 @@ public class Player extends Entity {
         int MAX_CURRENT_XP;
 
         while(recievedXP >=0){
-            MAX_CURRENT_XP = MAX_BASE_EXPERIENCE + (30*level);
+            MAX_CURRENT_XP = MAX_BASE_EXPERIENCE + (30*(level - 1));
             if(experience + recievedXP >= MAX_CURRENT_XP){
                 level++;
                 experience = (recievedXP -= MAX_CURRENT_XP);
@@ -63,9 +63,12 @@ public class Player extends Entity {
 
     MAXIMUM FOR ALL STATS (STR, INIT) IS 100
      */
-        if(incomingDamage <= 0) return 0;
+        if(incomingDamage <= 0) {
+            System.out.println("You get hit for [0] DMG, like a wet noodle");
+            return 0;
+        }
 
-        double armourCalc = ((double) (armour % 51) / 100.0); //Setting a variable is much easier than re-doing that calc again for the sake of the short if-else
+        double armourCalc = (1.0 - (((double) (armour % 51) )/ 100.0)); //Setting a variable is much easier than re-doing that calc again for the sake of the short if-else
 
         int actualDamage = Math.toIntExact(Math.round(
 
@@ -178,5 +181,9 @@ public class Player extends Entity {
 
     public void setEquipedArmour(Armour equipedArmour) {
         this.equipedArmour = equipedArmour;
+    }
+
+    public int getMAXHP(){
+        return 50 + (10 * (level-1));
     }
 }

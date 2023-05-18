@@ -21,7 +21,7 @@ public abstract class Entity {
     }
 
     public void setArmour(int armour) {
-        this.armour = armour;
+        this.armour = Math.min(armour, 50);
     }
 
     public int getHp() {
@@ -62,5 +62,9 @@ public abstract class Entity {
                 + this.name + "/\"" + this.hp + "/"
                 + this.strength + "/" + this.armour + "/"
                 + this.initiative;
+    }
+
+    public String getStats(){
+        return this.name + " || HP: " + this.hp + " || ARMR: " + this.armour + " || INIT: " + this.initiative;
     }
 }

@@ -7,6 +7,13 @@ public class TextConstants {
     public static final String EXIT_REGEX = "-";
     public static final String ITEM_REGEX = " / ";
     public static final String INVENTORY_VIEW = "=============INVENTORY VIEW=============";
+    public static final String GAME_LOSE = "=============GAME OVER!=============";
+
+    public static final String BATTLE_START = "=============BATTLE STARTED!=============";
+    public static final String BATTLE_OPTIONS = "=========| ATTACK | BLOCK | USE | RUN |=========";
+    public static final String BATTLE_WIN = "=============YOU WON THE BATTLE!=============";
+    public static final String BATTLE_LOSE = "=============YOU LOST!=============";
+
 
 
     public static final String STARTUP_MESSAGE = EQUALS_SEPERATOR + "\n" +
