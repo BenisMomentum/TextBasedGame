@@ -4,6 +4,7 @@ import main.Entities.Monster;
 import main.Entities.Player;
 import main.Game.BattleExceptions.PlayerLostException;
 import main.Game.BattleExceptions.PlayerWonException;
+import main.Items.UseableItems.HealingItem;
 import main.Items.UseableItems.UseableItem;
 import main.TextConstants;
 
@@ -41,6 +42,11 @@ public class Battle {
 
         System.out.println(TextConstants.BATTLE_START);
 
+        try {
+            Thread.sleep(500L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         battleLoop();
     }
 
@@ -171,7 +177,10 @@ public class Battle {
             System.out.print("Enter Item Number: ");
             int input = sc.nextInt();
             try{
-                player.getInventory().get(input).use(null); //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
+                if(player.getInventory().get(input) instanceof HealingItem){
+                    player.getInventory().get(input).use(player);
+                }
+                break; //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
             } catch(IndexOutOfBoundsException e){
                 System.out.println("\n" + "Number does not correspond to inventory item! Try again!");
             }
@@ -192,7 +201,6 @@ public class Battle {
                 * In case of the user responding with "RUN"
                 * He will have a random chance to not be able to get away
                 */
-
 
                 Random randomSeed = new Random();
 

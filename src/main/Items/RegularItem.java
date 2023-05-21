@@ -9,6 +9,6 @@ public class RegularItem extends Item{
 
     @Override
     public void use(Entity entity) {
-        System.out.println(this.name + " does nothing...");
+        System.out.println("Cannot USE " + this.name);
     }
 }

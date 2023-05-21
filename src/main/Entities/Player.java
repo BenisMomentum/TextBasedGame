@@ -151,6 +151,17 @@ public class Player extends Entity {
         return false;
     }
 
+    public void heal(int amount){
+        if(amount > 0){
+            if(amount + this.hp <= this.getMAXHP()){
+                this.hp += amount;
+            }else{
+                this.hp = this.getMAXHP();
+            }
+
+        }
+    }
+
 
     //STANDARDS
 

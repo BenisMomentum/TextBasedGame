@@ -47,7 +47,7 @@ public class Game {
         locationID = 0;
         previousLocationID = 0;
 
-        while(!input.equals("EXIT")){
+        while(!input.equalsIgnoreCase("EXIT")){
             try{
                 System.out.println(Locations.getInstance().getLocations().get(locationID).getDescription());
             } catch(IndexOutOfBoundsException e){
@@ -64,6 +64,7 @@ public class Game {
             try{
 
                 if(Locations.getInstance().getLocations().get(locationID).getM() != null){
+                    Thread.sleep(500L);
                     System.out.println("Before you could do anything something comes up behind you...\n");
 
                     try{
@@ -73,7 +74,7 @@ public class Game {
 
                         Thread.sleep(500L);
 
-                        standardCommandHandler("EXIT",Locations.getInstance().getLocations().get(locationID));
+                        System.exit(0);
 
                     }catch(PlayerWonException e){
                         System.out.println(e.message);

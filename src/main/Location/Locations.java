@@ -2,6 +2,7 @@ package main.Location;
 
 import main.Entities.Monster;
 import main.Items.*;
+import main.Items.UseableItems.HealingItem;
 import main.TextConstants;
 
 import java.io.*;
@@ -29,7 +30,20 @@ public class Locations {
     public void loadLocations(){
         locations = new LinkedList<>();
 
-        System.out.println("READING...");
+        System.out.print("READING FILES.");
+
+        try {
+            Thread.sleep(500L);
+            System.out.print(".");
+            Thread.sleep(500L);
+            System.out.print(".");
+            Thread.sleep(500L);
+        } catch (InterruptedException e) {
+
+        }finally{
+            System.out.println();
+        }
+
 
         try(Scanner sc = new Scanner(new File(fileName))){
             //This is the format the Location will be in:
@@ -59,32 +73,7 @@ public class Locations {
                 List<Item> newItems = new ArrayList<>();
 
                 //ITEM HANDLING
-                if(!compartments[3].equals("null")){
-                    for(String s : compartments[3].split(TextConstants.ITEM_REGEX)){
-                        String[] items = s.split("/");
-                        switch (items[0]) {
-                            case "WEAPON" -> {
-                                newItems.add(new Weapon(
-                                        Rarity.parse(items[2]),
-                                        items[1],
-                                        Integer.parseInt(items[3])
-                                ));
-                            }
-                            case "ARMOUR" -> {
-                                newItems.add(new Armour(
-                                        Rarity.valueOf(items[2]),
-                                        items[1],
-                                        Integer.parseInt(items[3])
-                                ));
-                            }
-                            default -> { //just ITEM rather than anything special, makes a RegularItem
-                                newItems.add(new RegularItem(
-                                        Rarity.valueOf(items[2]),
-                                        items[1]));
-                            }
-                        }
-                    }
-                }
+                readItems(compartments[3],newItems);
 
                 Monster mons = null;
 
@@ -98,7 +87,7 @@ public class Locations {
                             Integer.parseInt(monsParams[5])
                     );
                 }catch(IndexOutOfBoundsException e){
-                    System.out.println("No monster detected on init");
+                    //System.out.println("No monster detected on init"); //DEBUG PURPOSES
                 }
                 locations.add(new Location(locID,description,newExits,newItems,mons));
             }
@@ -116,6 +105,43 @@ public class Locations {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void readItems(String input, List<Item> newItems){
+        if(!input.equals("null")){
+            for(String s : input.split(TextConstants.ITEM_REGEX)){
+                String[] items = s.split("/");
+                switch (items[0]) {
+                    case "WEAPON" -> {
+                        newItems.add(new Weapon(
+                                Rarity.parse(items[2]), //Rarity
+                                items[1], //Name
+                                Integer.parseInt(items[3]) //Strength Buff (Attack Value)
+                        ));
+                    }
+                    case "ARMOUR" -> {
+                        newItems.add(new Armour(
+                                Rarity.valueOf(items[2]), //Rarity
+                                items[1], //Name
+                                Integer.parseInt(items[3]) //Armour Value
+                        ));
+                    }
+                    case "HEAL_ITEM" ->{
+                        newItems.add(new HealingItem(
+                                Rarity.valueOf(items[2]), //Rarity
+                                items[1], //Name
+                                Integer.parseInt(items[3]) //HealAmount
+                        ));
+                    }
+
+                    default -> { //just ITEM rather than anything special, makes a RegularItem
+                        newItems.add(new RegularItem(
+                                Rarity.valueOf(items[2]),
+                                items[1]));
+                    }
+                }
+            }
         }
     }
 }
