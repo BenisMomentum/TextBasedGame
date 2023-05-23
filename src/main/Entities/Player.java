@@ -13,6 +13,7 @@ public class Player extends Entity {
 
     protected int level = 1;
     protected int experience = 0;
+    protected int maxHP;
 
     protected List<Item> inventory; //MAX SIZE?
     protected Weapon equipedWeapon;
@@ -194,7 +195,14 @@ public class Player extends Entity {
         this.equipedArmour = equipedArmour;
     }
 
+    //MAX STAT HANDLING
+
     public int getMAXHP(){
         return 50 + (10 * (level-1));
     }
+
+    public void addMAXHP(int val){this.maxHP = val + maxHP;} //Capability of subtracting as well, as to avoid multiple methods.
+
+    public void resetMAXHP(){this.maxHP = this.getMAXHP();}
+
 }

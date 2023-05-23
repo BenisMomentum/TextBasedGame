@@ -2,13 +2,20 @@ package main.Items;
 
 import main.Entities.Entity;
 import main.Entities.Player;
+import main.Items.Effects.ArmourEffects.ArmourEffect;
+import main.Items.Effects.Effect;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Armour extends Item{
     protected int armour;
+    protected List<ArmourEffect> effectList;
 
     public Armour(Rarity r, String n) {
         super(r, n);
         this.armour = 0;
+        this.effectList = new ArrayList<>();
     }
 
     @Override
@@ -34,5 +41,13 @@ public class Armour extends Item{
                 + "/" + this.rarity
                 + "/" + this.armour
                 + "";
+    }
+
+    public int getArmour() {
+        return armour;
+    }
+
+    public List<ArmourEffect> getEffects() {
+        return effectList;
     }
 }
