@@ -2,17 +2,22 @@ package main.Location;
 
 import main.Entities.Monster;
 import main.Items.*;
+import main.Items.Effects.ArmourEffects.ArmourEffectList;
+import main.Items.Effects.ArmourEffects.Swiftness;
+import main.Items.Effects.ArmourEffects.Vitality;
+import main.Items.Effects.Effect;
 import main.Items.UseableItems.HealingItem;
 import main.TextConstants;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class Locations {
     private static Locations instance = new Locations();
     private static final String fileName = "locations.txt";
 
-    private List<Location> locations;
+    private Map<Integer,Location> locations;
 
     public Locations(){
 
@@ -22,13 +27,13 @@ public class Locations {
         return instance;
     }
 
-    public List<Location> getLocations() {
+    public Map<Integer,Location> getLocations() {
         return locations;
     }
 
 
     public void loadLocations(){
-        locations = new LinkedList<>();
+        locations = new LinkedHashMap<>();
 
         System.out.print("READING FILES.");
 
@@ -47,7 +52,7 @@ public class Locations {
 
         try(Scanner sc = new Scanner(new File(fileName))){
             //This is the format the Location will be in:
-            //LOCATIONID | DESCRIPTION | EXITS | ITEMS | MONSTER
+            //LOCATIONID | DESCRIPTION | EXITS | ITEMS | MONSTER`
 
             while(sc.hasNextLine()){
                 String[] compartments = sc.nextLine().split(TextConstants.LOCATION_SPLIT_REGEX);
@@ -89,7 +94,7 @@ public class Locations {
                 }catch(IndexOutOfBoundsException e){
                     //System.out.println("No monster detected on init"); //DEBUG PURPOSES
                 }
-                locations.add(new Location(locID,description,newExits,newItems,mons));
+                locations.put(locID,new Location(locID,description,newExits,newItems,mons));
             }
 
         } catch(FileNotFoundException e){e.printStackTrace();}
@@ -121,11 +126,19 @@ public class Locations {
                         ));
                     }
                     case "ARMOUR" -> {
-                        newItems.add(new Armour(
+                        Armour a = new Armour(
                                 Rarity.valueOf(items[2]), //Rarity
                                 items[1], //Name
                                 Integer.parseInt(items[3]) //Armour Value
-                        ));
+                        );
+
+                        try{
+                            readItemEffects(a,items[4]);
+                        }catch(IndexOutOfBoundsException e){
+
+                        }finally{
+                            newItems.add(a);
+                        }
                     }
                     case "HEAL_ITEM" ->{
                         newItems.add(new HealingItem(
@@ -139,6 +152,28 @@ public class Locations {
                         newItems.add(new RegularItem(
                                 Rarity.valueOf(items[2]),
                                 items[1]));
+                    }
+                }
+            }
+        }
+    }
+
+    private void readItemEffects(Item item, String input){
+        String[] newInput = input.split(" ");
+        String[] parseSrc = null;
+
+        for(String s : newInput){
+            parseSrc = s.split(Pattern.quote("="));
+            if(item instanceof Armour){
+                switch(ArmourEffectList.parse(parseSrc[0])){
+                    case VITALITY ->{
+
+                        ((Armour) item).getEffects().add(new Vitality(Integer.parseInt(parseSrc[1])));
+                        break;
+                    }
+                    case SWIFTNESS -> {
+                        ((Armour) item).getEffects().add( new Swiftness(Integer.parseInt(parseSrc[1])));
+                        break;
                     }
                 }
             }

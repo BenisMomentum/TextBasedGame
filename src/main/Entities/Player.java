@@ -27,6 +27,8 @@ public class Player extends Entity {
         this.equipedWeapon = new Weapon(Rarity.COMMON,"FISTS",0);
         this.equipedArmour = new Armour(Rarity.COMMON, "NONE",0);
 
+        this.maxHP = 50 + (10 * (level - 1));
+
         this.inventory = new ArrayList<>();
 
     }
@@ -47,6 +49,7 @@ public class Player extends Entity {
 
                 this.strength += 2;
                 this.hp += 10;
+                this.maxHP += 10;
                 this.initiative += 1;
             }else{
                 experience += recievedXP;
@@ -82,12 +85,16 @@ public class Player extends Entity {
     }
 
     public String getStats(){
+        this.updateMaxes();
+
         String s = TextConstants.EQUALS_SEPERATOR + "\nPLAYER STATS: \n" + TextConstants.EQUALS_SEPERATOR + "\n"
-                + "HEALTH - " + this.hp + "HP\n"
+                + "HEALTH - " + this.hp + "/" + this.maxHP + "HP\n"
                 + "STRENGTH - " + this.strength + "STR\n"
                 + "LEVEL/EXPERIENCE - " + this.level + "LVL / " + this.experience + "XP\n"
-                + "ARMOUR - " + this.armour + "/50 ARM\n"
+                + "ARMOUR - " + (this.armour + this.equipedArmour.getArmour())+ "/50 ARM\n"
                 + "INITIATIVE - " + this.initiative + "INIT\n"
+                + "WEAPON - " + this.equipedWeapon.getName() + " - " + this.equipedWeapon.getStrengthBuff() + "STR\n"
+                + "ARMOUR - " + this.equipedArmour.getName() + "\n"
                 + TextConstants.EQUALS_SEPERATOR;
 
         return s;
@@ -135,6 +142,7 @@ public class Player extends Entity {
              //FLAG: Potentially could cause problem where it doesn't duplicate the equiped weapon but instead your current weapon gets overwritten by the new one
             equipedWeapon = w;
             inventory.remove(w);
+
             return true;
         }
         return false;
@@ -142,11 +150,14 @@ public class Player extends Entity {
 
     public boolean equip(Armour a){
         if(inventory.contains(a)){
-            if(!equipedArmour.equals(new Armour(Rarity.COMMON, "NONE",0))){
+            if(!equipedArmour.equals(new Armour(Rarity.COMMON, "NONE",0))){ //Handles it to make sure that an item that ISNT the base is being added BACK to the inventory as it is unequipped
                 inventory.add(equipedArmour);
             }
             equipedArmour = a;
             inventory.remove(a);
+
+            equipedArmour.applyAllArmourEffects(this);
+
             return true;
         }
         return false;
@@ -197,12 +208,41 @@ public class Player extends Entity {
 
     //MAX STAT HANDLING
 
-    public int getMAXHP(){
-        return 50 + (10 * (level-1));
+    private void updateMaxes(){
+        //MAX HP UPDATE
+        System.out.println("maxHp: " + this.maxHP + " current: " + this.hp);
+
+        int hpDiff = this.maxHP - this.hp;//Accounts for damage recieved and doesn't provide a cheat way to keep scaling HP
+
+        this.maxHP = 50 + (10 * (level - 1));
+        this.hp = this.maxHP - hpDiff;
+
+        this.initiative = this.getREALINIT();
+
+        //ITEM MODIFIER HANDLING
+        this.equipedArmour.applyAllArmourEffects(this);
+
     }
 
-    public void addMAXHP(int val){this.maxHP = val + maxHP;} //Capability of subtracting as well, as to avoid multiple methods.
+    public int getMAXHP(){
+        return this.maxHP;
+    }
+
+    public void addMAXHP(int val){this.maxHP += val;} //Capability of subtracting as well, as to avoid multiple methods.
 
     public void resetMAXHP(){this.maxHP = this.getMAXHP();}
+
+    public int getREALINIT(){ //Gets the base initiative
+        return 5 + this.level - 1;
+    }
+
+    public void addInit(int value){ //Initiative/Speed is not as important as the other stats so its fine if it goes into the negative
+        this.initiative += value;
+    }
+
+    public void resetInit(){
+        this.initiative = this.getREALINIT();
+    }
+
 
 }

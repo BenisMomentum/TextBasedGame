@@ -9,6 +9,7 @@ public enum Commands{
     TAKE("TAKE"),
     HELP("HELP"),
     INVENTORY("INVENTORY"),
+    STATS("STATS"),
     EQUIP("EQUIP");
 
     Commands(String input){

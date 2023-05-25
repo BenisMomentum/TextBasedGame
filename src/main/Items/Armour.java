@@ -10,12 +10,21 @@ import java.util.List;
 
 public class Armour extends Item{
     protected int armour;
-    protected List<ArmourEffect> effectList;
+    protected List<ArmourEffect> effectList = new ArrayList<>();;
+
+    /*public Armour(Rarity r, String n, int a, List<ArmourEffect> lAE){
+        this(r,n,a);
+        this.effectList = lAE;
+    }*/
+
+    public Armour(Rarity r, String n, int armour) {
+        super(r, n);
+        this.armour = armour;
+    }
 
     public Armour(Rarity r, String n) {
         super(r, n);
         this.armour = 0;
-        this.effectList = new ArrayList<>();
     }
 
     @Override
@@ -30,21 +39,30 @@ public class Armour extends Item{
         }
     }
 
-    public Armour(Rarity r, String n, int armour) {
-        super(r, n);
-        this.armour = armour;
-    }
-
     @Override
     public String toString() {
-        return "ARMOUR/" + this.name
+        String s = "ARMOUR/" + this.name
                 + "/" + this.rarity
                 + "/" + this.armour
-                + "";
+                + "/Effects: ";
+
+        for(ArmourEffect aE : this.effectList){
+            s += aE.toString();
+        }
+
+        return s;
     }
 
     public int getArmour() {
         return armour;
+    }
+
+    public void applyAllArmourEffects(Player player){
+        if(player.getEquipedArmour().equals(this)){
+            for(ArmourEffect aE : player.getEquipedArmour().effectList){
+                aE.addEffect(player);
+            }
+        }
     }
 
     public List<ArmourEffect> getEffects() {

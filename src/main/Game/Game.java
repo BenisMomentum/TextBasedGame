@@ -2,6 +2,7 @@ package main.Game;
 
 import main.Entities.Player;
 import main.Game.BattleExceptions.PlayerLostException;
+import main.Game.BattleExceptions.PlayerRanException;
 import main.Game.BattleExceptions.PlayerWonException;
 import main.Items.Armour;
 import main.Items.Item;
@@ -89,6 +90,9 @@ public class Game {
 
                         System.out.println("LAST COMMAND: " + input);
 
+                    } catch(PlayerRanException e){
+                        locationID = previousLocationID;
+                        //System.out.println("You got away safely!");
                     }
                 }
 
@@ -167,6 +171,7 @@ public class Game {
             }
             
             case INVENTORY -> handleInvetoryView();
+            case STATS -> System.out.println(p.getStats());
                     
             default -> {
                 System.out.println("\n" + "Incorrect Command!");
@@ -197,6 +202,8 @@ public class Game {
     private void handleInvetoryView() {
 
         System.out.println("\n" + TextConstants.INVENTORY_VIEW);
+
+        System.out.println();
 
         System.out.println("\n"+"CURRENT WEAPON: " + p.getEquipedWeapon());
         System.out.println("\n"+"CURRENT ARMOUR: " + p.getEquipedArmour());

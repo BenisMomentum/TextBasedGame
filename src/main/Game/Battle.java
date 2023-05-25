@@ -3,6 +3,7 @@ package main.Game;
 import main.Entities.Monster;
 import main.Entities.Player;
 import main.Game.BattleExceptions.PlayerLostException;
+import main.Game.BattleExceptions.PlayerRanException;
 import main.Game.BattleExceptions.PlayerWonException;
 import main.Items.UseableItems.HealingItem;
 import main.Items.UseableItems.UseableItem;
@@ -35,7 +36,7 @@ public class Battle {
     protected Monster monster;
     private final Scanner sc = new Scanner(System.in);
 
-    public Battle(Player player, Monster monster, Game game) throws PlayerLostException, PlayerWonException {
+    public Battle(Player player, Monster monster, Game game) throws PlayerLostException, PlayerWonException, PlayerRanException {
         this.player = player;
         this.monster = monster;
         this.g = game;
@@ -50,7 +51,7 @@ public class Battle {
         battleLoop();
     }
 
-    private void battleLoop() throws PlayerLostException, PlayerWonException {
+    private void battleLoop() throws PlayerLostException, PlayerWonException, PlayerRanException {
         String input = null;
 
         while(this.turnChangeCheck(input)){
@@ -69,10 +70,6 @@ public class Battle {
             //Monster attack handling
 
         }
-
-        if(!input.equals("RUN")){
-            handleBattleOutcome();
-        }
     }
 
     private void handleBattleOutcome() throws PlayerLostException, PlayerWonException {
@@ -84,7 +81,7 @@ public class Battle {
         }
     }
 
-    private void attackCommandParser(String input) {
+    private void attackCommandParser(String input) throws PlayerRanException {
         boolean commandLock = true;
 
         input = input.trim().toUpperCase();
@@ -105,12 +102,34 @@ public class Battle {
                 }
                 case RUN -> {
                     input = "RUN";
+                    handleRUNBattleCommand();
                     commandLock = false;
                 }
 
             }
         }
 
+    }
+
+    private void handleRUNBattleCommand() throws PlayerRanException {
+        /*
+         * In case of the user responding with "RUN"
+         * He will have a random chance to not be able to get away
+         */
+
+        Random randomSeed = new Random();
+
+        Random random = new Random(randomSeed.nextLong());
+
+        if(random.nextInt(11) % 3 == 0){
+            System.out.println("Couldn't get away!"); //Small chance you couldn't get away safely
+            this.turnChangeCheck("RUN");
+        }else{
+            System.out.println("Got away safely!");
+
+            g.locationID = g.previousLocationID; //Sets it to where you would run back to
+            throw new PlayerRanException();
+        }
     }
 
 
@@ -193,30 +212,6 @@ public class Battle {
         /*
         Meant to do all the turn change checks. Such as HP > 0 or any Damage Over Time effects [Future plan]
          */
-
-        if (lastInput != null){
-            if(lastInput.equals("RUN")){
-
-                /*
-                * In case of the user responding with "RUN"
-                * He will have a random chance to not be able to get away
-                */
-
-                Random randomSeed = new Random();
-
-                Random random = new Random(randomSeed.nextLong());
-
-                if(random.nextInt(11) % 3 == 0){
-                    System.out.println("Couldn't get away!"); //Small chance you couldn't get away safely
-                    return true;
-                }else{
-                    System.out.println("Got away safely!");
-
-                    g.locationID = g.previousLocationID; //Sets it to where you would run back to
-                    return false;
-                }
-            }
-        }
 
         return player.getHp() > 0 && monster.getHp() > 0;
     }
