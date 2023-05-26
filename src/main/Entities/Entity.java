@@ -15,6 +15,17 @@ public abstract class Entity {
         this.name = name;
     }
 
+    public static  int genericArmourCalc(Entity e, int incomingDamage){
+        double armourCalc = (1.0 - (((double) (e.getArmour() % 51) )/ 100.0)); //Setting a variable is much easier than re-doing that calc again for the sake of the short if-else
+
+        int actualDamage = Math.toIntExact(Math.round(
+
+                (double) incomingDamage * ( armourCalc== 0.0 ? 1.0 : armourCalc)
+
+        ));
+        return actualDamage;
+    }
+
 
     public int getArmour() {
         return armour;

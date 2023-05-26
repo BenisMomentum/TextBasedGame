@@ -1,6 +1,7 @@
 package main.Entities;
 
 import main.Items.Armour;
+import main.Items.Effects.WeaponEffects.WeaponEffectList;
 import main.Items.Item;
 import main.Items.Rarity;
 import main.Items.Weapon;
@@ -72,17 +73,13 @@ public class Player extends Entity {
             return 0;
         }
 
-        double armourCalc = (1.0 - (((double) (armour % 51) )/ 100.0)); //Setting a variable is much easier than re-doing that calc again for the sake of the short if-else
+        int actualDamage = Entity.genericArmourCalc(this,incomingDamage);
 
-        int actualDamage = Math.toIntExact(Math.round(
-
-                (double) incomingDamage * ( armourCalc== 0.0 ? 1.0 : armourCalc)
-
-                ));
         System.out.println("You get hit for [" + actualDamage + "] DMG!");
 
         return actualDamage;
     }
+
 
     public String getStats(){
         this.updateMaxes();
@@ -102,7 +99,9 @@ public class Player extends Entity {
 
     public void attack(Monster monster){
 
-        int actualDamage = this.strength + this.equipedWeapon.getStrengthBuff();
+        int rawDamage = this.strength + this.equipedWeapon.getStrengthBuff();
+
+        int actualDamage = (this.equipedWeapon.hasEffect(WeaponEffectList.PIERCE)) ? rawDamage : Entity.genericArmourCalc(monster,rawDamage);
 
         System.out.println("YOU attack " + monster.getName() + " for [" + actualDamage + "] DMG with [" + this.equipedWeapon.getName() + "]!");
 
@@ -210,13 +209,12 @@ public class Player extends Entity {
 
     private void updateMaxes(){
         //MAX HP UPDATE
-        System.out.println("maxHp: " + this.maxHP + " current: " + this.hp);
-
         int hpDiff = this.maxHP - this.hp;//Accounts for damage recieved and doesn't provide a cheat way to keep scaling HP
 
         this.maxHP = 50 + (10 * (level - 1));
         this.hp = this.maxHP - hpDiff;
 
+        //INIT HANDLING
         this.initiative = this.getREALINIT();
 
         //ITEM MODIFIER HANDLING

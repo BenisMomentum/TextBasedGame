@@ -47,7 +47,7 @@ public class Armour extends Item{
                 + "/Effects: ";
 
         for(ArmourEffect aE : this.effectList){
-            s += aE.toString();
+            s += aE.toString() + " ";
         }
 
         return s;

@@ -6,6 +6,7 @@ import main.Items.Effects.ArmourEffects.ArmourEffectList;
 import main.Items.Effects.ArmourEffects.Swiftness;
 import main.Items.Effects.ArmourEffects.Vitality;
 import main.Items.Effects.Effect;
+import main.Items.Effects.WeaponEffects.*;
 import main.Items.UseableItems.HealingItem;
 import main.TextConstants;
 
@@ -119,11 +120,19 @@ public class Locations {
                 String[] items = s.split("/");
                 switch (items[0]) {
                     case "WEAPON" -> {
-                        newItems.add(new Weapon(
+                        Weapon w = new Weapon(
                                 Rarity.parse(items[2]), //Rarity
                                 items[1], //Name
                                 Integer.parseInt(items[3]) //Strength Buff (Attack Value)
-                        ));
+                        );
+
+                        try{
+                            readItemEffects(w,items[4]);
+                        }catch(IndexOutOfBoundsException e){
+
+                        }finally{
+                            newItems.add(w);
+                        }
                     }
                     case "ARMOUR" -> {
                         Armour a = new Armour(
@@ -173,6 +182,27 @@ public class Locations {
                     }
                     case SWIFTNESS -> {
                         ((Armour) item).getEffects().add( new Swiftness(Integer.parseInt(parseSrc[1])));
+                        break;
+                    }
+                }
+            } else if (item instanceof Weapon) {
+
+                switch(WeaponEffectList.parse(parseSrc[0])){
+
+                    case QUICKDRAW -> {
+                        ((Weapon) item).getEffects().add( new QuickDraw(Integer.parseInt(parseSrc[1])));
+                        break;
+                    }
+                    case LIFESTEAL -> {
+                        ((Weapon) item).getEffects().add( new LifeSteal(Integer.parseInt(parseSrc[1])));
+                        break;
+                    }
+                    case PIERCE -> {
+                        ((Weapon) item).getEffects().add( new Pierce(Integer.parseInt(parseSrc[1])));
+                        break;
+                    }
+                    case EDGED -> {
+                        ((Weapon) item).getEffects().add( new Edged(Integer.parseInt(parseSrc[1])));
                         break;
                     }
                 }

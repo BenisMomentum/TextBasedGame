@@ -5,7 +5,6 @@ import main.Entities.Player;
 
 public class Vitality extends ArmourEffect {
 
-
     public Vitality(int armourValBoost){
         this.value = armourValBoost;
         this.type = ArmourEffectList.VITALITY;
