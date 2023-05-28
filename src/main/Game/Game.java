@@ -11,6 +11,7 @@ import main.Location.Location;
 import main.Location.Locations;
 import main.TextConstants;
 
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class Game {
@@ -93,6 +94,8 @@ public class Game {
                     } catch(PlayerRanException e){
                         locationID = previousLocationID;
                         //System.out.println("You got away safely!");
+                    } finally{
+                        p.getStatusEffects().clear();
                     }
                 }
 
@@ -134,13 +137,10 @@ public class Game {
         switch(Commands.parse(( //Checks if its a multiple command thing
                 multiParamCommand ? command[0] : input)
         )){
-            case SCAN -> { //single param command
-                handleSCANCommand(currentLoc);
-            }
+            case SCAN -> handleSCANCommand(currentLoc); //single param command
             case MOVE -> {
                 try{
                     enterRoom(command[1]);
-
                 }catch(NumberFormatException e){
                     e.printStackTrace();
                 }catch(NullPointerException e){
@@ -208,7 +208,7 @@ public class Game {
         System.out.println("\n"+"CURRENT WEAPON: " + p.getEquipedWeapon());
         System.out.println("\n"+"CURRENT ARMOUR: " + p.getEquipedArmour());
 
-        p.getInventory().sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
+        p.getInventory().sort(Comparator.comparing(Item::getName));
 
         System.out.println("\n" + "ITEMS: \n");
         for(Item i : p.getInventory()){

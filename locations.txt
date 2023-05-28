@@ -1,4 +1,4 @@
-0 | You are sitting in on your couch. The TV in front of you as usual is displaying the latest news. Chaos...Social Decay...the norm. | EAST-1 | WEAPON/knife/COMMON/15/QUICKDRAW=5 PIERCE=0 | null
+0 | You are sitting in on your couch. The TV in front of you as usual is displaying the latest news. Chaos...Social Decay...the norm. | EAST-1 | WEAPON/knife/COMMON/15/QUICKDRAW=5 PIERCE=0 / REGEN_ITEM/Pervitin/COMMON/3/4 | null
 1 | You are outside on the sidewalk | NORTH-3 SOUTH-2 WEST-0 | null | null
 2 | You are in the Slums. A derilict place of rampant crime and degeneracy, forgotten by most and avoided by all. | NORTH-1 WEST-6 | null | MONSTER/Homeless Man/5/0/10/10
 3 | You are in the Park. Admittedly a very run down one, like your apartment complex, but on the bright side, it's sunny. | WEST-4 EAST-8 | null | null
@@ -12,4 +12,8 @@
 11 | You're in Eden Plaza. Plenty of shops around. Some medical stores, some various clothing shops. Unfortunately you can't afford anything here besides food, and even that costs an arm and a leg. Luckily there's a Salvation Army as well, for broke people like you! | SOUTH-10 WEST-12 EAST-13 | ARMOUR/Thick_Jacket/COMMON/5/ / HEAL_ITEM/Tacos/COMMON/5 / HEAL_ITEM/Refreshing_Water/COMMON/10 | null
 12 | You're in a small ocean-side park. Well, technically ocean-side, anyway. It's essentially an island with a road leading up to it that's surrounded by a river. The birds are chirping, you can see happy couples roaming by...how the years have left you. | EAST-11 NORTH-15 | null | null
 13 | You're next to a Coffee shack, small and quaint for its setting in a massive city. The owner is busy serving other customers. Coffee's not a bad idea. | WEST-11 NORTH-15 SOUTH-14 | null | null
-14 | You're down a road that leads to Downtown. Taking the bus would have been easier but it was full. | NORTH-10 WEST-16 SOUTH-15 | null | MONSTER/Drug Addict/5/0/10/10
+14 | You're down a road that leads to Downtown. Taking the bus would have been easier but it was full. | NORTH-10 WEST-16 SOUTH-20 | null | MONSTER/Drug Addict/30/0/10/10
+15 | You're on a small park trail surrounded by trees...fresh air is unique to a place such as this. | SOUTH-13 WEST-17 | null | null
+16 | You're next to an abandoned construction yard. Guess they ran out of funding for this. | EAST-14 | null | MONSTER/Security Guard/20/0/30/5
+17 | You're at a small river. There's a small patch of grass next to the river...the water isn't clean. | EAST-15 SOUTH-20 | null | null
+20 | You're Downtown. A scary place but nothing unfamiliar after how much has happened. Police sirens can be heard in the distance. | WEST-21 EAST-22 NORTH-14 SOUTH-23 | null | MONSTER/Drug Addict/30/0/10/10

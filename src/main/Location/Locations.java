@@ -8,6 +8,7 @@ import main.Items.Effects.ArmourEffects.Vitality;
 import main.Items.Effects.Effect;
 import main.Items.Effects.WeaponEffects.*;
 import main.Items.UseableItems.HealingItem;
+import main.Items.UseableItems.RegenItem;
 import main.TextConstants;
 
 import java.io.*;
@@ -155,6 +156,17 @@ public class Locations {
                                 items[1], //Name
                                 Integer.parseInt(items[3]) //HealAmount
                         ));
+                    }
+
+                    case "REGEN_ITEM" ->{
+
+                        newItems.add(new RegenItem(
+                                Rarity.valueOf(items[2]), //Rarity
+                                items[1],
+                                Integer.parseInt(items[3]),
+                                Integer.parseInt(items[4])
+                        ));
+
                     }
 
                     default -> { //just ITEM rather than anything special, makes a RegularItem

@@ -1,11 +1,17 @@
 package main.Entities;
 
+import main.Items.Effects.StatusEffects.StatusEffect;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Entity {
     protected int hp;
     protected int armour;
     protected int strength;
     protected int initiative;
     protected String name;
+    protected List<StatusEffect> statusEffects;
 
     public Entity(int hp, int armour, int strength, int initiative, String name) {
         this.hp = hp;
@@ -13,6 +19,7 @@ public abstract class Entity {
         this.strength = strength;
         this.initiative = initiative;
         this.name = name;
+        this.statusEffects = new ArrayList<>();
     }
 
     public static  int genericArmourCalc(Entity e, int incomingDamage){
@@ -77,5 +84,9 @@ public abstract class Entity {
 
     public String getStats(){
         return this.name + " || HP: " + this.hp + " || ARMR: " + this.armour + " || INIT: " + this.initiative;
+    }
+
+    public List<StatusEffect> getStatusEffects() {
+        return statusEffects;
     }
 }

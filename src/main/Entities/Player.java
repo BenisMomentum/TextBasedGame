@@ -54,6 +54,7 @@ public class Player extends Entity {
                 this.initiative += 1;
             }else{
                 experience += recievedXP;
+                return;
             }
         }
     }

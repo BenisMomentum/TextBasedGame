@@ -5,7 +5,9 @@ import main.Entities.Player;
 import main.Game.BattleExceptions.PlayerLostException;
 import main.Game.BattleExceptions.PlayerRanException;
 import main.Game.BattleExceptions.PlayerWonException;
+import main.Items.Effects.StatusEffects.StatusEffect;
 import main.Items.UseableItems.HealingItem;
+import main.Items.UseableItems.RegenItem;
 import main.Items.UseableItems.UseableItem;
 import main.TextConstants;
 
@@ -35,11 +37,13 @@ public class Battle {
     protected Player player;
     protected Monster monster;
     private final Scanner sc = new Scanner(System.in);
+    private int xpAwarded;
 
     public Battle(Player player, Monster monster, Game game) throws PlayerLostException, PlayerWonException, PlayerRanException {
         this.player = player;
         this.monster = monster;
         this.g = game;
+        this.xpAwarded = this.xpGainCalc();
 
         System.out.println(TextConstants.BATTLE_START);
 
@@ -66,10 +70,9 @@ public class Battle {
 
             input = sc.next();
             attackCommandParser(input);
-
-            //Monster attack handling
-
         }
+        if(!input.equalsIgnoreCase("run")) handleBattleOutcome();
+
     }
 
     private void handleBattleOutcome() throws PlayerLostException, PlayerWonException {
@@ -77,6 +80,8 @@ public class Battle {
             throw new PlayerLostException();
         }
         if(monster.getHp() <= 0){
+            System.out.println("\n"+"GAINED: " + this.xpAwarded + "XP");
+            this.player.levelUp(this.xpAwarded);
             throw new PlayerWonException();
         }
     }
@@ -196,7 +201,7 @@ public class Battle {
             System.out.print("Enter Item Number: ");
             int input = sc.nextInt();
             try{
-                if(player.getInventory().get(input) instanceof HealingItem){
+                if(player.getInventory().get(input) instanceof UseableItem){
                     player.getInventory().get(input).use(player);
                 }
                 break; //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
@@ -213,7 +218,25 @@ public class Battle {
         Meant to do all the turn change checks. Such as HP > 0 or any Damage Over Time effects [Future plan]
          */
 
+        for(StatusEffect e : player.getStatusEffects()){
+            e.tick(player);
+            if(e.getDuration() < 0) player.getStatusEffects().remove(e);
+        }
+
+        for(StatusEffect e : monster.getStatusEffects()){
+            e.tick(monster);
+            if(e.getDuration() < 0) monster.getStatusEffects().remove(e);
+        }
+
         return player.getHp() > 0 && monster.getHp() > 0;
+    }
+
+    private int xpGainCalc(){
+
+        if(this.monster != null){
+            return this.monster.getHp() * 3;
+        }
+        return 0;
     }
 
 
