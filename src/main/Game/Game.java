@@ -6,6 +6,8 @@ import main.Game.BattleExceptions.PlayerRanException;
 import main.Game.BattleExceptions.PlayerWonException;
 import main.Items.Armour;
 import main.Items.Item;
+import main.Items.UseableItems.RegenItem;
+import main.Items.UseableItems.UseableItem;
 import main.Items.Weapon;
 import main.Location.Location;
 import main.Location.Locations;
@@ -18,7 +20,7 @@ public class Game {
 
     Scanner sc = new Scanner(System.in);
 
-    Player p = new Player();
+    Player player = new Player();
 
 
     int previousLocationID;
@@ -52,7 +54,7 @@ public class Game {
         while(!input.equalsIgnoreCase("EXIT")){
             try{
                 System.out.println(Locations.getInstance().getLocations().get(locationID).getDescription());
-            } catch(IndexOutOfBoundsException e){
+            } catch(IndexOutOfBoundsException | NullPointerException e){
                 System.out.println("\n" + "That exit seems to be blocked upon further inspection...");
 
                 this.locationID = previousLocationID; //Rolls back to previous location
@@ -70,7 +72,7 @@ public class Game {
                     System.out.println("Before you could do anything something comes up behind you...\n");
 
                     try{
-                        Battle b = new Battle(this.p, Locations.getInstance().getLocations().get(locationID).getM(),this);
+                        Battle b = new Battle(this.player, Locations.getInstance().getLocations().get(locationID).getM(),this);
                     }catch(PlayerLostException e){
                         System.out.println(e.message);
 
@@ -95,7 +97,7 @@ public class Game {
                         locationID = previousLocationID;
                         //System.out.println("You got away safely!");
                     } finally{
-                        p.getStatusEffects().clear();
+                        player.getStatusEffects().clear();
                     }
                 }
 
@@ -171,12 +173,58 @@ public class Game {
             }
             
             case INVENTORY -> handleInvetoryView();
-            case STATS -> System.out.println(p.getStats());
+            case STATS -> System.out.println(player.getStats());
+            case USE -> handleStandardUSECommand();
                     
             default -> {
                 System.out.println("\n" + "Incorrect Command!");
             }
         }
+    }
+
+    private void handleStandardUSECommand() {
+
+        this.displayPlayerUseableItems();
+
+        while(true){
+            System.out.print("Enter Item Number: ");
+            int input = sc.nextInt();
+            try{
+                if(player.getInventory().get(input) instanceof UseableItem){
+                    if(player.getInventory().get(input) instanceof RegenItem){
+                        RegenItem i = (RegenItem) player.getInventory().get(input);
+
+                        player.heal(i.getRegenAmount() * i.getDuration()); //Heals for all turns it would have been applied for
+                    }else{
+                        player.getInventory().get(input).use(player);
+                    }
+                    player.getInventory().remove(player.getInventory().get(input));
+                }
+                break; //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
+            } catch(IndexOutOfBoundsException e){
+                System.out.println("\n" + "Number does not correspond to inventory item! Try again!");
+            }
+
+        }
+
+    }
+
+    private void displayPlayerUseableItems() {
+        System.out.println("\n" +TextConstants.INVENTORY_VIEW + "\n");
+
+        player.getInventory().sort(Comparator.comparing(Item::getName));
+
+        if(player.getInventory().size() != 0){
+            for(int i = 0; i < player.getInventory().size(); i++){
+                if(player.getInventory().get(i) instanceof UseableItem){
+                    System.out.println(i + " | " + player.getInventory().get(i).getName());
+                }
+            }
+        }else{
+            System.out.println("NO USEABLE ITEMS");
+        }
+
+        System.out.println("\n" + TextConstants.EQUALS_SEPERATOR + "\n");
     }
 
     private void handleSCANCommand(Location currentLoc) {
@@ -205,13 +253,13 @@ public class Game {
 
         System.out.println();
 
-        System.out.println("\n"+"CURRENT WEAPON: " + p.getEquipedWeapon());
-        System.out.println("\n"+"CURRENT ARMOUR: " + p.getEquipedArmour());
+        System.out.println("\n"+"CURRENT WEAPON: " + player.getEquipedWeapon());
+        System.out.println("\n"+"CURRENT ARMOUR: " + player.getEquipedArmour());
 
-        p.getInventory().sort(Comparator.comparing(Item::getName));
+        player.getInventory().sort(Comparator.comparing(Item::getName));
 
         System.out.println("\n" + "ITEMS: \n");
-        for(Item i : p.getInventory()){
+        for(Item i : player.getInventory()){
             System.out.println(i);
         }
 
@@ -238,7 +286,7 @@ public class Game {
     private void handleTakeItem(String itemName, Location location){
         for(Item i : location.getItems()){
             if(itemName.equals(i.getName())){
-                this.p.take(i);
+                this.player.take(i);
                 location.getItems().remove(i);
                 return;
             }
@@ -258,15 +306,15 @@ public class Game {
         Then calls the equip function correspondingly.
          */
 
-        for(int i = 0; i < p.getInventory().size(); i++){
-            if(p.getInventory().get(i).getName().equals(itemName)
-                    && p.getInventory().get(i) instanceof Weapon){
-                p.equip((Weapon) p.getInventory().get(i));
+        for(int i = 0; i < player.getInventory().size(); i++){
+            if(player.getInventory().get(i).getName().equals(itemName)
+                    && player.getInventory().get(i) instanceof Weapon){
+                player.equip((Weapon) player.getInventory().get(i));
                 return;
 
-            } else if(p.getInventory().get(i).getName().equals(itemName)
-                    && p.getInventory().get(i) instanceof Armour){
-                p.equip((Armour) p.getInventory().get(i));
+            } else if(player.getInventory().get(i).getName().equals(itemName)
+                    && player.getInventory().get(i) instanceof Armour){
+                player.equip((Armour) player.getInventory().get(i));
                 return;
             }
         }

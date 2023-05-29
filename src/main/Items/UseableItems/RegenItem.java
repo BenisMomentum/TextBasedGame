@@ -25,4 +25,12 @@ public class RegenItem extends UseableItem{
     public String toString() {
         return "REGEN_ITEM/" + this.name + "/" + this.rarity + "/" + this.regenAmount + "HP For " + this.duration + " turns";
     }
+
+    public int getRegenAmount() {
+        return regenAmount;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
 }

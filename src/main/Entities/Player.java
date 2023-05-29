@@ -41,19 +41,21 @@ public class Player extends Entity {
     public void levelUp(int recievedXP){
 
         int MAX_CURRENT_XP;
+        experience += recievedXP;
 
-        while(recievedXP >=0){
+        while(experience >=0){
             MAX_CURRENT_XP = MAX_BASE_EXPERIENCE + (30*(level - 1));
-            if(experience + recievedXP >= MAX_CURRENT_XP){
-                level++;
-                experience = (recievedXP -= MAX_CURRENT_XP);
+
+            if(experience >= MAX_CURRENT_XP){
+                experience -= MAX_CURRENT_XP;
 
                 this.strength += 2;
                 this.hp += 10;
                 this.maxHP += 10;
                 this.initiative += 1;
+                level++;
             }else{
-                experience += recievedXP;
+                //experience += recievedXP;
                 return;
             }
         }

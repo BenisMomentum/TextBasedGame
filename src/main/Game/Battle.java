@@ -5,9 +5,9 @@ import main.Entities.Player;
 import main.Game.BattleExceptions.PlayerLostException;
 import main.Game.BattleExceptions.PlayerRanException;
 import main.Game.BattleExceptions.PlayerWonException;
+import main.Items.Effects.StatusEffects.Bleed;
 import main.Items.Effects.StatusEffects.StatusEffect;
-import main.Items.UseableItems.HealingItem;
-import main.Items.UseableItems.RegenItem;
+import main.Items.Effects.WeaponEffects.WeaponEffectList;
 import main.Items.UseableItems.UseableItem;
 import main.TextConstants;
 
@@ -145,6 +145,10 @@ public class Battle {
                     monster.attack(player);
                     if(player.getHp() > 0){ //Makes sure that the player doesn't strike the monster after they're dead
                         player.attack(monster);
+                        if(player.getEquipedWeapon().hasEffect(WeaponEffectList.EDGED)){
+                            monster.getStatusEffects().add(new Bleed(3, //Bleed effects generally applied for 3 turns when it comes to EDGED
+                                    player.getEquipedWeapon().getEffect(WeaponEffectList.EDGED).getValue())); //Grabs the effect value and applies it as the bleed.
+                        }
                     }
 
                 } else{
@@ -204,7 +208,8 @@ public class Battle {
                 if(player.getInventory().get(input) instanceof UseableItem){
                     player.getInventory().get(input).use(player);
                 }
-                break; //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
+                player.getInventory().remove(player.getInventory().get(input));
+                return; //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
             } catch(IndexOutOfBoundsException e){
                 System.out.println("\n" + "Number does not correspond to inventory item! Try again!");
             }

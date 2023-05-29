@@ -32,6 +32,13 @@ public class Weapon extends Item{
         return false;
     }
 
+    public WeaponEffect getEffect(WeaponEffectList wE){
+        for(WeaponEffect w : this.effectList){
+            if(w.getType().equals(wE)) return w;
+        }
+        return null;
+    }
+
     public int getStrengthBuff() {
         return strengthBuff;
     }
