@@ -15,6 +15,20 @@ public class TextConstants {
     public static final String BATTLE_LOSE = "=============YOU LOST!=============";
 
 
+    //EFFECTS DURING BATTLE:
+    //Key note, replace '=' with the level/turns left
+
+    public static final String[] EFFECT_REGEN = {"    ___    " ,
+            " __|   |__" ,
+            "|__  = __|" ,
+            "   |___|"};
+
+    public static final String[] EFFECT_BLEED = {"    /\\   " ,
+            "  /    \\ " ,
+            "  |  =  |" ,
+            "  \\___/"};
+
+
 
     public static final String STARTUP_MESSAGE = EQUALS_SEPERATOR + "\n" +
             " ________  ________  ___      ___ _______   ________   _________  ___  ___  ________  _______           ________  ________  _____ ______   _______      \n" +

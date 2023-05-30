@@ -22,7 +22,6 @@ public class Vitality extends ArmourEffect {
             if(p.getEquipedArmour().getEffects().contains(this)){
                 p.addMAXHP(this.value);
                 p.setHp(p.getHp() + this.value);
-                System.out.println("Current HP: " + p.getHp());
             }
         }
     }

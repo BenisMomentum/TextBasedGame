@@ -1,6 +1,10 @@
 package main.Entities;
 
+import main.Colors;
 import main.Items.Armour;
+import main.Items.Effects.StatusEffects.Bleed;
+import main.Items.Effects.StatusEffects.Regen;
+import main.Items.Effects.StatusEffects.StatusEffect;
 import main.Items.Effects.WeaponEffects.WeaponEffectList;
 import main.Items.Item;
 import main.Items.Rarity;
@@ -88,15 +92,76 @@ public class Player extends Entity {
         this.updateMaxes();
 
         String s = TextConstants.EQUALS_SEPERATOR + "\nPLAYER STATS: \n" + TextConstants.EQUALS_SEPERATOR + "\n"
-                + "HEALTH - " + this.hp + "/" + this.maxHP + "HP\n"
-                + "STRENGTH - " + this.strength + "STR\n"
-                + "LEVEL/EXPERIENCE - " + this.level + "LVL / " + this.experience + "XP\n"
-                + "ARMOUR - " + (this.armour + this.equipedArmour.getArmour())+ "/50 ARM\n"
-                + "INITIATIVE - " + this.initiative + "INIT\n"
-                + "WEAPON - " + this.equipedWeapon.getName() + " - " + this.equipedWeapon.getStrengthBuff() + "STR\n"
-                + "ARMOUR - " + this.equipedArmour.getName() + "\n"
-                + TextConstants.EQUALS_SEPERATOR;
+                + Colors.GREEN_BRIGHT + "HEALTH - " + this.hp + "/" + this.maxHP + "HP" + Colors.RESET + "   |   "
+                + Colors.PURPLE_BOLD_BRIGHT + "LEVEL/EXPERIENCE - " + this.level + "LVL / " + this.experience + "XP" + Colors.RESET + "\n"
+                + Colors.RED_BRIGHT + "STRENGTH - " + this.strength + "STR" + Colors.RESET + "   |   "
+                + Colors.BLUE_BRIGHT + "ARMOUR - " + (this.armour + this.equipedArmour.getArmour())+ "/50 ARM " + Colors.RESET + "\n"
+                + Colors.YELLOW_BRIGHT + "INITIATIVE - " + this.initiative + "INIT"  + Colors.RESET + "\n"
+                + "WEAPON - " + this.equipedWeapon.getName() + " - " + Colors.RED_BRIGHT + this.equipedWeapon.getStrengthBuff() + "STR" + Colors.RESET + "\n"
+                + "ARMOUR - " + Colors.BLUE_BRIGHT + this.equipedArmour.getName() + Colors.RESET +"\n"
+                + "EFFECTS: \n" + this.getEffectString() + "\n"
+                + TextConstants.EQUALS_SEPERATOR + "\n";
+        return s;
+    }
 
+    private String getEffectString(){
+        if(this.statusEffects.size() == 0) return "";
+
+        String s = "";
+        int loopLen = Math.max(TextConstants.EFFECT_BLEED.length, TextConstants.EFFECT_REGEN.length);
+
+        /*
+                PSEUDOCODE:
+
+                eff1[0] \t eff2[0] \t ....
+                eff1[1] \t eff2[1] \t ....
+
+                ^ What I want.
+
+                THEORY:
+
+                for every effect{
+                    switch(effect class){
+                        case BLEED:
+                           IF it contains '=' -> s+= bleed_eff[i].replace("=", eff.strength)
+                           ELSE -> s +=
+                           break;
+                        case REGEN:
+                           IF it contains '=' -> s+= bleed_eff[i].replace("=", eff.strength)
+                           ELSE -> s +=
+
+
+                    }
+                }
+
+                 */
+
+                /*if(sE instanceof Regen){
+                    s += (TextConstants.EFFECT_REGEN[i].contains("="))
+                            ? TextConstants.EFFECT_REGEN[i].replace("=",String.valueOf(sE.getStrength()))
+                            : TextConstants.EFFECT_REGEN[i];
+                }
+                if(sE instanceof Bleed){
+                    s += (TextConstants.EFFECT_BLEED[i].contains("="))
+                            ? TextConstants.EFFECT_BLEED[i].replace("=",String.valueOf(sE.getStrength()))
+                            : TextConstants.EFFECT_BLEED[i];
+                }*/
+
+        for(int i = 0; i < loopLen; i++){
+            for(StatusEffect sE : this.statusEffects){
+                if(sE instanceof Regen){
+                    s += (TextConstants.EFFECT_REGEN[i].contains("="))
+                            ? TextConstants.EFFECT_REGEN[i].replace("=",String.valueOf(sE.getStrength()))
+                            : TextConstants.EFFECT_REGEN[i];
+                } else if(sE instanceof Bleed){
+                    s += (TextConstants.EFFECT_BLEED[i].contains("="))
+                            ? TextConstants.EFFECT_BLEED[i].replace("=",String.valueOf(sE.getStrength()))
+                            : TextConstants.EFFECT_BLEED[i];
+                }
+                s += "\t";
+            }
+            s += "\n";
+        }
         return s;
     }
 
