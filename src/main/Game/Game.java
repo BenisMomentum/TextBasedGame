@@ -174,38 +174,59 @@ public class Game {
             
             case INVENTORY -> handleInvetoryView();
             case STATS -> System.out.println(player.getStats());
-            case USE -> handleStandardUSECommand();
+            case USE -> handleStandardUSECommand(command[1]);
                     
-            default -> {
-                System.out.println("\n" + "Incorrect Command!");
-            }
+            default -> System.out.println("\n" + "Incorrect Command!");
         }
     }
 
-    private void handleStandardUSECommand() {
+    private void handleStandardUSECommand(String inp) {
 
-        this.displayPlayerUseableItems();
+        if(inp != null){
 
-        while(true){
-            System.out.print("Enter Item Number: ");
-            int input = new Scanner(System.in).nextInt(); //Fixes a bug where apparently the main scanner registers a new command when none is present
-            try{
-                if(player.getInventory().get(input) instanceof UseableItem){
-                    if(player.getInventory().get(input) instanceof RegenItem){
-                        RegenItem i = (RegenItem) player.getInventory().get(input);
+            for(int f = 0; f < player.getInventory().size(); f++){
+                if(player.getInventory().get(f).getName().equalsIgnoreCase(inp)){
+                    try{
+                        if(player.getInventory().get(f) instanceof UseableItem){
+                            if(player.getInventory().get(f) instanceof RegenItem regenItem){
 
-                        player.heal(i.getRegenAmount() * i.getDuration()); //Heals for all turns it would have been applied for
-                    }else{
-                        player.getInventory().get(input).use(player);
+                                player.heal(regenItem.getRegenAmount() * regenItem.getDuration()); //Heals for all turns it would have been applied for
+                            }else{
+                                player.getInventory().get(f).use(player);
+                            }
+                            player.getInventory().remove(player.getInventory().get(f));
+                        }
+                        break; //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
+                    } catch(IndexOutOfBoundsException e){
+                        System.out.println("\n" + "Number does not correspond to inventory item! Try again!");
                     }
-                    player.getInventory().remove(player.getInventory().get(input));
                 }
-                break; //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
-            } catch(IndexOutOfBoundsException e){
-                System.out.println("\n" + "Number does not correspond to inventory item! Try again!");
             }
 
+        } else{
+            this.displayPlayerUseableItems(); //Displays all items for user to choose based on Number
+
+            while(true){
+                System.out.print("Enter Item Number: ");
+                int input = new Scanner(System.in).nextInt(); //Fixes a bug where apparently the main scanner registers a new command when none is present
+                try{
+                    if(player.getInventory().get(input) instanceof UseableItem){
+                        if(player.getInventory().get(input) instanceof RegenItem regenItem){
+
+                            player.heal(regenItem.getRegenAmount() * regenItem.getDuration()); //Heals for all turns it would have been applied for
+                        }else{
+                            player.getInventory().get(input).use(player);
+                        }
+                        player.getInventory().remove(player.getInventory().get(input));
+                    }
+                    break; //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
+                } catch(IndexOutOfBoundsException e){
+                    System.out.println("\n" + "Number does not correspond to inventory item! Try again!");
+                }
+
+            }
         }
+
 
     }
 
@@ -285,7 +306,7 @@ public class Game {
 
     private void handleTakeItem(String itemName, Location location){
         for(Item i : location.getItems()){
-            if(itemName.equals(i.getName())){
+            if(itemName.equalsIgnoreCase(i.getName())){
                 this.player.take(i);
                 location.getItems().remove(i);
                 return;
