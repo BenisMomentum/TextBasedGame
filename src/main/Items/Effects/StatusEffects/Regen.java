@@ -7,6 +7,7 @@ public class Regen extends StatusEffect{
 
     public Regen(int d, int eV) {
         super(d, eV);
+        this.type = StatusEffectList.REGEN;
     }
 
     @Override

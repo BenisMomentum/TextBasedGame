@@ -1,5 +1,11 @@
 package main.Entities;
 
+import main.Items.Effects.Effect;
+import main.Items.Effects.StatusEffects.StatusEffect;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Monster extends Entity{
 
     public Monster(String name, int hp, int armour, int strength, int initiative) {
@@ -21,12 +27,22 @@ public class Monster extends Entity{
         hp -= damage;
     }
 
+    public void addEffect(StatusEffect e){
+        this.statusEffects.add(e);
+    }
+
     @Override
     public String toString() {
-        return "MONSTER/"
+        String s = "MONSTER/"
                 + this.name + "/" + this.hp + "/"
                 + this.armour + "/" + this.strength + "/"
-                + this.initiative;
+                + this.initiative + "/";
+        for(int i = 0; i < this.statusEffects.size(); i++){
+
+        }
+
+
+        return s;
     }
 
 

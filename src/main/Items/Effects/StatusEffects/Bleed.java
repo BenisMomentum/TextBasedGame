@@ -5,6 +5,7 @@ import main.Entities.Entity;
 public class Bleed extends StatusEffect{
     public Bleed(int d, int eV) {
         super(d, eV);
+        this.type = StatusEffectList.BLEED;
     }
 
     @Override

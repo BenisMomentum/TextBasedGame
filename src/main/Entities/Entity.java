@@ -83,10 +83,26 @@ public abstract class Entity {
     }
 
     public String getStats(){
-        return this.name + " || HP: " + this.hp + " || ARMR: " + this.armour + " || INIT: " + this.initiative;
+        StringBuilder s = new StringBuilder(this.name + " || HP: " + this.hp + " || ARMR: " + this.armour + " || INIT: " + this.initiative + "\n");
+        s.append("Status Effects \\/ \n");
+
+        if(this.statusEffects.size() != 0){
+            for(int i = 0; i < statusEffects.size(); i++){
+                s.append(statusEffects.get(i).toHumanReadable()).append("\n");
+            }
+        }
+
+        return s.toString();
     }
 
     public List<StatusEffect> getStatusEffects() {
         return statusEffects;
     }
+
+    /*public void removeEffect(StatusEffect e){
+        if(this.getStatusEffects().contains(e)){
+            this.getStatusEffects().get(this.getStatusEffects().indexOf(e)).tick(this);
+        }
+
+    }*/
 }

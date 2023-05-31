@@ -197,7 +197,10 @@ public class Player extends Entity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return inventory.add(t);
+
+        inventory.add(t);
+
+        return true;
     }
 
     public boolean equip(Weapon w){

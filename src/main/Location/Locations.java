@@ -6,6 +6,8 @@ import main.Items.Effects.ArmourEffects.ArmourEffectList;
 import main.Items.Effects.ArmourEffects.Swiftness;
 import main.Items.Effects.ArmourEffects.Vitality;
 import main.Items.Effects.Effect;
+import main.Items.Effects.StatusEffects.StatusEffect;
+import main.Items.Effects.StatusEffects.StatusEffectList;
 import main.Items.Effects.WeaponEffects.*;
 import main.Items.UseableItems.HealingItem;
 import main.Items.UseableItems.RegenItem;
@@ -93,6 +95,13 @@ public class Locations {
                             Integer.parseInt(monsParams[4]),
                             Integer.parseInt(monsParams[5])
                     );
+                    try{
+                        if(!monsParams[6].equals("null")) readMonsterBuffs(mons,monsParams[6]);
+
+                    }catch(IndexOutOfBoundsException e){
+
+                    }
+
                 }catch(IndexOutOfBoundsException e){
                     //System.out.println("No monster detected on init"); //DEBUG PURPOSES
                 }
@@ -102,6 +111,7 @@ public class Locations {
         } catch(FileNotFoundException e){e.printStackTrace();}
         catch(NumberFormatException e){e.printStackTrace();}
     }
+
 
     public void saveLocations(){
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName))){
@@ -219,6 +229,13 @@ public class Locations {
                     }
                 }
             }
+        }
+    }
+
+    private void readMonsterBuffs(Monster mons, String input) {
+        for(String s : input.split(" ")){
+            mons.addEffect(StatusEffect.readStatus(s));
+            System.out.println(StatusEffect.readStatus(s));
         }
     }
 }

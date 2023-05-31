@@ -141,7 +141,7 @@ public class Battle {
     private void handleBattleInteraction(boolean blocks) { //Meant to handle the battle interraction
         if(monster.getHp() > 0){
             if(!blocks){
-                if(monster.getInitiative() > player.getInitiative()){ //judging attack order based on initiative
+                if(monster.getInitiative() > player.getInitiative() && !player.getEquipedWeapon().hasEffect(WeaponEffectList.QUICKDRAW)){ //judging attack order based on initiative
                     monster.attack(player);
                     if(player.getHp() > 0){ //Makes sure that the player doesn't strike the monster after they're dead
                         player.attack(monster);
@@ -223,14 +223,23 @@ public class Battle {
         Meant to do all the turn change checks. Such as HP > 0 or any Damage Over Time effects [Future plan]
          */
 
-        for(StatusEffect e : player.getStatusEffects()){
-            e.tick(player);
-            if(e.getDuration() < 0) player.getStatusEffects().remove(e);
+        for(int i = 0; i < player.getStatusEffects().size(); i++){
+            if(player.getStatusEffects().get(i).getDuration() < 0) {
+                player.getStatusEffects().remove(player.getStatusEffects().get(i));
+            }
+            else{
+                player.getStatusEffects().get(i).tick(player);
+            };
+
         }
 
-        for(StatusEffect e : monster.getStatusEffects()){
-            e.tick(monster);
-            if(e.getDuration() < 0) monster.getStatusEffects().remove(e);
+        for(int i = 0; i < monster.getStatusEffects().size(); i++){
+            if(monster.getStatusEffects().get(i).getDuration() < 0) {
+                monster.getStatusEffects().remove(monster.getStatusEffects().get(i));
+            }else{
+                monster.getStatusEffects().get(i).tick(monster);
+            }
+
         }
 
         return player.getHp() > 0 && monster.getHp() > 0;
