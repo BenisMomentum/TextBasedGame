@@ -62,7 +62,7 @@ public class Game {
             }
 
             System.out.println("\n What do you do?");
-
+            input = "";
             input = sc.nextLine();
 
             try{
@@ -188,7 +188,7 @@ public class Game {
 
         while(true){
             System.out.print("Enter Item Number: ");
-            int input = sc.nextInt();
+            int input = new Scanner(System.in).nextInt(); //Fixes a bug where apparently the main scanner registers a new command when none is present
             try{
                 if(player.getInventory().get(input) instanceof UseableItem){
                     if(player.getInventory().get(input) instanceof RegenItem){

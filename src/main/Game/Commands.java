@@ -48,6 +48,7 @@ public enum Commands{
         System.out.println("SCAN | Scans the area for exits or items.");
         System.out.println("MOVE [DIRECTION] | Any cardinal direction which is available.");
         System.out.println("INVENTORY | Gives you a view of your Inventory");
+        System.out.println("STATS | Gives you an overview of your stats");
         System.out.println("USE | Allows you to use a UseableItem from your Inventory");
         System.out.println("EQUIP [ITEM NAME] | Equips Item if its in your inventory");
         System.out.println("TAKE [ITEM NAME] | Grabs an item from the room");
