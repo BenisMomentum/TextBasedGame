@@ -13,10 +13,23 @@ import main.Location.Location;
 import main.Location.Locations;
 import main.TextConstants;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 
 public class Game {
+
+    /*
+    TODO:
+    Feature Requests:
+           - Marker to show you known places, essentially with the name of it.
+           [Read description after "You're in" or something, if not possible use Asterisk and Arraylist for places you've visited]. <- DONE
+
+            -Fix input mismatch exception for use in BattleCommands. <- DONE
+            -Fix all of the god forsaken errors in BattleCommands <- DONE
+
+     */
 
     Scanner sc = new Scanner(System.in);
 
@@ -25,10 +38,10 @@ public class Game {
 
     int previousLocationID;
     int locationID;
+    private List<Integer> visitedLocations = new ArrayList<>();
 
     public Game(){
         Locations.getInstance().loadLocations(); //Loads locations from the locations.txt file that encompasses most game data regarding area.
-        //Locations.getInstance().saveLocations(); //Why save the locations?
 
         startGame();
     }
@@ -70,6 +83,7 @@ public class Game {
                 if(Locations.getInstance().getLocations().get(locationID).getM() != null){
                     Thread.sleep(500L);
                     System.out.println("Before you could do anything something comes up behind you...\n");
+                    Thread.sleep(300L);
 
                     try{
                         Battle b = new Battle(this.player, Locations.getInstance().getLocations().get(locationID).getM(),this);
@@ -96,7 +110,9 @@ public class Game {
                     } catch(PlayerRanException e){
                         locationID = previousLocationID;
                         //System.out.println("You got away safely!");
-                    } finally{
+                    } catch(Exception e){ //DEBUG: Remove this later as I have no idea whats going on with this anymore, this is just so that I can understand the fucking error
+                        e.printStackTrace();
+                    } finally {
                         player.getStatusEffects().clear();
                     }
                 }
@@ -142,7 +158,7 @@ public class Game {
             case SCAN -> handleSCANCommand(currentLoc); //single param command
             case MOVE -> {
                 try{
-                    enterRoom(command[1]);
+                    handleMOVECommand(command[1]);
                 }catch(NumberFormatException e){
                     e.printStackTrace();
                 }catch(NullPointerException e){
@@ -263,9 +279,20 @@ public class Game {
         System.out.println("\n EXITS FOUND!: ");
 
         for(String s : currentLoc.getExits().keySet()){
-                System.out.println(s);
+                System.out.println(s + getExitDiscovery(currentLoc, s));
         }
 
+    }
+
+    private String getExitDiscovery(Location currentLoc, String desiredExit) { //Meant to get the exit name if it's been discovered or not.
+
+        Integer id = currentLoc.getExits().get(desiredExit);
+
+        if(this.visitedLocations.contains(id)){
+            return " - " + Locations.getInstance().getLocations().get(id).getName();
+        }else{
+            return "";
+        }
     }
 
     private void handleInvetoryView() {
@@ -287,7 +314,7 @@ public class Game {
         System.out.println("\n" + TextConstants.EQUALS_SEPERATOR + "\n");
     }
 
-    private void enterRoom(String direction){
+    private void handleMOVECommand(String direction){
         //Basically checks if the locationID is valid to be set
 
         direction = direction.toUpperCase();
@@ -296,6 +323,7 @@ public class Game {
 
             previousLocationID = this.locationID; //Updates previous location
             this.locationID = Locations.getInstance().getLocations().get(locationID).getExits().get(direction);
+            this.visitedLocations.add(this.previousLocationID); //Adds it to the list of visited locations.
 
         }else{
             System.out.println("[NOT A VALID COMMAND]");
@@ -328,12 +356,12 @@ public class Game {
          */
 
         for(int i = 0; i < player.getInventory().size(); i++){
-            if(player.getInventory().get(i).getName().equals(itemName)
+            if(player.getInventory().get(i).getName().equalsIgnoreCase(itemName)
                     && player.getInventory().get(i) instanceof Weapon){
                 player.equip((Weapon) player.getInventory().get(i));
                 return;
 
-            } else if(player.getInventory().get(i).getName().equals(itemName)
+            } else if(player.getInventory().get(i).getName().equalsIgnoreCase(itemName)
                     && player.getInventory().get(i) instanceof Armour){
                 player.equip((Armour) player.getInventory().get(i));
                 return;

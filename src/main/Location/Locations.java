@@ -53,7 +53,6 @@ public class Locations {
             System.out.println();
         }
 
-
         try(Scanner sc = new Scanner(new File(fileName))){
             //This is the format the Location will be in:
             //LOCATIONID | DESCRIPTION | EXITS | ITEMS | MONSTER`
@@ -66,10 +65,12 @@ public class Locations {
 
                 locID = Integer.parseInt(compartments[0]);
 
-                String description = compartments[1];
+                String name = compartments[1];
+
+                String description = compartments[2];
 
                 //EXITS HANDLING
-                String rawExits = compartments[2];
+                String rawExits = compartments[3];
 
                 Map<String, Integer> newExits = new HashMap<>();
 
@@ -82,13 +83,13 @@ public class Locations {
                 List<Item> newItems = new ArrayList<>();
 
                 //ITEM HANDLING
-                readItems(compartments[3],newItems);
+                readItems(compartments[4],newItems);
 
                 Monster mons = null;
 
                 //MONSTER HANDLING
                 try{
-                    String[] monsParams = compartments[4].split("/");
+                    String[] monsParams = compartments[5].split("/");
 
                     mons = new Monster(monsParams[1], Integer.parseInt(monsParams[2]),
                             Integer.parseInt(monsParams[3]),
@@ -105,7 +106,7 @@ public class Locations {
                 }catch(IndexOutOfBoundsException e){
                     //System.out.println("No monster detected on init"); //DEBUG PURPOSES
                 }
-                locations.put(locID,new Location(locID,description,newExits,newItems,mons));
+                locations.put(locID,new Location(locID,name,description,newExits,newItems,mons));
             }
 
         } catch(FileNotFoundException e){e.printStackTrace();}

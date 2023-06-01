@@ -9,6 +9,7 @@ import java.util.*;
 
 public class Location {
     private final int locationID;
+    private final String name;
     private final String description;
     private final Map<String,Integer> exits;
     private final List<Item> items;
@@ -18,7 +19,10 @@ public class Location {
     /*
     Essentially this is how Locations are meant to be managed:
 
-    There will be a description, a set of exits, and perhaps a set of items in the room.
+
+    There will be a description, a set of exits, and perhaps a set of items in the room, as well as a name.
+
+    ^ Above is not in order of READ
 
     Items in the room will be revealed by a SCAN
 
@@ -28,12 +32,13 @@ public class Location {
 
     Writing format will likely be the following:
 
-    LOCATIONID | DESCRIPTION | EXITS | ITEMS | MONSTER
+    LOCATIONID | NAME | DESCRIPTION | EXITS | ITEMS | MONSTER
 
      */
 
-    public Location(int locationID, String description, Map<String, Integer> exits, List<Item> items, Monster monster) {
+    public Location(int locationID, String name, String description, Map<String, Integer> exits, List<Item> items, Monster monster) {
         this.locationID = locationID;
+        this.name = name;
         this.description = description;
         this.exits = (exits == null) ? new HashMap<>() : new HashMap<>(exits);
         this.items = (items == null) ? new ArrayList<>() : new ArrayList<>(items);
@@ -67,7 +72,7 @@ public class Location {
 
         final String seperator = TextConstants.LOCATION_BIG_REGEX;
 
-        sB.append(this.locationID + seperator + this.description + seperator);
+        sB.append(this.locationID + seperator + this.name + seperator + this.description + seperator);
 
         String[] cardinalDirection = exits.keySet().toArray(new String[0]);
         Integer[] exitLead = exits.values().toArray(new Integer[0]);
@@ -107,11 +112,6 @@ public class Location {
         return sB.toString();
     }
 
-    public void read(String rawInput){ //supposed to read from file
-        //EMPTY FOR NOW
-        //FUNCTION IS BEING MOVED TO SINGLETON Locations.java
-
-    }
 
     public Monster getM() {
         return m;
@@ -119,5 +119,9 @@ public class Location {
 
     public void setM(Monster m) {
         this.m = m;
+    }
+
+    public String getName() {
+        return name;
     }
 }

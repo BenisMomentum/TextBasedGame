@@ -5,7 +5,7 @@ import main.Entities.Entity;
 public class Bleed extends StatusEffect{
     public Bleed(int d, int eV) {
         super(d, eV);
-        this.type = StatusEffectList.BLEED;
+        this.type = StatusEffectList.BLEED; //Damage taken per turn.
     }
 
     @Override

@@ -6,11 +6,11 @@ import main.Game.BattleExceptions.PlayerLostException;
 import main.Game.BattleExceptions.PlayerRanException;
 import main.Game.BattleExceptions.PlayerWonException;
 import main.Items.Effects.StatusEffects.Bleed;
-import main.Items.Effects.StatusEffects.StatusEffect;
 import main.Items.Effects.WeaponEffects.WeaponEffectList;
 import main.Items.UseableItems.UseableItem;
 import main.TextConstants;
 
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -22,13 +22,30 @@ public class Battle {
         ATTACK("ATTACK"),
         BLOCK("BLOCK"),
         USE("USE"),
-        RUN("RUN");
+        RUN("RUN"),
+        NULL("NULL");
 
         BattleCommands(String command) {
         }
 
         static BattleCommands parse(String command){
-            return BattleCommands.valueOf(command.toUpperCase());
+            switch(command.toUpperCase()){
+                case "ATTACK" -> {
+                    return ATTACK;
+                }
+                case "BLOCK" ->{
+                    return BLOCK;
+                }
+                case "USE" ->{
+                    return USE;
+                }
+                case "RUN" ->{
+                    return RUN;
+                }
+                default ->{
+                    return null;
+                }
+            }
         }
     }
 
@@ -68,7 +85,7 @@ public class Battle {
 
             System.out.println(TextConstants.BATTLE_OPTIONS);
 
-            input = sc.next();
+            input = sc.nextLine().trim();
             attackCommandParser(input);
         }
         if(!input.equalsIgnoreCase("run")) handleBattleOutcome();
@@ -92,28 +109,38 @@ public class Battle {
         input = input.trim().toUpperCase();
 
         while(commandLock){
-            switch(BattleCommands.parse(input)){
-                case ATTACK -> {
-                    handleBattleInteraction(false);
-                    commandLock = false;
-                }
-                case BLOCK -> {
-                    handleBattleInteraction(true);
-                    commandLock = false;
-                }
-                case USE -> {
-                    handleUSEBattleCommand();
-                    commandLock = false;
-                }
-                case RUN -> {
-                    input = "RUN";
-                    handleRUNBattleCommand();
-                    commandLock = false;
-                }
+            if(BattleCommands.parse(input) != null){
+                switch(BattleCommands.parse(input)){
+                    case ATTACK -> {
+                        handleBattleInteraction(false);
+                        commandLock = false;
+                    }
+                    case BLOCK -> {
+                        handleBattleInteraction(true);
+                        commandLock = false;
+                    }
+                    case USE -> {
+                        handleUSEBattleCommand();
+                        commandLock = false;
+                    }
+                    case RUN -> {
+                        input = "RUN";
+                        handleRUNBattleCommand();
+                        commandLock = false;
+                    }
+                    default -> {
+                        input = "";
+                        System.out.println("Incorrect Battle Command!");
+                    }
 
+                }
+            }
+            else{
+                commandLock = false;
+                input = "";
+                System.out.println("Incorrect Battle Command!");
             }
         }
-
     }
 
     private void handleRUNBattleCommand() throws PlayerRanException {
@@ -202,9 +229,12 @@ public class Battle {
         this.displayPlayerUseableItems(); //Displays useable items.
 
         while(true){
-            System.out.print("Enter Item Number: ");
-            int input = sc.nextInt();
+
             try{
+                int input = 0;
+                System.out.print("Enter Item Number: ");
+                input = sc.nextInt();
+
                 if(player.getInventory().get(input) instanceof UseableItem){
                     player.getInventory().get(input).use(player);
                 }
@@ -212,6 +242,10 @@ public class Battle {
                 return; //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
             } catch(IndexOutOfBoundsException e){
                 System.out.println("\n" + "Number does not correspond to inventory item! Try again!");
+            } catch(InputMismatchException e){
+                System.out.println("\n" + "(Enter a number!)");
+            } finally{
+                return;
             }
         }
 
