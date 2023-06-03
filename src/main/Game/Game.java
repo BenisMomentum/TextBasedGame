@@ -193,7 +193,11 @@ public class Game {
             case USE -> handleStandardUSECommand(command[1]);
 
             case TALK ->{
-                handleTALKCommand(command[1]);
+                try{
+                    handleTALKCommand(command[1]);
+                }catch(NullPointerException e){
+
+                }
             }
                     
             default -> System.out.println("\n" + "Incorrect Command!");
