@@ -2,6 +2,7 @@ package main.Location;
 
 import main.Entities.Monster;
 import main.Items.Item;
+import main.NPC.NPC;
 import main.TextConstants;
 
 import java.io.File;
@@ -14,6 +15,7 @@ public class Location {
     private final Map<String,Integer> exits;
     private final List<Item> items;
     private Monster m;
+    private NPC npc;
 
 
     /*
@@ -32,17 +34,18 @@ public class Location {
 
     Writing format will likely be the following:
 
-    LOCATIONID | NAME | DESCRIPTION | EXITS | ITEMS | MONSTER
+    LOCATIONID | NAME | DESCRIPTION | EXITS | ITEMS | MONSTER | NPC (if there otherwise left blank)
 
      */
 
-    public Location(int locationID, String name, String description, Map<String, Integer> exits, List<Item> items, Monster monster) {
+    public Location(int locationID, String name, String description, Map<String, Integer> exits, List<Item> items, Monster monster, NPC npc) {
         this.locationID = locationID;
         this.name = name;
         this.description = description;
         this.exits = (exits == null) ? new HashMap<>() : new HashMap<>(exits);
         this.items = (items == null) ? new ArrayList<>() : new ArrayList<>(items);
         this.m = monster;
+        this.npc = npc;
 
         //NOTE, IF THERE IS NO MONSTER IN THE ROOM, PUT NULL
     }
@@ -123,5 +126,9 @@ public class Location {
 
     public String getName() {
         return name;
+    }
+
+    public NPC getNPC() {
+        return npc;
     }
 }

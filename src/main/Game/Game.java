@@ -11,6 +11,9 @@ import main.Items.UseableItems.UseableItem;
 import main.Items.Weapon;
 import main.Location.Location;
 import main.Location.Locations;
+import main.NPC.DialogueController;
+import main.NPC.NPC;
+import main.NPC.NPCList;
 import main.TextConstants;
 
 import java.util.ArrayList;
@@ -23,11 +26,8 @@ public class Game {
     /*
     TODO:
     Feature Requests:
-           - Marker to show you known places, essentially with the name of it.
-           [Read description after "You're in" or something, if not possible use Asterisk and Arraylist for places you've visited]. <- DONE
 
-            -Fix input mismatch exception for use in BattleCommands. <- DONE
-            -Fix all of the god forsaken errors in BattleCommands <- DONE
+          - NPCs
 
      */
 
@@ -191,9 +191,23 @@ public class Game {
             case INVENTORY -> handleInvetoryView();
             case STATS -> System.out.println(player.getStats());
             case USE -> handleStandardUSECommand(command[1]);
+
+            case TALK ->{
+                handleTALKCommand(command[1]);
+            }
                     
             default -> System.out.println("\n" + "Incorrect Command!");
         }
+    }
+
+    private void handleTALKCommand(String s) {
+        if(Locations.getInstance().getLocations().get(locationID).getNPC() != null){
+            NPC npc = Locations.getInstance().getLocations().get(locationID).getNPC();
+
+            DialogueController dC = new DialogueController(npc, this.player);
+        }
+
+
     }
 
     private void handleStandardUSECommand(String inp) {
@@ -282,6 +296,13 @@ public class Game {
                 System.out.println(s + getExitDiscovery(currentLoc, s));
         }
 
+        if(currentLoc.getNPC() != null){
+            System.out.println("\n" + "People detected: ");
+
+            System.out.println(currentLoc.getNPC().getName());
+        }else{
+            System.out.println("\n" + "No people detected");
+        }
     }
 
     private String getExitDiscovery(Location currentLoc, String desiredExit) { //Meant to get the exit name if it's been discovered or not.

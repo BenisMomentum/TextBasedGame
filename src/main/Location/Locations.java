@@ -5,15 +5,17 @@ import main.Items.*;
 import main.Items.Effects.ArmourEffects.ArmourEffectList;
 import main.Items.Effects.ArmourEffects.Swiftness;
 import main.Items.Effects.ArmourEffects.Vitality;
-import main.Items.Effects.Effect;
 import main.Items.Effects.StatusEffects.StatusEffect;
-import main.Items.Effects.StatusEffects.StatusEffectList;
 import main.Items.Effects.WeaponEffects.*;
 import main.Items.UseableItems.HealingItem;
 import main.Items.UseableItems.RegenItem;
+import main.NPC.Mike;
+import main.NPC.NPC;
+import main.NPC.NPCList;
 import main.TextConstants;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -52,6 +54,8 @@ public class Locations {
         }finally{
             System.out.println();
         }
+
+        int lineNum = 0;
 
         try(Scanner sc = new Scanner(new File(fileName))){
             //This is the format the Location will be in:
@@ -100,21 +104,47 @@ public class Locations {
                         if(!monsParams[6].equals("null")) readMonsterBuffs(mons,monsParams[6]);
 
                     }catch(IndexOutOfBoundsException e){
-
                     }
-
                 }catch(IndexOutOfBoundsException e){
                     //System.out.println("No monster detected on init"); //DEBUG PURPOSES
                 }
-                locations.put(locID,new Location(locID,name,description,newExits,newItems,mons));
+
+                NPC npc = null;
+
+                if(compartments.length == 7){
+                    try{
+                        String npcName = compartments[6];
+                        if(npcName != null){
+                            switch(NPCList.parse(npcName)){
+
+                                case MIKE -> {
+                                    npc = new Mike();
+                                }
+                            }
+                        }
+                    } catch(IndexOutOfBoundsException e){
+                        System.out.println("NPC reading error @ line: " + lineNum);
+                    }
+                }
+                locations.put(locID,new Location(locID,name,description,newExits,newItems,mons,npc));
+                lineNum++;
             }
 
-        } catch(FileNotFoundException e){e.printStackTrace();}
-        catch(NumberFormatException e){e.printStackTrace();}
+        } catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(NumberFormatException e){
+            e.printStackTrace();
+            System.out.println("Number Reading error @ line: " + lineNum);
+        } catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("Array Out of Bounds Exception @ line: " + lineNum);
+            e.printStackTrace();
+        }
+
     }
 
 
-    public void saveLocations(){
+    /*public void saveLocations(){
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName))){
             for(int i = 0; i < locations.size() - 1;i++){
                 bufferedWriter.write(locations.get(i).toWriteable() + "\n");
@@ -124,7 +154,7 @@ public class Locations {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     private void readItems(String input, List<Item> newItems){
         if(!input.equals("null")){
@@ -161,24 +191,18 @@ public class Locations {
                             newItems.add(a);
                         }
                     }
-                    case "HEAL_ITEM" ->{
-                        newItems.add(new HealingItem(
-                                Rarity.valueOf(items[2]), //Rarity
-                                items[1], //Name
-                                Integer.parseInt(items[3]) //HealAmount
-                        ));
-                    }
+                    case "HEAL_ITEM" -> newItems.add(new HealingItem(
+                            Rarity.valueOf(items[2]), //Rarity
+                            items[1], //Name
+                            Integer.parseInt(items[3]) //HealAmount
+                    ));
 
-                    case "REGEN_ITEM" ->{
-
-                        newItems.add(new RegenItem(
-                                Rarity.valueOf(items[2]), //Rarity
-                                items[1],
-                                Integer.parseInt(items[3]),
-                                Integer.parseInt(items[4])
-                        ));
-
-                    }
+                    case "REGEN_ITEM" -> newItems.add(new RegenItem(
+                            Rarity.valueOf(items[2]), //Rarity
+                            items[1],
+                            Integer.parseInt(items[3]),
+                            Integer.parseInt(items[4])
+                    ));
 
                     default -> { //just ITEM rather than anything special, makes a RegularItem
                         newItems.add(new RegularItem(
@@ -201,11 +225,9 @@ public class Locations {
                     case VITALITY ->{
 
                         ((Armour) item).getEffects().add(new Vitality(Integer.parseInt(parseSrc[1])));
-                        break;
                     }
                     case SWIFTNESS -> {
                         ((Armour) item).getEffects().add( new Swiftness(Integer.parseInt(parseSrc[1])));
-                        break;
                     }
                 }
             } else if (item instanceof Weapon) {
@@ -214,19 +236,15 @@ public class Locations {
 
                     case QUICKDRAW -> {
                         ((Weapon) item).getEffects().add( new QuickDraw(Integer.parseInt(parseSrc[1])));
-                        break;
                     }
                     case LIFESTEAL -> {
                         ((Weapon) item).getEffects().add( new LifeSteal(Integer.parseInt(parseSrc[1])));
-                        break;
                     }
                     case PIERCE -> {
                         ((Weapon) item).getEffects().add( new Pierce(Integer.parseInt(parseSrc[1])));
-                        break;
                     }
                     case EDGED -> {
                         ((Weapon) item).getEffects().add( new Edged(Integer.parseInt(parseSrc[1])));
-                        break;
                     }
                 }
             }
