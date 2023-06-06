@@ -1,6 +1,6 @@
 package main.NPC;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Dialogue {
@@ -9,12 +9,12 @@ public class Dialogue {
 
     public Dialogue(String p){
         this.prompt = p;
-        options = new HashMap<>();
+        options = new LinkedHashMap<>();
     }
 
     public Dialogue(String p, Map<String,Integer> options){
         this.prompt = p;
-        this.options = new HashMap<>(options);
+        this.options = new LinkedHashMap<>(options);
     }
 
     public String getPrompt() {

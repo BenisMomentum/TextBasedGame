@@ -1,6 +1,6 @@
 package main.NPC;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class NPC {
@@ -8,7 +8,7 @@ public abstract class NPC {
 
     protected NPCList type;
 
-    protected Map<Integer, Dialogue> dialogue = new HashMap<>();
+    protected Map<Integer, Dialogue> dialogue = new LinkedHashMap<>();
 
     /*
     Essentially this is how its going to work:

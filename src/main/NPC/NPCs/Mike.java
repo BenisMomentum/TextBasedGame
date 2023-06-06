@@ -1,6 +1,10 @@
-package main.NPC;
+package main.NPC.NPCs;
 
-public class Mike extends NPC{
+import main.NPC.Dialogue;
+import main.NPC.NPC;
+import main.NPC.NPCList;
+
+public class Mike extends NPC {
 
     public Mike(){
         this.name = "Mike";

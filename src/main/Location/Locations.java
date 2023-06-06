@@ -9,9 +9,11 @@ import main.Items.Effects.StatusEffects.StatusEffect;
 import main.Items.Effects.WeaponEffects.*;
 import main.Items.UseableItems.HealingItem;
 import main.Items.UseableItems.RegenItem;
-import main.NPC.Mike;
+import main.NPC.NPCs.Karla;
+import main.NPC.NPCs.Mike;
 import main.NPC.NPC;
 import main.NPC.NPCList;
+import main.NPC.NPCs.Raymond;
 import main.TextConstants;
 
 import java.io.File;
@@ -116,9 +118,14 @@ public class Locations {
                         String npcName = compartments[6];
                         if(npcName != null){
                             switch(NPCList.parse(npcName)){
-
                                 case MIKE -> {
                                     npc = new Mike();
+                                }
+                                case RAYMOND -> {
+                                    npc = new Raymond();
+                                }
+                                case KARLA -> npc = new Karla();
+                                default -> {
                                 }
                             }
                         }
