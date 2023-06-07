@@ -224,7 +224,7 @@ public class Game {
                         if(player.getInventory().get(f) instanceof UseableItem){
                             if(player.getInventory().get(f) instanceof RegenItem regenItem){
 
-                                player.heal(regenItem.getRegenAmount() * regenItem.getDuration()); //Heals for all turns it would have been applied for
+                                player.heal(regenItem.getValue() * regenItem.getDuration()); //Heals for all turns it would have been applied for
                             }else{
                                 player.getInventory().get(f).use(player);
                             }
@@ -242,12 +242,12 @@ public class Game {
 
             while(true){
                 System.out.print("Enter Item Number: ");
-                int input = new Scanner(System.in).nextInt(); //Fixes a bug where apparently the main scanner registers a new command when none is present
+                int input = new Scanner(System.in).nextInt(); //Attempts to fix a bug where apparently the main scanner registers a new command when none is present
                 try{
                     if(player.getInventory().get(input) instanceof UseableItem){
                         if(player.getInventory().get(input) instanceof RegenItem regenItem){
 
-                            player.heal(regenItem.getRegenAmount() * regenItem.getDuration()); //Heals for all turns it would have been applied for
+                            player.heal(regenItem.getValue() * regenItem.getDuration()); //Heals for all turns it would have been applied for
                         }else{
                             player.getInventory().get(input).use(player);
                         }

@@ -28,6 +28,11 @@ public class TextConstants {
             "  |  =  |" ,
             "  \\___/"};
 
+    public static final String[] EFFECT_SPEED = {"\\ \\" ,
+            "   \\\\" ,
+            "  =//" ,
+            "/ /"
+    };
 
 
     public static final String STARTUP_MESSAGE = EQUALS_SEPERATOR + "\n" +

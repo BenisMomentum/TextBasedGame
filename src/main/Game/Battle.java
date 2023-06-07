@@ -84,7 +84,7 @@ public class Battle {
             System.out.println("Your Move.\n");
 
             System.out.println(TextConstants.BATTLE_OPTIONS);
-
+            input = "";
             input = sc.nextLine().trim();
             attackCommandParser(input);
         }
@@ -233,19 +233,19 @@ public class Battle {
             try{
                 int input = 0;
                 System.out.print("Enter Item Number: ");
-                input = sc.nextInt();
+                input = Integer.parseInt(sc.nextLine().trim());
 
                 if(player.getInventory().get(input) instanceof UseableItem){
                     player.getInventory().get(input).use(player);
                 }
                 player.getInventory().remove(player.getInventory().get(input));
+
+
                 return; //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
             } catch(IndexOutOfBoundsException e){
                 System.out.println("\n" + "Number does not correspond to inventory item! Try again!");
             } catch(InputMismatchException e){
                 System.out.println("\n" + "(Enter a number!)");
-            } finally{
-                return;
             }
         }
 

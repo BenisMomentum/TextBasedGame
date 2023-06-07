@@ -1,6 +1,7 @@
 package main.Items.Effects.StatusEffects;
 
 import main.Entities.Entity;
+import main.Entities.Player;
 
 public class Adrenaline extends StatusEffect{
 
@@ -8,6 +9,9 @@ public class Adrenaline extends StatusEffect{
 
     public Adrenaline(int d, int eV) {
         super(d, eV);
+
+        System.out.println("Adrenaline Duration: " + d);
+
         applied = false;
         this.type = StatusEffectList.ADRENALINE;
     }
@@ -16,19 +20,24 @@ public class Adrenaline extends StatusEffect{
     @Override
     public void tick(Entity e) {
         /*
-            If Rage is not applied, then it will apply itself to the player
+            If Adrenline is not applied, then it will apply itself to the player
             If the duration runs out, applied will be false and the effect will be removed.
             Effect removal is handled in the Battle class
              */
 
-        if(!applied && this.duration > 0){
+        if(!applied){
             this.applied = true;
-            e.setInitiative(e.getInitiative() + this.strength); //In this case this.strength refers to the Rage value
-        }
-        if(this.duration < 0 && applied){
+            ((Player) e).addInit(this.strength); //In this case this.strength refers to the INIT value
+
+        } else if(this.duration < 0 && applied){
+
             this.applied = false;
-            e.setInitiative(e.getInitiative() - this.strength);
+            ((Player) e).addInit(-this.strength);
+            System.out.println("Remove effect called:" + e.getInitiative());
         }
+        System.out.println(e.getInitiative());
+
+
         duration--;
 
     }

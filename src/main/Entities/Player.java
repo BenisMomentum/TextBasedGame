@@ -2,12 +2,11 @@ package main.Entities;
 
 import main.Colors;
 import main.Items.Armour;
-import main.Items.Effects.StatusEffects.Bleed;
-import main.Items.Effects.StatusEffects.Regen;
-import main.Items.Effects.StatusEffects.StatusEffect;
+import main.Items.Effects.StatusEffects.*;
 import main.Items.Effects.WeaponEffects.WeaponEffectList;
 import main.Items.Item;
 import main.Items.Rarity;
+import main.Items.UseableItems.SpeedItem;
 import main.Items.Weapon;
 import main.TextConstants;
 
@@ -157,6 +156,11 @@ public class Player extends Entity {
                     s += (TextConstants.EFFECT_BLEED[i].contains("="))
                             ? TextConstants.EFFECT_BLEED[i].replace("=",String.valueOf(sE.getStrength()))
                             : TextConstants.EFFECT_BLEED[i];
+                } else if(sE instanceof Adrenaline){
+                    s+= (TextConstants.EFFECT_SPEED[i].contains("="))
+                        ? TextConstants.EFFECT_SPEED[i].replace("=",String.valueOf(sE.getStrength()))
+                            : TextConstants.EFFECT_SPEED[i];
+
                 }
                 s += "\t";
             }
@@ -288,8 +292,18 @@ public class Player extends Entity {
         //INIT HANDLING
         this.initiative = this.getREALINIT();
 
+
         //ITEM MODIFIER HANDLING
         this.equipedArmour.applyAllArmourEffects(this);
+
+        //STATUS EFFECTS HANDLING
+        for(StatusEffect e : statusEffects){
+            if(e instanceof Adrenaline){
+                this.initiative += e.getStrength();
+            }else if(e instanceof Rage){
+                this.strength += e.getStrength();
+            }
+        }
 
     }
 

@@ -2,7 +2,7 @@
 1 | SIDEWALK | You are outside on the sidewalk | NORTH-3 SOUTH-2 WEST-0 | null | null
 2 | SLUMS | You are in the Slums. A derilict place of rampant crime and degeneracy, forgotten by most and avoided by all. Nothing was changed... | NORTH-1 WEST-6 EAST-5 | null | MONSTER/Homeless Man/5/0/10/10/null
 3 | PARK | You are in the Park. Admittedly a very run down one, like your apartment complex, but on the bright side, it's sunny. | WEST-4 EAST-8 SOUTH-1 | null | null
-4 | SMALL PLAZA | You're in a small plaza. Nothing Special. Just some stores, fast-food, drycleaning and a pharmacy. | EAST-3 NORTH-5 SOUTH-9 | HEAL_ITEM/Bandage/COMMON/10 / HEAL_ITEM/Bandage/COMMON/10 | null
+4 | SMALL PLAZA | You're in a small plaza. Nothing Special. Just some stores, fast-food, drycleaning and a pharmacy. | EAST-3 NORTH-5 SOUTH-9 | HEAL_ITEM/Bandage/COMMON/10 / HEAL_ITEM/Bandage/COMMON/10 / SPEED_ITEM/6Hr_Energy/UNCOMMON/3/5 | null
 5 | BUS STOP | You are on a small bus stop. Leads to the City (WEST) or the Slums (EAST). | EAST-2 WEST-10 SOUTH-4 | null | null
 6 | DEEP SLUMS | You're deeper in the Slums. A mini Red-Light Disctrict. Broken used needles, passed out druggies...god help them all...you fought for what again? | EAST-2 SOUTH-7 | null | MONSTER/Impoverished Mugger/20/0/20/5/null
 7 | BANDIT CAMP | You're in an abandoned apartment building...some bandits made it their resting stead. Seems like some good stuff is inside...lets hope they don't see you. | NORTH-6 | WEAPON/Pistol/UNCOMMON/30/PIERCE=1 | MONSTER/Bandit/30/0/15/5/RAGE=0,-10

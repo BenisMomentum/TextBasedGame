@@ -8,7 +8,9 @@ import main.Items.Effects.ArmourEffects.Vitality;
 import main.Items.Effects.StatusEffects.StatusEffect;
 import main.Items.Effects.WeaponEffects.*;
 import main.Items.UseableItems.HealingItem;
+import main.Items.UseableItems.RageItem;
 import main.Items.UseableItems.RegenItem;
+import main.Items.UseableItems.SpeedItem;
 import main.NPC.NPCs.Karla;
 import main.NPC.NPCs.Mike;
 import main.NPC.NPC;
@@ -211,6 +213,20 @@ public class Locations {
                             Integer.parseInt(items[4])
                     ));
 
+                    case "SPEED_ITEM" -> newItems.add(new SpeedItem(
+                            Rarity.valueOf(items[2]), //Rarity
+                            items[1],
+                            Integer.parseInt(items[3]),
+                            Integer.parseInt(items[4])
+                    ));
+
+                    case "RAGE_ITEM" -> newItems.add(new RageItem(
+                            Rarity.valueOf(items[2]), //Rarity
+                            items[1],
+                            Integer.parseInt(items[3]),
+                            Integer.parseInt(items[4])
+                    ));
+
                     default -> { //just ITEM rather than anything special, makes a RegularItem
                         newItems.add(new RegularItem(
                                 Rarity.valueOf(items[2]),
@@ -261,7 +277,7 @@ public class Locations {
     private void readMonsterBuffs(Monster mons, String input) {
         for(String s : input.split(" ")){
             mons.addEffect(StatusEffect.readStatus(s));
-            System.out.println(StatusEffect.readStatus(s));
+            //System.out.println(StatusEffect.readStatus(s)); //DEBUG USES ONLY
         }
     }
 }
