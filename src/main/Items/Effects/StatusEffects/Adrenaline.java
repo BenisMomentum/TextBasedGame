@@ -10,8 +10,6 @@ public class Adrenaline extends StatusEffect{
     public Adrenaline(int d, int eV) {
         super(d, eV);
 
-        System.out.println("Adrenaline Duration: " + d);
-
         applied = false;
         this.type = StatusEffectList.ADRENALINE;
     }
@@ -27,13 +25,12 @@ public class Adrenaline extends StatusEffect{
 
         if(!applied){
             this.applied = true;
-            ((Player) e).addInit(this.strength); //In this case this.strength refers to the INIT value
+            e.setInitiative(e.getInitiative() + this.strength); //In this case this.strength refers to the INIT value
 
         } else if(this.duration < 0 && applied){
 
             this.applied = false;
-            ((Player) e).addInit(-this.strength);
-            System.out.println("Remove effect called:" + e.getInitiative());
+            e.setInitiative(e.getInitiative() - this.strength);
         }
         System.out.println(e.getInitiative());
 
