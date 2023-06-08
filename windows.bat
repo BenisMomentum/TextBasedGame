@@ -1,4 +1,4 @@
-cd ../../
+:cd ../../
 
 cd out/production/TextBasedGame/main
 
