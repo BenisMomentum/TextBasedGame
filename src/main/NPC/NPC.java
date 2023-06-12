@@ -8,6 +8,8 @@ public abstract class NPC {
 
     protected NPCList type;
 
+    protected boolean hasTalked;
+
     protected Map<Integer, Dialogue> dialogue = new LinkedHashMap<>();
 
     /*
@@ -30,6 +32,8 @@ public abstract class NPC {
     Integer dialogueKey = options.get(optionKey);
 
     String response = dialogue.get(dialogueKey);
+
+    Alternatively, the ALIGNMENT of the dialogue will affect the Player's alignment
 
     granted the DATA (options and dialogue) will be stored inside the NPC,
     the rest is done externally through a dialogue handler.

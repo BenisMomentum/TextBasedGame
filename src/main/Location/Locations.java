@@ -16,6 +16,7 @@ import main.NPC.NPCs.Mike;
 import main.NPC.NPC;
 import main.NPC.NPCList;
 import main.NPC.NPCs.Raymond;
+import main.NPC.NPCs.Ves;
 import main.TextConstants;
 
 import java.io.File;
@@ -127,6 +128,7 @@ public class Locations {
                                     npc = new Raymond();
                                 }
                                 case KARLA -> npc = new Karla();
+                                case VES -> npc = new Ves();
                                 default -> {
                                 }
                             }

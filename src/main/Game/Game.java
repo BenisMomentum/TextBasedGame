@@ -1,9 +1,11 @@
 package main.Game;
 
+import main.Colors;
 import main.Entities.Player;
 import main.Game.BattleExceptions.PlayerLostException;
 import main.Game.BattleExceptions.PlayerRanException;
 import main.Game.BattleExceptions.PlayerWonException;
+import main.Game.GameConditions.GameWon;
 import main.Items.Armour;
 import main.Items.Item;
 import main.Items.UseableItems.RegenItem;
@@ -67,11 +69,16 @@ public class Game {
         while(!input.equalsIgnoreCase("EXIT")){
             try{
                 System.out.println(Locations.getInstance().getLocations().get(locationID).getDescription());
+
             } catch(IndexOutOfBoundsException | NullPointerException e){
                 System.out.println("\n" + "That exit seems to be blocked upon further inspection...");
 
                 this.locationID = previousLocationID; //Rolls back to previous location
                 continue;
+            }
+
+            if(this.visitedLocations.size() == Locations.getInstance().getLocations().size()){
+                System.out.println("\n" + Colors.RED + "It's getting late" + Colors.RESET);
             }
 
             System.out.println("\n What do you do?");
@@ -120,6 +127,8 @@ public class Game {
                 standardCommandHandler(input, Locations.getInstance().getLocations().get(locationID));
             } catch(NullPointerException | IllegalArgumentException | InterruptedException e){
                 System.out.println("\n" + "Incorrect Command!");
+            } catch(GameWon e){
+                System.exit(0);
             }
 
         }
@@ -136,7 +145,7 @@ public class Game {
     }
 
 
-    private void standardCommandHandler(String input, Location currentLoc) throws NullPointerException{
+    private void standardCommandHandler(String input, Location currentLoc) throws GameWon {
         //One of the only reasons it would throw an NPE is because the Commands.ordinal() function used by
         //The switch case returns null.
 
@@ -199,9 +208,20 @@ public class Game {
 
                 }
             }
+
+            case DEBUG -> handleDEBUGCommand(command[1]);
                     
             default -> System.out.println("\n" + "Incorrect Command!");
         }
+    }
+
+    private void handleDEBUGCommand(String s) throws GameWon {
+        int debugCode = Integer.parseInt(s.trim());
+
+        if(debugCode == 30){
+            Track11 t = new Track11(player);
+        }
+
     }
 
     private void handleTALKCommand(String s) {
@@ -339,7 +359,7 @@ public class Game {
         System.out.println("\n" + TextConstants.EQUALS_SEPERATOR + "\n");
     }
 
-    private void handleMOVECommand(String direction){
+    private void handleMOVECommand(String direction) throws GameWon {
         //Basically checks if the locationID is valid to be set
 
         direction = direction.toUpperCase();
@@ -349,6 +369,10 @@ public class Game {
             previousLocationID = this.locationID; //Updates previous location
             this.locationID = Locations.getInstance().getLocations().get(locationID).getExits().get(direction);
             this.visitedLocations.add(this.previousLocationID); //Adds it to the list of visited locations.
+
+            if(this.locationID == 0 && this.visitedLocations.size() == Locations.getInstance().getLocations().size()){
+                Track11 t11 = new Track11(player);
+            }
 
         }else{
             System.out.println("[NOT A VALID COMMAND]");

@@ -23,6 +23,8 @@ public class Player extends Entity {
     protected Weapon equipedWeapon;
     protected Armour equipedArmour;
 
+    private int alignment = 0;
+    private int MAX_ALIGN = 10;
 
     private final int MAX_BASE_EXPERIENCE = 100;
 
@@ -327,5 +329,22 @@ public class Player extends Entity {
         this.initiative = this.getREALINIT();
     }
 
+    public void incAlign(){
+        if(this.alignment + 1 < MAX_ALIGN){
+            this.alignment++;
+        }
+    }
+
+    public int getAlignment(){
+        return alignment;
+    }
+
+    public int getMAXAlign(){
+        return MAX_ALIGN;
+    }
+
+    public void decAlign(){
+        this.alignment--;
+    }
 
 }

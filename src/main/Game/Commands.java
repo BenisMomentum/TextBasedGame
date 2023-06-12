@@ -12,7 +12,8 @@ public enum Commands{
     STATS("STATS"),
     EQUIP("EQUIP"),
     USE("USE"),
-    TALK("TALK");
+    TALK("TALK"),
+    DEBUG("DEBUG");
 
     Commands(String input){
 

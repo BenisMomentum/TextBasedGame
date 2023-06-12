@@ -3,7 +3,8 @@ package main.NPC;
 public enum NPCList {
     MIKE("MIKE"),
     RAYMOND("RAYMOND"),
-    KARLA("KARLA");
+    KARLA("KARLA"),
+    VES("VES");
 
 
     NPCList(String name) {
@@ -21,6 +22,9 @@ public enum NPCList {
             }
             case "KARLA" -> {
                 return KARLA;
+            }
+            case "VES" ->{
+                return VES;
             }
             default -> {return null;}
         }

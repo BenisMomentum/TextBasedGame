@@ -20,5 +20,6 @@
 19 | THE TREE | You're lying down by the tree. You remember that you were with someone here a long time ago; a friend...where is she? More importantly, is she alive? | NORTH-18 SOUTH-20 | null | null
 20 | DOWNTOWN | You're Downtown. A scary place but nothing unfamiliar after how much has happened. Police sirens can be heard in the distance. | WEST-21 EAST-22 NORTH-14 SOUTH-23 | null | MONSTER/Drug Addict/30/0/10/10/null
 21 | RECRUITMENT FACILITY | You're at a recruitment facility. Brings back the memories honestly, good and bad. | EAST-20 WEST-25 SOUTH-23 | null | null
-22 | JOYCE ST | You're at a street called "Joyce"...why did you decide to stop here? | WEST-20 SOUTH-23 | null | null
+22 | JOY ST | You're at a street called "Joyce"...why did you decide to stop here? | WEST-20 SOUTH-23 EAST-24 | null | null
 23 | BAR | You're at the usual bar you go to after work...since you got fired over that bullshit there's not been much of a reason to come here...or go outside for that matter. It's almost closing time. | NORTH-20 | HEAL_ITEM/Kvass/COMMON/5 | null | KARLA
+24 | MAYTOWN CENTER | You're at the heart of Maytown Center. Shops, food, and other consumer goods galore!...lots of crackheads though. | WEST-22 | HEAL_ITEM/Shawarma/RARE/20 / REGEN_ITEM/BMRA/RARE/8/4 / RAGE_ITEM/Orange_Juice/RARE/5/2 | null | VES

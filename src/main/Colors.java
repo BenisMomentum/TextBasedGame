@@ -1,6 +1,9 @@
 package main;
 
 public class Colors {
+    public static final String BLACK = "\033[0;30m";   // BLACK
+    public static final String RED   = "\u001B[31m";
+
     public static final String BLACK_BRIGHT = "\033[0;90m";  // BLACK
     public static final String RED_BRIGHT = "\033[0;91m";    // RED
     public static final String GREEN_BRIGHT = "\033[0;92m";  // GREEN
