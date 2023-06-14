@@ -1,5 +1,7 @@
 package main.Location;
 
+import main.Entities.Bosses.BossList;
+import main.Entities.Bosses.Desperato;
 import main.Entities.Monster;
 import main.Items.*;
 import main.Items.Effects.ArmourEffects.ArmourEffectList;
@@ -100,11 +102,19 @@ public class Locations {
                 try{
                     String[] monsParams = compartments[5].split("/");
 
-                    mons = new Monster(monsParams[1], Integer.parseInt(monsParams[2]),
-                            Integer.parseInt(monsParams[3]),
-                            Integer.parseInt(monsParams[4]),
-                            Integer.parseInt(monsParams[5])
-                    );
+                    if(monsParams[0].equalsIgnoreCase("Monster")){
+                        mons = new Monster(monsParams[1], Integer.parseInt(monsParams[2]),
+                                Integer.parseInt(monsParams[3]),
+                                Integer.parseInt(monsParams[4]),
+                                Integer.parseInt(monsParams[5])
+                        );
+                    } else if(monsParams[0].equalsIgnoreCase("Boss")){
+                        String bossName = monsParams[1].toUpperCase(); //Gets the boss name from the parameter list
+
+                        switch(BossList.valueOf(bossName)){
+                            case DESPERATO -> mons = new Desperato();
+                        }
+                    }
                     try{
                         if(!monsParams[6].equals("null")) readMonsterBuffs(mons,monsParams[6]);
 

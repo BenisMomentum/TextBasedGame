@@ -67,7 +67,7 @@ public class Player extends Entity {
 
     //BATTLE NECESSITIES
 
-    public int takeDamage(int incomingDamage) {
+    public void takeDamage(int incomingDamage) {
         /*
     ARMOUR IS MEANT TO BE CALCULATED SUCH AS THE FOLLOWING SUCH THAT IT CAN NEVER EXCEED 50% PROTECTION
 
@@ -77,14 +77,14 @@ public class Player extends Entity {
      */
         if(incomingDamage <= 0) {
             System.out.println("You get hit for [0] DMG, like a wet noodle");
-            return 0;
+            return;
         }
 
         int actualDamage = Entity.genericArmourCalc(this,incomingDamage);
 
         System.out.println("You get hit for [" + actualDamage + "] DMG!");
 
-        return actualDamage;
+        this.hp -= actualDamage;
     }
 
 

@@ -1,6 +1,6 @@
 package main.Entities;
 
-import main.Items.Effects.StatusEffects.StatusEffect;
+import main.Items.Effects.StatusEffects.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +97,45 @@ public abstract class Entity {
 
     public List<StatusEffect> getStatusEffects() {
         return statusEffects;
+    }
+
+    public StatusEffect getStatusByType(StatusEffectList type){
+        for(StatusEffect e : statusEffects){
+            if(type.equals(e.getType())){
+                return e;
+            }
+        }
+        return null;
+    }
+
+    public boolean addStatusEffect(StatusEffect e){
+        /*
+        * Essentially adding the same effect should double the efficacy and refresh the duration.
+        * AKA if Bleed (4 stren, 2 duration) has 1 duration left, and bleed is applied again
+        * Bleed will turn into the new duration, from either the new or the old duration
+        * Whichever is higher.
+        * */
+
+        if(getStatusByType(e.getType()) != null){
+            StatusEffect oldEff = getStatusByType(e.getType());
+
+            int d = Math.max(e.getDuration(), oldEff.getDuration());
+            int s = oldEff.getStrength() + e.getStrength();
+
+            statusEffects.remove(oldEff);
+
+            switch(e.getType()){
+                case ADRENALINE -> statusEffects.add(new Adrenaline(d,s));
+                case BLEED -> statusEffects.add(new Bleed(d,s));
+                case RAGE -> statusEffects.add(new Rage(d,s));
+                case REGEN -> statusEffects.add(new Regen(d,s));
+            }
+
+        }else{
+            statusEffects.add(e);
+        }
+
+        return true;
     }
 
     /*public void removeEffect(StatusEffect e){

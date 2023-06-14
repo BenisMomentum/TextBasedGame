@@ -9,6 +9,7 @@ public enum Commands{
     TAKE("TAKE"),
     HELP("HELP"),
     INVENTORY("INVENTORY"),
+    ITEMS("ITEMS"),
     STATS("STATS"),
     EQUIP("EQUIP"),
     USE("USE"),
@@ -54,6 +55,7 @@ public enum Commands{
         System.out.println("USE | Allows you to use a UseableItem from your Inventory");
         System.out.println("EQUIP [ITEM NAME] | Equips Item if its in your inventory");
         System.out.println("TAKE [ITEM NAME] | Grabs an item from the room");
+        System.out.println("TALK [NPC_NAME] | Social interraction");
         System.out.println("EXIT | Quit the game");
         System.out.println("HELP | The command you just used.");
 

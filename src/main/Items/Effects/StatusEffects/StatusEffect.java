@@ -22,6 +22,10 @@ public abstract class StatusEffect {
         return strength;
     }
 
+    public StatusEffectList getType(){
+        return type;
+    }
+
     public abstract void tick(Entity e);
 
     @Override

@@ -1,20 +1,19 @@
 package main.Entities;
 
-import main.Items.Effects.Effect;
 import main.Items.Effects.StatusEffects.StatusEffect;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Monster extends Entity{
 
+    protected final int maxHp;
+
     public Monster(String name, int hp, int armour, int strength, int initiative) {
         super(hp, armour, strength, initiative, name);
+        this.maxHp = hp;
     }
 
     public void attack(Player p){
         System.out.println(name + " attacks PLAYER!");
-        p.hp -= p.takeDamage(strength);
+        p.takeDamage(strength);
     }
 
     public void takeDamage(int damage){
@@ -25,6 +24,15 @@ public class Monster extends Entity{
         }
 
         hp -= damage;
+    }
+
+    public void rejuvenate(int amount){
+        if(amount + hp > maxHp){
+            this.hp = maxHp;
+        }
+        else{
+            this.hp += amount;
+        }
     }
 
     public void addEffect(StatusEffect e){

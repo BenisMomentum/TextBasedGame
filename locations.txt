@@ -1,10 +1,10 @@
 0 | HOME | You are sitting in on your couch. The TV in front of you as usual is displaying the latest news. Chaos...Social Decay...what happened to your dream? | EAST-1 | WEAPON/Bayonet/COMMON/15/QUICKDRAW=5 PIERCE=0 / REGEN_ITEM/BMRA/COMMON/3/4 | null
 1 | SIDEWALK | You are outside on the sidewalk | NORTH-3 SOUTH-2 WEST-0 | null | null
-2 | SLUMS | You are in the Slums. A derilict place of rampant crime and degeneracy, forgotten by most and avoided by all. Nothing was changed... | NORTH-1 WEST-6 EAST-5 | null | MONSTER/Homeless Man/5/0/10/10/null
+2 | SLUMS | You are in the Slums. A derilict place of rampant crime and degeneracy, forgotten by most and avoided by all. Nothing was changed... | NORTH-1 WEST-5 EAST-6 | null | MONSTER/Homeless Man/5/0/10/10/null
 3 | PARK | You are in the Park. Admittedly a very run down one, like your apartment complex, but on the bright side, it's sunny. | WEST-4 EAST-8 SOUTH-1 | null | null
 4 | SMALL PLAZA | You're in a small plaza. Nothing Special. Just some stores, fast-food, drycleaning and a pharmacy. | EAST-3 NORTH-5 SOUTH-9 | HEAL_ITEM/Bandage/COMMON/10 / HEAL_ITEM/Bandage/COMMON/10 / SPEED_ITEM/6Hr_Energy/UNCOMMON/3/5 | null
 5 | BUS STOP | You are on a small bus stop. Leads to the City (WEST) or the Slums (EAST). | EAST-2 WEST-10 SOUTH-4 | null | null
-6 | DEEP SLUMS | You're deeper in the Slums. A mini Red-Light Disctrict. Broken used needles, passed out druggies...god help them all...you fought for what again? | EAST-2 SOUTH-7 | null | MONSTER/Impoverished Mugger/20/0/20/5/null
+6 | DEEP SLUMS | You're deeper in the Slums. A mini Red-Light Disctrict. Broken used needles, passed out druggies...god help them all...you fought for what again? | WEST-2 SOUTH-7 | null | MONSTER/Impoverished Mugger/20/0/20/5/null
 7 | BANDIT CAMP | You're in an abandoned apartment building...some bandits made it their resting stead. Seems like some good stuff is inside...lets hope they don't see you. | NORTH-6 | WEAPON/Pistol/UNCOMMON/30/PIERCE=1 | MONSTER/Bandit/30/0/15/5/RAGE=0,-10
 8 | ABANDONED PARK AREA | You're in a forgotten part of the Park. Overground brush and unpruned trees - nobody seemed to maintain them for a while, huh? | WEST-3 | null | null
 9 | HOMELESS BRIDGE | You're South of the Plaza, next to a bridge. Underneath it, there seems to be a homeless encampment. Guess the Slums aren't the only place for them... | NORTH-4 | null | MONSTER/Homeless Man/5/0/10/10 | RAYMOND
@@ -24,4 +24,5 @@
 23 | BAR | You're at the usual bar you go to after work...since you got fired over that bullshit there's not been much of a reason to come here...or go outside for that matter. It's almost closing time. | NORTH-20 | HEAL_ITEM/Kvass/COMMON/5 | null | KARLA
 24 | MAYTOWN CENTER | You're at the heart of Maytown Center. Shops, food, and other consumer goods galore!...lots of crackheads though. | WEST-22 NORTH-26 | HEAL_ITEM/Shawarma/RARE/20 / REGEN_ITEM/BMRA/RARE/8/4 / RAGE_ITEM/Orange_Juice/RARE/5/2 | null | VES
 25 | STARPORT | You're at Cassini Starport. Ahh the fresh smell of Rocket Fuel. Domestic flights around the planet are very cheap now, in comparison to when the Starport opened 20 years ago. | EAST-21 NORTH-26 | null | null
-26 | MAYTOWN PEAK | You're at Maytown Peak...some peak, it's a small hill that people like to sit on top of and take pictures. You better not be here for that. | WEST-25 EAST-24 | null | null
+26 | MAYTOWN PEAK | You're at Maytown Peak...some peak, it's a small hill that people like to sit on top of and take pictures. You better not be here for that. | WEST-25 EAST-24 NORTH-27 | null | null
+27 | CARTARA TRAIL | You're on Cartara Trail. Leads to the shoreside. | SOUTH-26 NORTH-28 | ARMOUR/North_Star_Band/EPIC/20/VITALITY=20 | BOSS/DESPERATO

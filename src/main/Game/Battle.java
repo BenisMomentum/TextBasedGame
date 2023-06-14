@@ -1,5 +1,8 @@
 package main.Game;
 
+import main.Colors;
+import main.Entities.Boss;
+import main.Entities.Bosses.BossList;
 import main.Entities.Monster;
 import main.Entities.Player;
 import main.Game.BattleExceptions.PlayerLostException;
@@ -77,7 +80,14 @@ public class Battle {
 
         while(this.turnChangeCheck(input)){
             turnCount++;
+
+            if(monster instanceof Boss){
+                System.out.print(Colors.RED_BOLD_BRIGHT);
+            }
+
             System.out.println(this.monster.getStats());
+
+            System.out.print(Colors.RESET);
 
             System.out.println("\n" + this.player.getStats());
 
@@ -94,13 +104,35 @@ public class Battle {
 
     private void handleBattleOutcome() throws PlayerLostException, PlayerWonException {
         if(player.getHp() <= 0){
+
+            if(monster instanceof Boss){
+                outputBossOutcomeMessage(false); //Outputs a message at the end of the battle if you lose
+            }
+
             throw new PlayerLostException();
         }
         if(monster.getHp() <= 0){
+            if(monster instanceof Boss){
+                outputBossOutcomeMessage(true);
+            }
+
             System.out.println("\n"+"GAINED: " + this.xpAwarded + "XP");
             this.player.levelUp(this.xpAwarded);
             throw new PlayerWonException();
         }
+    }
+
+    private void outputBossOutcomeMessage(boolean won) {
+        if(won){
+            switch(BossList.valueOf(this.monster.getName())){
+                case DESPERATO -> System.out.println(Colors.GREEN_BOLD_BRIGHT + ">Maybe there is something left...<" + Colors.RESET);
+            }
+        } else{
+            switch(BossList.valueOf(this.monster.getName())){
+                case DESPERATO -> System.out.println(Colors.RED_BRIGHT + ">THERE IS NOTHING LEFT<" + Colors.RESET);
+            }
+        }
+
     }
 
     private void attackCommandParser(String input) throws PlayerRanException {
@@ -244,7 +276,7 @@ public class Battle {
                 return; //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
             } catch(IndexOutOfBoundsException e){
                 System.out.println("\n" + "Number does not correspond to inventory item! Try again!");
-            } catch(InputMismatchException e){
+            } catch(InputMismatchException | NumberFormatException e){
                 System.out.println("\n" + "(Enter a number!)");
             }
         }

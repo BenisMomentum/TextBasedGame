@@ -18,25 +18,14 @@ import main.NPC.NPC;
 import main.NPC.NPCList;
 import main.TextConstants;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Game {
 
-    /*
-    TODO:
-    Feature Requests:
-
-          - NPCs
-
-     */
 
     Scanner sc = new Scanner(System.in);
 
     Player player = new Player();
-
 
     int previousLocationID;
     int locationID;
@@ -196,8 +185,7 @@ public class Game {
                     handleEQUIPCommand(command[1]);
                 }
             }
-            
-            case INVENTORY -> handleInvetoryView();
+            case ITEMS, INVENTORY -> handleInvetoryView();
             case STATS -> System.out.println(player.getStats());
             case USE -> handleStandardUSECommand(command[1]);
 
@@ -216,6 +204,16 @@ public class Game {
     }
 
     private void handleDEBUGCommand(String s) throws GameWon {
+
+        if(s.equalsIgnoreCase("discover_all")){
+            for(Location l : Locations.getInstance().getLocations().values()){
+                if(!visitedLocations.contains(l.getLocationID())){
+                    this.visitedLocations.add(l.getLocationID()); //Adds it to the list of visited locations if not there.
+                }
+            }
+            return;
+        }
+
         int debugCode = Integer.parseInt(s.trim());
 
         if(debugCode == 30){
@@ -372,7 +370,10 @@ public class Game {
 
             previousLocationID = this.locationID; //Updates previous location
             this.locationID = Locations.getInstance().getLocations().get(locationID).getExits().get(direction);
-            this.visitedLocations.add(this.previousLocationID); //Adds it to the list of visited locations.
+
+            if(!visitedLocations.contains(locationID)){
+                this.visitedLocations.add(this.previousLocationID); //Adds it to the list of visited locations if not there.
+            }
 
             if(this.locationID == 0 && this.visitedLocations.size() == Locations.getInstance().getLocations().size()){
                 Track11 t11 = new Track11(player);
@@ -386,6 +387,15 @@ public class Game {
     }
 
     private void handleTakeItem(String itemName, Location location){
+        if(itemName.equalsIgnoreCase("all")){
+            for(int i = 0; i < location.getItems().size(); i++){
+                player.take(location.getItems().get(i));
+            }
+
+            location.getItems().clear();
+            return;
+        }
+
         for(Item i : location.getItems()){
             if(itemName.equalsIgnoreCase(i.getName())){
                 this.player.take(i);
