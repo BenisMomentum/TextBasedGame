@@ -31,6 +31,21 @@ Make sure to get an Oracle link.
 
 who.
 
+## HOW TO RUN
+
+Go to the directory where the github clone is located via:
+```cd [FOLDER/DIRECTORYNAME] ```
+
+### LINUX:
+
+```sh linux.sh```
+
+### WINDOWS:
+
+just type `windows.bat` OR if you're using Powershell: `sh .\linux.sh`
+
+### MAC:
+who
 
 
 
