@@ -3,10 +3,13 @@
 
 Just a small text game I'm making.
 
-## CURRENT JAVA VERSION REQUIREMENT: Java 18 JRE
+### CURRENT JAVA VERSION REQUIREMENT: Java 18 JRE
 
-### Java 18 installation
+### Libraries used:
 
+Jansi - https://github.com/fusesource/jansi
+
+## Java 18 installation
 
 ### Linux Installation:
 
@@ -27,5 +30,7 @@ Make sure to get an Oracle link.
 ### For Apple/Mac:
 
 who.
+
+
 
 

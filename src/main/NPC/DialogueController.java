@@ -2,8 +2,6 @@ package main.NPC;
 
 import main.Entities.Player;
 import main.TextConstants;
-
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -36,13 +34,6 @@ public class DialogueController {
             for(int i = 0; i < options.size(); i++){
                 System.out.println(i + " | " + options.get(i));
             }
-
-
-            /*for(String option : this.npc.dialogue.get(dialogIndex).getOptions().keySet()){
-                int index = this.npc.dialogue.get(dialogIndex).getOptions().get(option);
-
-                System.out.println(index + " | " + option);
-            }*/
 
             System.out.println(TextConstants.EQUALS_SEPERATOR + "\n" + "(Enter a number for your choice):");
 

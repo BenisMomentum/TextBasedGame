@@ -24,7 +24,7 @@ public class Player extends Entity {
     protected Armour equipedArmour;
 
     private int alignment = 0;
-    private int MAX_ALIGN = 10;
+    private final int MAX_ALIGN = 10;
 
     private final int MAX_BASE_EXPERIENCE = 100;
 
@@ -60,7 +60,6 @@ public class Player extends Entity {
                 this.initiative += 1;
                 level++;
             }else{
-                //experience += recievedXP;
                 return;
             }
         }
@@ -137,16 +136,6 @@ public class Player extends Entity {
 
                  */
 
-                /*if(sE instanceof Regen){
-                    s += (TextConstants.EFFECT_REGEN[i].contains("="))
-                            ? TextConstants.EFFECT_REGEN[i].replace("=",String.valueOf(sE.getStrength()))
-                            : TextConstants.EFFECT_REGEN[i];
-                }
-                if(sE instanceof Bleed){
-                    s += (TextConstants.EFFECT_BLEED[i].contains("="))
-                            ? TextConstants.EFFECT_BLEED[i].replace("=",String.valueOf(sE.getStrength()))
-                            : TextConstants.EFFECT_BLEED[i];
-                }*/
 
         for(int i = 0; i < loopLen; i++){
             for(StatusEffect sE : this.statusEffects){

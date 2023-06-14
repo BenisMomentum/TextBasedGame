@@ -220,7 +220,11 @@ public class Game {
 
         if(debugCode == 30){
             Track11 t = new Track11(player);
+        }else if(debugCode >= 0){
+            this.previousLocationID = locationID;
+            this.locationID = debugCode;
         }
+
 
     }
 

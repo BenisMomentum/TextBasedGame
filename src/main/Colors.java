@@ -24,4 +24,5 @@ public class Colors {
     public static final String WHITE_BOLD_BRIGHT = "\033[1;97m"; // WHITE
 
     public static final String RESET = "\033[0m";  // Text Reset
+
 }
