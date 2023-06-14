@@ -138,10 +138,4 @@ public abstract class Entity {
         return true;
     }
 
-    /*public void removeEffect(StatusEffect e){
-        if(this.getStatusEffects().contains(e)){
-            this.getStatusEffects().get(this.getStatusEffects().indexOf(e)).tick(this);
-        }
-
-    }*/
 }

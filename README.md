@@ -42,7 +42,7 @@ Go to the directory where the github clone is located via:
 
 ### WINDOWS:
 
-just type `windows.bat` OR if you're using Powershell: `sh .\linux.sh`
+just type `windows.bat` OR if you're using Powershell: `sh .\powershell.sh`
 
 ### MAC:
 who
