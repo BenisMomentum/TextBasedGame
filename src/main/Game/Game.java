@@ -29,7 +29,7 @@ public class Game {
 
     int previousLocationID;
     int locationID;
-    private List<Integer> visitedLocations = new ArrayList<>();
+    private Set<Integer> visitedLocations = new LinkedHashSet<>();
 
     public Game(){
         Locations.getInstance().loadLocations(); //Loads locations from the locations.txt file that encompasses most game data regarding area.
@@ -371,9 +371,7 @@ public class Game {
             previousLocationID = this.locationID; //Updates previous location
             this.locationID = Locations.getInstance().getLocations().get(locationID).getExits().get(direction);
 
-            if(!visitedLocations.contains(locationID)){
-                this.visitedLocations.add(this.previousLocationID); //Adds it to the list of visited locations if not there.
-            }
+            this.visitedLocations.add(this.previousLocationID); //Adds it to the list of visited locations if not there.
 
             if(this.locationID == 0 && this.visitedLocations.size() == Locations.getInstance().getLocations().size()){
                 Track11 t11 = new Track11(player);
