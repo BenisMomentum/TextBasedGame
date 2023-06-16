@@ -3,6 +3,7 @@ package main.Entities;
 import main.Colors;
 import main.Items.Armour;
 import main.Items.Effects.StatusEffects.*;
+import main.Items.Effects.WeaponEffects.LifeSteal;
 import main.Items.Effects.WeaponEffects.WeaponEffectList;
 import main.Items.Item;
 import main.Items.Rarity;
@@ -99,6 +100,7 @@ public class Player extends Entity {
                 + Colors.YELLOW_BRIGHT + "INITIATIVE - " + this.initiative + "INIT"  + Colors.RESET + "\n"
                 + "WEAPON - " + this.equipedWeapon.getName() + " - " + Colors.RED_BRIGHT + this.equipedWeapon.getStrengthBuff() + "STR" + Colors.RESET + "\n"
                 + "ARMOUR - " + Colors.BLUE_BRIGHT + this.equipedArmour.getName() + Colors.RESET +"\n"
+                + "ALIGNTMENT - " + ((alignment > 5) ? "HONEST" : "SUB-OPTIMAL") + "\n"
                 + "EFFECTS: \n" + this.getEffectString() + "\n"
                 + TextConstants.EQUALS_SEPERATOR + "\n";
         return s;
@@ -169,6 +171,10 @@ public class Player extends Entity {
         System.out.println("YOU attack " + monster.getName() + " for [" + actualDamage + "] DMG with [" + this.equipedWeapon.getName() + "]!");
 
         monster.takeDamage(actualDamage);
+
+        if(this.equipedWeapon.hasEffect(WeaponEffectList.LIFESTEAL)){
+            this.equipedWeapon.getEffect(WeaponEffectList.LIFESTEAL).useEffect(this);
+        }
     }
 
     public boolean take(Item t){

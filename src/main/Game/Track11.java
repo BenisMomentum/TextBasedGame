@@ -202,7 +202,7 @@ public class Track11 {
     }
 
     private int determineAlignment(){
-        if(this.player.getAlignment() > (player.getMAXAlign() / 2)){ //If your alignment is greater than 5, then you're gucci
+        if(this.player.getAlignment() >= (player.getMAXAlign() / 2)){ //If your alignment is greater than 5, then you're gucci
             return 2;
         }
         return 1;

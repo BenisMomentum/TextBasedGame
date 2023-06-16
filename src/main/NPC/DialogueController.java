@@ -43,24 +43,26 @@ public class DialogueController {
                 dialogIndex = this.npc.dialogue.get(dialogIndex).getOptions().get(options.get(c)); //Extracts the index FROM the dialog option
 
                 try{ //This is the dumbest fix for an IOOB exception, the other try catch should have caught it but oh well.
-                    if(!npc.hasTalked){
-                        switch(npc.getDialogue().get(dialogIndex).getAlignment()){
 
-                            case GOOD -> {
-                                player.incAlign();
-                            }
-                            case BAD -> {
+                    switch(npc.getDialogue().get(dialogIndex).getAlignment()){
+
+                        case GOOD -> {
+                            player.incAlign();
+                        }
+                        case BAD -> {
+                            if(!npc.hasTalked){
                                 player.decAlign();
                             }
-                            default -> {
-                            }
+                        }
+                        default -> {
                         }
                     }
+
                 } catch (IndexOutOfBoundsException e ){
                     System.out.println("\n"+ "(Enter an option!");
                 }
-            } catch(NumberFormatException e){
-                System.out.println("\n"+ "(Enter a number!)");
+            } catch(NumberFormatException | IndexOutOfBoundsException e){
+                System.out.println("\n"+ "(Enter a valid number!)");
             }
 
             if(!npc.hasTalked) npc.hasTalked = true;

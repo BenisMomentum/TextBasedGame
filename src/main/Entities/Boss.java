@@ -20,9 +20,11 @@ public class Boss extends Monster{
     public void attack(Player p) {
         Random rand = new Random();
 
-        int move = rand.nextInt(moveList.size());
+        int move = rand.nextInt(moveList.size()); //Determines random move
 
-        moveList.get(move).attack(p);
+        if(rand.nextInt(6) != 1){ //Gives the boss a chance to miss
+            moveList.get(move).attack(p);
+        }
     }
 }
 

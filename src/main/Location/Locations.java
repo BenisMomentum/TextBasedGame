@@ -2,6 +2,8 @@ package main.Location;
 
 import main.Entities.Bosses.BossList;
 import main.Entities.Bosses.Desperato;
+import main.Entities.Bosses.TheChild;
+import main.Entities.Bosses.Vulnus;
 import main.Entities.Monster;
 import main.Items.*;
 import main.Items.Effects.ArmourEffects.ArmourEffectList;
@@ -113,6 +115,8 @@ public class Locations {
 
                         switch(BossList.valueOf(bossName)){
                             case DESPERATO -> mons = new Desperato();
+                            case VULNUS -> mons = new Vulnus();
+                            case THECHILD -> mons = new TheChild();
                         }
                     }
                     try{

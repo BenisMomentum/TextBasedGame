@@ -25,8 +25,7 @@ public class Battle {
         ATTACK("ATTACK"),
         BLOCK("BLOCK"),
         USE("USE"),
-        RUN("RUN"),
-        NULL("NULL");
+        RUN("RUN");
 
         BattleCommands(String command) {
         }
@@ -123,13 +122,26 @@ public class Battle {
     }
 
     private void outputBossOutcomeMessage(boolean won) {
+
+        /*
+            If the player wins or loses it will output a special message.
+            It will also increase the alignment if the player wins.
+        */
+
         if(won){
             switch(BossList.valueOf(this.monster.getName())){
                 case DESPERATO -> System.out.println(Colors.GREEN_BOLD_BRIGHT + ">Maybe there is something left...<" + Colors.RESET);
+                case VULNUS -> System.out.println(Colors.GREEN_BOLD_BRIGHT + ">It wasn't your fault..." + Colors.RESET);
             }
+
+            for(int i = 0; i < 5; i++){
+                player.incAlign();
+            }
+
         } else{
             switch(BossList.valueOf(this.monster.getName())){
                 case DESPERATO -> System.out.println(Colors.RED_BRIGHT + ">THERE IS NOTHING LEFT<" + Colors.RESET);
+                case VULNUS -> System.out.println(Colors.RED_BRIGHT + ">YOU WILL LOSE THEM ALL<" + Colors.RESET);
             }
         }
 
@@ -295,7 +307,7 @@ public class Battle {
             }
             else{
                 player.getStatusEffects().get(i).tick(player);
-            };
+            }
 
         }
 
