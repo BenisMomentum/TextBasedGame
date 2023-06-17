@@ -2,13 +2,12 @@ package main.Entities.Bosses;
 
 import main.Entities.Boss;
 import main.Items.Effects.StatusEffects.Adrenaline;
-import main.Items.Effects.StatusEffects.Bleed;
 import main.Items.Effects.StatusEffects.Rage;
 import main.Items.Effects.StatusEffects.Regen;
 
 public class TheChild extends Boss {
     public TheChild(){
-        super("THE CHILD", 300, 20, 10, 5);
+        super("THECHILD", 300, 20, 10, 5);
 
         //SOUL DRAIN
         this.moveList.add(p -> {

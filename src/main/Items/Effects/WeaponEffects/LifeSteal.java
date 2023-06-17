@@ -18,7 +18,7 @@ public class LifeSteal extends WeaponEffect{
 
             double healVal = (double) (p.getStrength() + p.getEquipedWeapon().getStrengthBuff()) * ((double) this.value / 100.0);
 
-            p.heal((int) healVal);
+            p.heal(Math.toIntExact(Math.round(healVal)));
         }
     }
 

@@ -325,7 +325,7 @@ public class Player extends Entity {
     }
 
     public void incAlign(){
-        if(this.alignment + 1 < MAX_ALIGN){
+        if(this.alignment + 1 <= MAX_ALIGN){
             this.alignment++;
         }
     }

@@ -131,7 +131,8 @@ public class Battle {
         if(won){
             switch(BossList.valueOf(this.monster.getName())){
                 case DESPERATO -> System.out.println(Colors.GREEN_BOLD_BRIGHT + ">Maybe there is something left...<" + Colors.RESET);
-                case VULNUS -> System.out.println(Colors.GREEN_BOLD_BRIGHT + ">It wasn't your fault..." + Colors.RESET);
+                case VULNUS -> System.out.println(Colors.GREEN_BOLD_BRIGHT + ">It wasn't your fault...<" + Colors.RESET);
+                case THECHILD -> System.out.println(Colors.GREEN_BOLD_BRIGHT + ">You're in control of your own happiness<" + Colors.RESET);
             }
 
             for(int i = 0; i < 5; i++){
@@ -142,12 +143,13 @@ public class Battle {
             switch(BossList.valueOf(this.monster.getName())){
                 case DESPERATO -> System.out.println(Colors.RED_BRIGHT + ">THERE IS NOTHING LEFT<" + Colors.RESET);
                 case VULNUS -> System.out.println(Colors.RED_BRIGHT + ">YOU WILL LOSE THEM ALL<" + Colors.RESET);
+                case THECHILD -> System.out.println(Colors.RED_BRIGHT + ">YOU'RE STILL A KID<" + Colors.RESET);
             }
         }
 
     }
 
-    private void attackCommandParser(String input) throws PlayerRanException {
+    private void attackCommandParser(String input) throws PlayerRanException, PlayerLostException, PlayerWonException {
         boolean commandLock = true;
 
         input = input.trim().toUpperCase();
@@ -187,7 +189,7 @@ public class Battle {
         }
     }
 
-    private void handleRUNBattleCommand() throws PlayerRanException {
+    private void handleRUNBattleCommand() throws PlayerRanException, PlayerLostException, PlayerWonException {
         /*
          * In case of the user responding with "RUN"
          * He will have a random chance to not be able to get away
@@ -296,10 +298,14 @@ public class Battle {
 
     }
 
-    private boolean turnChangeCheck(String lastInput) {
+    private boolean turnChangeCheck(String lastInput) throws PlayerLostException, PlayerWonException {
         /*
         Meant to do all the turn change checks. Such as HP > 0 or any Damage Over Time effects [Future plan]
          */
+
+        if(player.getHp() <= 0 || monster.getHp() <= 0){
+            handleBattleOutcome();
+        }
 
         for(int i = 0; i < player.getStatusEffects().size(); i++){
             if(player.getStatusEffects().get(i).getDuration() < 0) {

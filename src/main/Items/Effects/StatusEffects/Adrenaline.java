@@ -32,8 +32,6 @@ public class Adrenaline extends StatusEffect{
             this.applied = false;
             e.setInitiative(e.getInitiative() - this.strength);
         }
-        System.out.println(e.getInitiative());
-
 
         duration--;
 

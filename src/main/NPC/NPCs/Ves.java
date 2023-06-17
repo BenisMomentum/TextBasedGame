@@ -34,7 +34,6 @@ public class Ves extends NPC {
 
         this.dialogue.put(5, new Dialogue("It's alright, I can understand.",Alignments.GOOD));
         this.dialogue.get(5).getOptions().put("What about you?",4);
-        this.dialogue.get(5).getOptions().put("Sounds nice.",6);
 
         this.dialogue.put(6,new Dialogue("So what's going on?"));
         this.dialogue.get(6).getOptions().put("Nothing much really, just wanted to roam the area for a bit",7);
