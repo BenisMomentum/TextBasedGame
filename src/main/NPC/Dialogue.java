@@ -8,6 +8,12 @@ public class Dialogue {
     private final Map<String, Integer> options;
     private final Alignments alignment;
 
+    /*
+        Each dialogue will have a prompt and a set of options.
+        Each dialogue also has an alignment.
+        Essentially if the player chooses a dishonest option it will decrement the player's alignment after choosing.
+    */
+
     public Dialogue(String p){
         this.prompt = p;
         options = new LinkedHashMap<>();

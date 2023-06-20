@@ -14,8 +14,8 @@ public class RageItem extends DurationalItem{
 
     @Override
     public void use(Entity entity) {
-        if(entity instanceof Player){
-            entity.getStatusEffects().add(new Rage(super.duration,super.value));
+        if(entity instanceof Player){ //Checks if its a player using it
+            entity.getStatusEffects().add(new Rage(super.duration,super.value)); //Adds the rage buff
         }
     }
 

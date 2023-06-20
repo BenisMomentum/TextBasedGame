@@ -1,8 +1,8 @@
 package main.Items.Effects.ArmourEffects;
 
 public enum ArmourEffectList {
-    VITALITY("VITALITY"),
-    SWIFTNESS("SWIFTNESS");
+    VITALITY("VITALITY"), //Buffs HP
+    SWIFTNESS("SWIFTNESS"); //Buffs INIT
 
     private final String name;
 

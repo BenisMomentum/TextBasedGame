@@ -31,10 +31,10 @@ public class Player extends Entity {
 
     public Player(){
         super(50,0,5,5, "Player");
-        this.equipedWeapon = new Weapon(Rarity.COMMON,"FISTS",0);
-        this.equipedArmour = new Armour(Rarity.COMMON, "NONE",0);
+        this.equipedWeapon = new Weapon(Rarity.COMMON,"FISTS",0); //Base level Weapon
+        this.equipedArmour = new Armour(Rarity.COMMON, "NONE",0); //Base level Armour
 
-        this.maxHP = 50 + (10 * (level - 1));
+        this.maxHP = 50;
 
         this.inventory = new ArrayList<>();
 
@@ -46,13 +46,25 @@ public class Player extends Entity {
 
     public void levelUp(int recievedXP){
 
-        int MAX_CURRENT_XP;
-        experience += recievedXP;
+        int MAX_CURRENT_XP = MAX_BASE_EXPERIENCE + (30*(level - 1)); //Sets up the Max_Current_Xp with an increment of 30 per level
+
+        /*
+        Keeps levelling up so long as there's XP above the maximum.
+        */
+
+
+        experience += recievedXP; //Adds the recieved into the current XP
 
         while(experience >=0){
-            MAX_CURRENT_XP = MAX_BASE_EXPERIENCE + (30*(level - 1));
 
             if(experience >= MAX_CURRENT_XP){
+
+                /*
+                Subtracts the MAX_CURRENT_XP from experience
+
+                then updates the player's attributes correspondingly
+                */
+
                 experience -= MAX_CURRENT_XP;
 
                 this.strength += 2;
@@ -60,6 +72,8 @@ public class Player extends Entity {
                 this.maxHP += 10;
                 this.initiative += 1;
                 level++;
+
+                MAX_CURRENT_XP += 30; //Updates the MAX_CURRENT_XP
             }else{
                 return;
             }
@@ -70,12 +84,14 @@ public class Player extends Entity {
 
     public void takeDamage(int incomingDamage) {
         /*
-    ARMOUR IS MEANT TO BE CALCULATED SUCH AS THE FOLLOWING SUCH THAT IT CAN NEVER EXCEED 50% PROTECTION
 
-    actualDamage = (incomingDamage) * ((Armour % 51)/100)
+        ARMOUR IS MEANT TO BE CALCULATED SUCH AS THE FOLLOWING SUCH THAT IT CAN NEVER EXCEED 50% PROTECTION
 
-    MAXIMUM FOR ALL STATS (STR, INIT) IS 100
-     */
+        actualDamage = (incomingDamage) * ((Armour % 51)/100)
+
+        MAXIMUM FOR ALL STATS (STR, INIT) IS 100
+
+        */
         if(incomingDamage <= 0) {
             System.out.println("You get hit for [0] DMG, like a wet noodle");
             return;
@@ -106,63 +122,17 @@ public class Player extends Entity {
         return s;
     }
 
-    private String getEffectString(){
-        if(this.statusEffects.size() == 0) return "";
-
-        String s = "";
-        int loopLen = Math.max(TextConstants.EFFECT_BLEED.length, TextConstants.EFFECT_REGEN.length);
-
-        /*
-                PSEUDOCODE:
-
-                eff1[0] \t eff2[0] \t ....
-                eff1[1] \t eff2[1] \t ....
-
-                ^ What I want.
-
-                THEORY:
-
-                for every effect{
-                    switch(effect class){
-                        case BLEED:
-                           IF it contains '=' -> s+= bleed_eff[i].replace("=", eff.strength)
-                           ELSE -> s +=
-                           break;
-                        case REGEN:
-                           IF it contains '=' -> s+= bleed_eff[i].replace("=", eff.strength)
-                           ELSE -> s +=
-
-
-                    }
-                }
-
-                 */
-
-
-        for(int i = 0; i < loopLen; i++){
-            for(StatusEffect sE : this.statusEffects){
-                if(sE instanceof Regen){
-                    s += (TextConstants.EFFECT_REGEN[i].contains("="))
-                            ? TextConstants.EFFECT_REGEN[i].replace("=",String.valueOf(sE.getStrength()))
-                            : TextConstants.EFFECT_REGEN[i];
-                } else if(sE instanceof Bleed){
-                    s += (TextConstants.EFFECT_BLEED[i].contains("="))
-                            ? TextConstants.EFFECT_BLEED[i].replace("=",String.valueOf(sE.getStrength()))
-                            : TextConstants.EFFECT_BLEED[i];
-                } else if(sE instanceof Adrenaline){
-                    s+= (TextConstants.EFFECT_SPEED[i].contains("="))
-                        ? TextConstants.EFFECT_SPEED[i].replace("=",String.valueOf(sE.getStrength()))
-                            : TextConstants.EFFECT_SPEED[i];
-
-                }
-                s += "\t";
-            }
-            s += "\n";
-        }
-        return s;
-    }
 
     public void attack(Monster monster){
+
+        /*
+            First it gets the raw damage from the equiped Weapon and your actual strength
+            Then IF your weapon has piercing, it ignores the armour (as it should) and treats the actualdamage as rawdamage
+            ELSE, it performs a generic Armour Calc using the Monster's armour.
+
+            THEN IF you have LIFESTEAL, you heal for a percentage of that RAW damage (aka even if the damage as reduced, you're still healing that raw amount)
+            ELSE, you just continue as normal.
+        */
 
         int rawDamage = this.strength + this.equipedWeapon.getStrengthBuff();
 
@@ -178,6 +148,13 @@ public class Player extends Entity {
     }
 
     public boolean take(Item t){
+
+        /*
+        First, it checks if the inventory has enough space, IF it doesn't, then it exits.
+
+        IF the inventory isn't full, it adds the Item into the Inventory
+        */
+
         if(inventory.size() > 30){
             System.out.println("INVETORY is full!");
             return false;
@@ -205,6 +182,17 @@ public class Player extends Entity {
     }
 
     public boolean equip(Weapon w){
+
+        /*
+            First it checks if you even have the Weapon in your inventory.
+
+            Then, IF true, it checks if you currently have your FISTS equipped.
+
+            IF that is true, it just equips your current weapon by overwriting FISTS
+
+            ELSE, it adds the equipped weapon to inventory.
+        */
+
         if(inventory.contains(w)){
 
             if(!equipedWeapon.equals(new Weapon(Rarity.COMMON,"FISTS",0))){
@@ -220,6 +208,9 @@ public class Player extends Entity {
     }
 
     public boolean equip(Armour a){
+
+        //Same as the above but with Armour
+
         if(inventory.contains(a)){
             if(!equipedArmour.equals(new Armour(Rarity.COMMON, "NONE",0))){ //Handles it to make sure that an item that ISNT the base is being added BACK to the inventory as it is unequipped
                 inventory.add(equipedArmour);
@@ -235,6 +226,11 @@ public class Player extends Entity {
     }
 
     public void heal(int amount){
+
+        //Checks if the amount is > 0.
+        // Then checks if the amount + your current HP is > your MaxHP
+        // If it is, just sets your HP to the max, otherwise it heals you.
+
         if(amount > 0){
             if(amount + this.hp <= this.getMAXHP()){
                 this.hp += amount;
@@ -280,6 +276,9 @@ public class Player extends Entity {
     //MAX STAT HANDLING
 
     private void updateMaxes(){
+        equipedWeapon.removeAllWeaponEffects(this);
+        equipedArmour.removeAllArmourEffects(this);
+
         //MAX HP UPDATE
         int hpDiff = this.maxHP - this.hp;//Accounts for damage recieved and doesn't provide a cheat way to keep scaling HP
 
@@ -289,9 +288,13 @@ public class Player extends Entity {
         //INIT HANDLING
         this.initiative = this.getREALINIT();
 
+        //STR HANDLING
+        this.strength  = this.getREALSTR();
 
         //ITEM MODIFIER HANDLING
+
         this.equipedArmour.applyAllArmourEffects(this);
+        this.equipedWeapon.applyAllWeaponEffects(this);
 
         //STATUS EFFECTS HANDLING
         for(StatusEffect e : statusEffects){
@@ -322,6 +325,14 @@ public class Player extends Entity {
 
     public void resetInit(){
         this.initiative = this.getREALINIT();
+    }
+
+    public int getREALSTR(){
+        return 5 + (2 * (level - 1)); //Essentially it calculates it with this formula -->[ BASESTR + (STR_LEVEL_UP_INCREMENT * (LEVEL - 1)); ]
+    }
+
+    public void resetSTR(){
+        this.strength = getREALSTR();
     }
 
     public void incAlign(){

@@ -1,6 +1,9 @@
 package main.Items;
 
 public enum Rarity {
+
+    //Various rarities with their supposed "Lootbox value" (I havent implemented lootboxes so idk what thats for)
+
     COMMON(50.0),
     UNCOMMON(25.0),
     RARE(12.5),

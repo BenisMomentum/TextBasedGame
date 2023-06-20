@@ -5,6 +5,8 @@ import main.Entities.Player;
 
 public class QuickDraw extends WeaponEffect{
 
+    //Quickdraw is meant to make it so that the player always go first (Handled in Game\Battle.java) and increments the player's initiative
+
     public QuickDraw(int value) {
         super.value = value;
         super.type = WeaponEffectList.QUICKDRAW;

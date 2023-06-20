@@ -9,13 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Armour extends Item{
-    protected int armour;
-    protected List<ArmourEffect> effectList = new ArrayList<>();;
 
-    /*public Armour(Rarity r, String n, int a, List<ArmourEffect> lAE){
-        this(r,n,a);
-        this.effectList = lAE;
-    }*/
+    //Armour class, meant to be equipped to the player.
+
+    protected int armour;
+    protected List<ArmourEffect> effectList = new ArrayList<>(); //Effects the armour may have
 
     public Armour(Rarity r, String n, int armour) {
         super(r, n);
@@ -57,10 +55,18 @@ public class Armour extends Item{
         return armour;
     }
 
-    public void applyAllArmourEffects(Player player){
-        if(player.getEquipedArmour().equals(this)){
+    public void applyAllArmourEffects(Player player){ //Applies all armour effects to the player (Vitality and Swiftness)
+        if(player.getEquipedArmour().equals(this)){ //Checks first if its equipped tho
             for(ArmourEffect aE : player.getEquipedArmour().effectList){
                 aE.addEffect(player);
+            }
+        }
+    }
+
+    public void removeAllArmourEffects(Player player){ //Removes all armour effects to the player (Vitality and Swiftness)
+        if(player.getEquipedArmour().equals(this)){ //Checks first if its equipped tho
+            for(ArmourEffect aE : player.getEquipedArmour().effectList){
+                aE.removeEffect(player);
             }
         }
     }

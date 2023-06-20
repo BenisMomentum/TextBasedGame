@@ -12,7 +12,6 @@ import main.Items.Effects.StatusEffects.Bleed;
 import main.Items.Effects.WeaponEffects.WeaponEffectList;
 import main.Items.UseableItems.UseableItem;
 import main.TextConstants;
-
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -255,6 +254,11 @@ public class Battle {
     }
 
     private void displayPlayerUseableItems(){
+
+        //Displays the players useable items as the following
+
+        //INDEX | ITEMNAME
+
         System.out.println("\n" +TextConstants.INVENTORY_VIEW + "\n");
 
         if(player.getInventory().size() != 0){
@@ -277,6 +281,15 @@ public class Battle {
         while(true){
 
             try{
+
+                /*
+                    Scans the user for an input, then cleans and parses it into an integer.
+
+                    User is supposed to enter an index number after it is displayed by displayPlayerUseableItems().
+
+                    It then checks if the index is valid (it just catches it if the user messes up lmao)
+                */
+
                 int input = 0;
                 System.out.print("Enter Item Number: ");
                 input = Integer.parseInt(sc.nextLine().trim());
@@ -300,7 +313,9 @@ public class Battle {
 
     private boolean turnChangeCheck(String lastInput) throws PlayerLostException, PlayerWonException {
         /*
-        Meant to do all the turn change checks. Such as HP > 0 or any Damage Over Time effects [Future plan]
+            Meant to do all the turn change checks. Such as HP > 0 or any Damage Over Time effects [Future plan]
+
+            Not only that but also loops through their Status Effects and "ticks" through them.
          */
 
         if(player.getHp() <= 0 || monster.getHp() <= 0){

@@ -15,7 +15,6 @@ import main.Location.Location;
 import main.Location.Locations;
 import main.NPC.DialogueController;
 import main.NPC.NPC;
-import main.NPC.NPCList;
 import main.TextConstants;
 
 import java.util.*;
@@ -27,9 +26,12 @@ public class Game {
 
     Player player = new Player();
 
+
     int previousLocationID;
     int locationID;
     private Set<Integer> visitedLocations = new LinkedHashSet<>();
+
+
 
     public Game(){
         Locations.getInstance().loadLocations(); //Loads locations from the locations.txt file that encompasses most game data regarding area.
@@ -38,7 +40,7 @@ public class Game {
     }
 
     public void startGame(){
-        if(startMessage()){
+        if(startMessage()){ //Checks for "start" as the input, if there is no other input it exits
             System.out.println("TYPE \"HELP\" FOR A LIST OF COMMANDS");
             gameLoop();
         }
@@ -57,14 +59,16 @@ public class Game {
 
         while(!input.equalsIgnoreCase("EXIT")){
             try{
-                System.out.println(Locations.getInstance().getLocations().get(locationID).getDescription());
+                System.out.println(Locations.getInstance().getLocations().get(locationID).getDescription()); //Prints the description of the current location
 
             } catch(IndexOutOfBoundsException | NullPointerException e){
-                System.out.println("\n" + "That exit seems to be blocked upon further inspection...");
+                System.out.println("\n" + "That exit seems to be blocked upon further inspection..."); //In case of emergency (I messed up and didn't make a location for that exit)
 
-                this.locationID = previousLocationID; //Rolls back to previous location
+                this.locationID = previousLocationID; //Rolls back to previous location for safety reasons
                 continue;
             }
+
+            //In case you've discovered all locations it signals you to go home
 
             if(this.visitedLocations.size() == Locations.getInstance().getLocations().size()){
                 System.out.println("\n" + Colors.RED + "It's getting late" + Colors.RESET);
@@ -75,15 +79,19 @@ public class Game {
             input = sc.nextLine();
 
             try{
-
+                //Catches you in 4k with a monster if present
                 if(Locations.getInstance().getLocations().get(locationID).getM() != null){
                     Thread.sleep(500L);
                     System.out.println("Before you could do anything something comes up behind you...\n");
                     Thread.sleep(300L);
 
                     try{
+                        //Initiates the Battle with the given monster and the player.
+
                         Battle b = new Battle(this.player, Locations.getInstance().getLocations().get(locationID).getM(),this);
                     }catch(PlayerLostException e){
+
+                        //In case the player loses it just prints "YOU LOSE" and exits gracefully
                         System.out.println(e.message);
 
                         Thread.sleep(500L);
@@ -91,11 +99,14 @@ public class Game {
                         System.exit(0);
 
                     }catch(PlayerWonException e){
+                        //Player wins, it goes back to normalna.
                         System.out.println(e.message);
 
                         Thread.sleep(500L);
 
                         Locations.getInstance().getLocations().get(locationID).setM(null);
+
+                        //Resumes standard game procedure and prints the last command you entered, as well as executes it.
 
                         System.out.println("Anyways, as you were...\n");
 
@@ -112,9 +123,14 @@ public class Game {
                         player.getStatusEffects().clear();
                     }
                 }
-
+                //Executes the last command
                 standardCommandHandler(input, Locations.getInstance().getLocations().get(locationID));
             } catch(NullPointerException | IllegalArgumentException | InterruptedException e){
+                /*  In case of stupid stuff happening, it catches it and just says Incorrect command
+                    NPE from the switch case
+                    Interrupted from all the Thread.sleep()'s
+                    IllegalArgument from the parser in the switch case. */
+
                 System.out.println("\n" + "Incorrect Command!");
             } catch(GameWon e){
                 System.exit(0);
@@ -128,7 +144,7 @@ public class Game {
 
         System.out.println("START? " + TextConstants.EQUALS_SEPERATOR + " EXIT?");
 
-        String input = sc.next();
+        String input = sc.next(); //If it's Start, then it continues with the game, if it's anything else, then ay.
 
         return input.trim().equalsIgnoreCase("START");
     }
@@ -138,9 +154,11 @@ public class Game {
         //One of the only reasons it would throw an NPE is because the Commands.ordinal() function used by
         //The switch case returns null.
 
-        input = input.trim();
-        String[] command = null;
+        input = input.trim(); //Cleans up the input
+        String[] command = null; //In case the command has multiple parts, it sets it to null as to avoid initializing it unnecessarily.
         boolean multiParamCommand = false;
+
+        //Handles the multiple parameter input for the game. Checks first if its actually multiple parameters
 
         if(input.contains(" ")){
             command = input.split(" ");
@@ -185,9 +203,11 @@ public class Game {
                     handleEQUIPCommand(command[1]);
                 }
             }
-            case ITEMS, INVENTORY -> handleInvetoryView();
+            case ITEMS, INVENTORY -> handleInventoryView();
             case STATS -> System.out.println(player.getStats());
-            case USE -> handleStandardUSECommand(command[1]);
+            case USE -> {
+                handleStandardUSECommand(multiParamCommand ? command[1] : null);
+            }
 
             case TALK ->{
                 try{
@@ -204,6 +224,7 @@ public class Game {
     }
 
     private void handleDEBUGCommand(String s) throws GameWon {
+        //Checksfor the text debug codes first, then moves to the actual numbers for teleportation
 
         if(s.equalsIgnoreCase("discover_all")){
             for(Location l : Locations.getInstance().getLocations().values()){
@@ -227,6 +248,13 @@ public class Game {
     }
 
     private void handleTALKCommand(String s) {
+        /*
+        *IF there is an NPC in the area and you try talking to it.
+        * Doesn't check with String as thats pretty much just for show and there's only 1 NPC in a location at a time
+        * Passes the NPC to a DialogueController as well as the player for the sake of Alignment.
+         */
+
+
         if(Locations.getInstance().getLocations().get(locationID).getNPC() != null){
             NPC npc = Locations.getInstance().getLocations().get(locationID).getNPC();
 
@@ -237,6 +265,17 @@ public class Game {
     }
 
     private void handleStandardUSECommand(String inp) {
+
+        /*
+        IF its a multi parameter command
+            Loops through the inventory, finds the item with the name specified.
+            IF its a regen item, it will heal for (regenAmount * duration)
+            ELSE it will just use the item.
+            Afterwards it will remove the item from inventory.
+
+         ELSE it will display all the items for the player and make them enter the item number that corresponds to its index.
+
+         */
 
         if(inp != null){
 
@@ -275,7 +314,7 @@ public class Game {
                         }
                         player.getInventory().remove(player.getInventory().get(input));
                     }
-                    break; //FLAG: CHANGE NULL TO MONSTER LATER ON ALONG WITH CHECK FOR OFFENSIVE/DEFENSIVE USEABLE ITEM
+                    break;
                 } catch(IndexOutOfBoundsException e){
                     System.out.println("\n" + "Number does not correspond to inventory item! Try again!");
                 }
@@ -287,6 +326,15 @@ public class Game {
     }
 
     private void displayPlayerUseableItems() {
+
+        /*
+        Displays all the useable items of the player.
+
+        Filters it by checking if the getInventory index result is an instance of UseableItem.
+
+        ELSE it will just print No Useable Items if the size == 0.
+        */
+
         System.out.println("\n" +TextConstants.INVENTORY_VIEW + "\n");
 
         player.getInventory().sort(Comparator.comparing(Item::getName));
@@ -305,6 +353,22 @@ public class Game {
     }
 
     private void handleSCANCommand(Location currentLoc) {
+
+        /*
+        First, it checks how many items are in the currentLocation
+        IF there are more than 0 items in the current locale, it prints it.
+        ELSE, it will just display "No items found"
+
+        Second, it will Scan for any exits and displays it
+        IF the Exit leads to a place that the player has found already,
+        it will display the name of it.
+        ELSE, it will just print the direction the player has to go in.
+
+        Third and final, IF there is an NPC, it will display the name,
+        ELSE it will just print "No People Found"
+
+         */
+
         if(currentLoc.getItems().size() != 0){
             System.out.println("ITEMS FOUND!: ");
 
@@ -331,7 +395,19 @@ public class Game {
         }
     }
 
-    private String getExitDiscovery(Location currentLoc, String desiredExit) { //Meant to get the exit name if it's been discovered or not.
+    private String getExitDiscovery(Location currentLoc, String desiredExit) {
+
+        /*
+        Meant to get the exit name if it's been discovered or not.
+
+        Does this by getting the Location ID and cross-referencing it with visitedLocations
+
+        IF the ID is in the visitedLocations arraylist, it will be return the following:
+
+        " - [LOCATION_NAME]"
+
+        ELSE, it will just return "".
+        */
 
         Integer id = currentLoc.getExits().get(desiredExit);
 
@@ -342,7 +418,19 @@ public class Game {
         }
     }
 
-    private void handleInvetoryView() {
+    private void handleInventoryView() {
+
+        /*
+        Prints the following:
+        =========================
+
+        CURRENT WEAPON:
+        CURRENT ARMOUR:
+
+        ITEMS:
+
+        =========================
+        */
 
         System.out.println("\n" + TextConstants.INVENTORY_VIEW);
 
@@ -373,8 +461,12 @@ public class Game {
 
             this.visitedLocations.add(this.previousLocationID); //Adds it to the list of visited locations if not there.
 
-            if(this.locationID == 0 && this.visitedLocations.size() == Locations.getInstance().getLocations().size()){
-                Track11 t11 = new Track11(player);
+            //The following are cutscene checks
+
+            if(this.locationID == 0){
+                if(this.visitedLocations.size() == Locations.getInstance().getLocations().size()){
+                    Track11 t11 = new Track11(player);
+                }
             }
 
         }else{
@@ -385,6 +477,15 @@ public class Game {
     }
 
     private void handleTakeItem(String itemName, Location location){
+
+        /*
+        IF ItemName is "all", then it just takes every item in the Location.
+
+        ELSE IF ItemName is valid, it will find the itemname and then take it
+
+        ELSE, It will just print no valid item names.
+        */
+
         if(itemName.equalsIgnoreCase("all")){
             for(int i = 0; i < location.getItems().size(); i++){
                 player.take(location.getItems().get(i));
@@ -405,6 +506,9 @@ public class Game {
     }
 
     private void handleHELPCommand(){
+
+        //Prints all commands with a description of what they do via Commands.useHelpCommand()
+
         Commands.useHelpCommand();
     }
 

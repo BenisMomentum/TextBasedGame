@@ -14,8 +14,8 @@ public class SpeedItem extends DurationalItem{
 
     @Override
     public void use(Entity entity) {
-        if(entity instanceof Player){
-            entity.getStatusEffects().add(new Adrenaline(super.duration,super.value));
+        if(entity instanceof Player){ //Checks if its a Player
+            entity.getStatusEffects().add(new Adrenaline(super.duration,super.value)); //Add the Adrenaline status
         }
     }
 

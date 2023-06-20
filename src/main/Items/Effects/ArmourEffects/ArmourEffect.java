@@ -5,6 +5,9 @@ import main.Entities.Player;
 import main.Items.Effects.Effect;
 
 public abstract class ArmourEffect implements Effect {
+
+    //Base Armour Effect class
+
     protected int value; //The value of what exactly is going to be adjusted
     protected ArmourEffectList type;
 

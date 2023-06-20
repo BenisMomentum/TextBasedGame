@@ -1,6 +1,7 @@
 package main.Entities;
 
 import main.Items.Effects.StatusEffects.*;
+import main.TextConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +84,10 @@ public abstract class Entity {
     }
 
     public String getStats(){
+
+        // MonsterName || HP || ARMR || INIT
+        // Then it displays Status Effects as well
+
         StringBuilder s = new StringBuilder(this.name + " || HP: " + this.hp + " || ARMR: " + this.armour + " || INIT: " + this.initiative + "\n");
         s.append("Status Effects \\/ \n");
 
@@ -136,6 +141,67 @@ public abstract class Entity {
         }
 
         return true;
+    }
+
+    protected String getEffectString(){
+        if(this.statusEffects.size() == 0) return "";
+
+        String s = "";
+        int loopLen = Math.max(TextConstants.EFFECT_BLEED.length, TextConstants.EFFECT_REGEN.length);
+
+        /*
+                PSEUDOCODE:
+
+                eff1[0] \t eff2[0] \t ....
+                eff1[1] \t eff2[1] \t ....
+
+                ^ What I want.
+
+                THEORY:
+
+                for every effect{
+                    switch(effect class){
+                        case BLEED:
+                           IF it contains '=' -> s+= bleed_eff[i].replace("=", eff.strength)
+                           ELSE -> s +=
+                           break;
+                        case REGEN:
+                           IF it contains '=' -> s+= bleed_eff[i].replace("=", eff.strength)
+                           ELSE -> s +=
+
+
+                    }
+                }
+
+
+                /*
+                    Essentially what this does is that it prints out the various effects in an effect below the player stats
+
+         */
+
+
+
+        for(int i = 0; i < loopLen; i++){
+            for(StatusEffect sE : this.statusEffects){
+                if(sE instanceof Regen){
+                    s += (TextConstants.EFFECT_REGEN[i].contains("="))
+                            ? TextConstants.EFFECT_REGEN[i].replace("=",String.valueOf(sE.getStrength()))
+                            : TextConstants.EFFECT_REGEN[i];
+                } else if(sE instanceof Bleed){
+                    s += (TextConstants.EFFECT_BLEED[i].contains("="))
+                            ? TextConstants.EFFECT_BLEED[i].replace("=",String.valueOf(sE.getStrength()))
+                            : TextConstants.EFFECT_BLEED[i];
+                } else if(sE instanceof Adrenaline){
+                    s+= (TextConstants.EFFECT_SPEED[i].contains("="))
+                            ? TextConstants.EFFECT_SPEED[i].replace("=",String.valueOf(sE.getStrength()))
+                            : TextConstants.EFFECT_SPEED[i];
+
+                }
+                s += "\t";
+            }
+            s += "\n";
+        }
+        return s;
     }
 
 }

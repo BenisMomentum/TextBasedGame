@@ -10,6 +10,9 @@ public abstract class WeaponEffect implements Effect {
     protected WeaponEffectList type;
 
     protected boolean checkIfPlayer(Entity e){
+
+        //Checks if e is null, then returns a boolean value on if its a Player or not
+
         if(e != null){
             return e instanceof Player;
         }

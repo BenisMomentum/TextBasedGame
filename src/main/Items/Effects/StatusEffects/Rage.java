@@ -4,6 +4,9 @@ import main.Entities.Entity;
 import main.Entities.Player;
 
 public class Rage extends StatusEffect {
+
+
+
     private boolean applied;
 
     public Rage(int d, int eV) {

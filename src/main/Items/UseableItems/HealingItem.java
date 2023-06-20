@@ -15,8 +15,8 @@ public class HealingItem extends UseableItem{
 
     @Override
     public void use(Entity entity) {
-        if(entity instanceof Player){
-            ((Player) entity).heal(this.healAmount);
+        if(entity instanceof Player){ //Checks if the entity is indeed a player
+            ((Player) entity).heal(this.healAmount); //Heals them for that amount
             System.out.println(this.name + " HEALS FOR " + this.healAmount);
         }
     }

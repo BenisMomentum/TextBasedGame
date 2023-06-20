@@ -3,6 +3,10 @@ package main.Items;
 import main.Entities.Entity;
 
 public abstract class Item{
+
+    //Item abstract class, essentially lays the ground work for all items in the game with getters, hashcodes, and .equals
+
+
     protected Rarity rarity;
     protected String name;
 

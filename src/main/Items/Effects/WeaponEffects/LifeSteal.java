@@ -13,7 +13,13 @@ public class LifeSteal extends WeaponEffect{
 
     @Override
     public void useEffect(Entity e) {
+
+        //First it checks if the entity is a player. IF it is then it heals the player according to this forumla:
+
+        // Total Strength * (LifeStealValue / 100.0)
+
         if(super.checkIfPlayer(e)){
+
             Player p = ((Player) e);
 
             double healVal = (double) (p.getStrength() + p.getEquipedWeapon().getStrengthBuff()) * ((double) this.value / 100.0);
@@ -24,11 +30,11 @@ public class LifeSteal extends WeaponEffect{
 
     @Override
     public void addEffect(Entity e) {
-
+        //crickets
     }
 
     @Override
     public void removeEffect(Entity e) {
-
+        //crickets
     }
 }

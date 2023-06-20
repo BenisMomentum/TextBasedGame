@@ -38,13 +38,14 @@ public abstract class StatusEffect {
     }
 
     public static StatusEffect readStatus(String input){
-        String[] raw = input.trim().split("=");
-        String[] deez = raw[1].split(",");
 
-        int duration = Integer.parseInt(deez[0]);
-        int str = Integer.parseInt(deez[1]);
+        String[] raw = input.trim().split("="); //Splits it into the Raw data set
+        String[] deez = raw[1].split(","); //Which is then split into the deez data set (nuts)
 
-        switch(StatusEffectList.valueOf(raw[0].toUpperCase())){
+        int duration = Integer.parseInt(deez[0]); //Gets the duration from the Deez set
+        int str = Integer.parseInt(deez[1]); //Gets the Strength from the Deez data set.
+
+        switch(StatusEffectList.valueOf(raw[0].toUpperCase())){ //Switches it by the name which should be raw[0] if all goes well
             case ADRENALINE -> {
                 return new Adrenaline(duration,str);
             }

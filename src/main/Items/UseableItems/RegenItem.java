@@ -13,8 +13,8 @@ public class RegenItem extends DurationalItem{
 
     @Override
     public void use(Entity entity) {
-        if(entity instanceof Player){
-            entity.getStatusEffects().add(new Regen(this.duration,this.value));
+        if(entity instanceof Player){ //Checks if its a player
+            entity.getStatusEffects().add(new Regen(this.duration,this.value)); //adds the regen effect
         }
     }
 

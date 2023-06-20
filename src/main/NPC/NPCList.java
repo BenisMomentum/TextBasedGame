@@ -11,9 +11,9 @@ public enum NPCList {
     }
 
     public static NPCList parse(String name){
-        name = name.toUpperCase();
+        name = name.toUpperCase(); //Cleans up the name variable
 
-        switch(name){
+        switch(name){ //Determines which NPC it is based on the name.
             case "MIKE" -> {
                 return MIKE;
             }
