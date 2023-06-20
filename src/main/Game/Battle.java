@@ -261,6 +261,7 @@ public class Battle {
 
         System.out.println("\n" +TextConstants.INVENTORY_VIEW + "\n");
 
+        System.out.println("-1 | CANCEL");
         if(player.getInventory().size() != 0){
             for(int i = 0; i < player.getInventory().size(); i++){
                 if(player.getInventory().get(i) instanceof UseableItem){
@@ -294,7 +295,9 @@ public class Battle {
                 System.out.print("Enter Item Number: ");
                 input = Integer.parseInt(sc.nextLine().trim());
 
-                if(player.getInventory().get(input) instanceof UseableItem){
+                if(input == -1){
+                    return;
+                }else if(player.getInventory().get(input) instanceof UseableItem){
                     player.getInventory().get(input).use(player);
                 }
                 player.getInventory().remove(player.getInventory().get(input));

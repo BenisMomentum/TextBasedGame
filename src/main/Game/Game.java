@@ -5,6 +5,9 @@ import main.Entities.Player;
 import main.Game.BattleExceptions.PlayerLostException;
 import main.Game.BattleExceptions.PlayerRanException;
 import main.Game.BattleExceptions.PlayerWonException;
+import main.Game.Cutscenes.Bench;
+import main.Game.Cutscenes.Cutscene;
+import main.Game.Cutscenes.Track11;
 import main.Game.GameConditions.GameWon;
 import main.Items.Armour;
 import main.Items.Item;
@@ -237,9 +240,9 @@ public class Game {
 
         int debugCode = Integer.parseInt(s.trim());
 
-        if(debugCode == 30){
+        if(debugCode == Cutscene.TRACK11_ID){
             Track11 t = new Track11(player);
-        }else if(debugCode >= 0){
+        }else if(debugCode >= 0 && debugCode <= 29){
             this.previousLocationID = locationID;
             this.locationID = debugCode;
         }
@@ -303,9 +306,18 @@ public class Game {
 
             while(true){
                 System.out.print("Enter Item Number: ");
-                int input = new Scanner(System.in).nextInt(); //Attempts to fix a bug where apparently the main scanner registers a new command when none is present
+
+                int input = 0;
+
                 try{
-                    if(player.getInventory().get(input) instanceof UseableItem){
+                    input = new Scanner(System.in).nextInt();//Attempts to fix a bug where apparently the main scanner registers a new command when none is present
+                }catch(InputMismatchException e){
+                    System.out.println("(Enter an appropriate number:)");
+                }
+                try{
+                    if(input == -1){
+                        return;
+                    } else if(player.getInventory().get(input) instanceof UseableItem){
                         if(player.getInventory().get(input) instanceof RegenItem regenItem){
 
                             player.heal(regenItem.getValue() * regenItem.getDuration()); //Heals for all turns it would have been applied for
@@ -339,6 +351,7 @@ public class Game {
 
         player.getInventory().sort(Comparator.comparing(Item::getName));
 
+        System.out.println("-1 | CANCEL");
         if(player.getInventory().size() != 0){
             for(int i = 0; i < player.getInventory().size(); i++){
                 if(player.getInventory().get(i) instanceof UseableItem){
@@ -463,10 +476,22 @@ public class Game {
 
             //The following are cutscene checks
 
-            if(this.locationID == 0){
-                if(this.visitedLocations.size() == Locations.getInstance().getLocations().size()){
-                    Track11 t11 = new Track11(player);
+            switch(locationID){
+                case(0) -> {
+                    if(this.visitedLocations.size() == Locations.getInstance().getLocations().size()){
+                        Track11 t11 = new Track11(player);
+                    }
                 }
+
+                case(Cutscene.BENCH_ID) -> {
+                    if(!Cutscene.VISITED_BENCH){
+
+                        Bench b = new Bench(null); //Initializes the cutscene
+                        Cutscene.VISITED_BENCH = true; //Sets the cutscene status to true so that it doesn't proc every time.
+                    }
+                }
+
+                default -> {}
             }
 
         }else{

@@ -1,4 +1,4 @@
-package main.Game;
+package main.Game.Cutscenes;
 
 import main.Colors;
 
@@ -10,18 +10,15 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 
-public class Track11 {
-
-    private final Player player;
+public class Track11 extends Cutscene{
 
     public Track11(Player player) throws GameWon {
-        this.player = player;
+        super(player);
 
         this.play();
     }
 
     private void play() throws GameWon {
-        final long pause_dur = 1500L;
 
         try {
 
@@ -36,13 +33,13 @@ public class Track11 {
             Thread.sleep(pause_dur);
 
             System.out.print("They're going to take it any day now...");
-            printSlowly(Colors.BLACK_BRIGHT + "it was your fault you know?\n",300L);
+            printSlowly(Colors.RED + "it was your fault you know?\n",300L);
 
             Thread.sleep(pause_dur);
 
             System.out.print(Colors.RESET + "You didn't HAVE to hit him...");
             printSlowly("after all...",350L);
-            printSlowly(Colors.BLACK_BOLD_BRIGHT + "words are just words\n" + Colors.RESET,400L);
+            printSlowly(Colors.RED + "words are just words\n" + Colors.RESET,400L);
 
             Thread.sleep(pause_dur);
 
@@ -187,18 +184,6 @@ public class Track11 {
             e.printStackTrace();
         }
 
-    }
-
-
-    private void printSlowly(String input, long pauseDuration){
-        try{
-            for(int i = 0; i < input.length(); i++){
-                System.out.print(input.charAt(i));
-                Thread.sleep(pauseDuration);
-            }
-        }catch(InterruptedException e){
-            e.printStackTrace();
-        }
     }
 
     private int determineAlignment(){
