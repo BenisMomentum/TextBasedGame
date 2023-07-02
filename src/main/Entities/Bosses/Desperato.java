@@ -2,6 +2,7 @@ package main.Entities.Bosses;
 
 import main.Entities.Boss;
 import main.Items.Effects.StatusEffects.Bleed;
+import main.Items.Effects.StatusEffects.Rage;
 
 public class Desperato extends Boss {
 
@@ -20,6 +21,13 @@ public class Desperato extends Boss {
             p.takeDamage(strength);
 
             p.addStatusEffect(new Bleed(2,2));
+        });
+
+        this.moveList.add(p -> {
+
+            System.out.println(name + "inflicts DROWN");
+
+            p.addStatusEffect(new Rage(1,-30));
         });
 
     }

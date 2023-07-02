@@ -42,5 +42,9 @@ public class Bench extends Cutscene{
 
         System.out.println("\n" + cyan + "Her: With you");
 
+        Thread.sleep(pause_dur);
+
+        VISITED_BENCH = true;
+
     }
 }

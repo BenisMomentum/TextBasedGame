@@ -7,10 +7,12 @@ public abstract class Cutscene {
     //The Cutscene class establishes some baselines for all the Cutscenes in the game
 
     //IDs and booleans for all cutscenes in the game
-    public static final int TRACK11_ID = 30;
-
+    public static final int TRACK11_ID = 99;
+    public static final int HIGHSCHOOL_ID = 30;
     public static final int BENCH_ID = 29;
+
     public static boolean VISITED_BENCH = false;
+    public static boolean VISITED_HIGHSCHOOL = false;
 
     //=======================================
 

@@ -134,9 +134,7 @@ public class Battle {
                 case THECHILD -> System.out.println(Colors.GREEN_BOLD_BRIGHT + ">You're in control of your own happiness<" + Colors.RESET);
             }
 
-            for(int i = 0; i < 5; i++){
-                player.incAlign();
-            }
+            player.incAlign();
 
         } else{
             switch(BossList.valueOf(this.monster.getName())){

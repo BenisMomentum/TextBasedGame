@@ -7,12 +7,12 @@ import main.Items.Effects.StatusEffects.Regen;
 
 public class TheChild extends Boss {
     public TheChild(){
-        super("THECHILD", 300, 20, 10, 5);
+        super("THECHILD", 400, 20, 10, 5);
 
         //SOUL DRAIN
         this.moveList.add(p -> {
             System.out.println(name + " attacks with ANZIO");
-            p.takeDamage(strength + 5);
+            p.takeDamage(strength + 15);
 
             addStatusEffect(new Adrenaline(1,1));
         });
@@ -20,13 +20,13 @@ public class TheChild extends Boss {
         this.moveList.add(p -> {
             System.out.println(name + " uses YOUTH");
 
-            this.rejuvenate(15);
+            this.rejuvenate(20);
         });
 
         this.moveList.add(p -> {
             System.out.println(name + " inflicts BRAIN DAMAGE");
 
-            p.takeDamage(2);
+            p.takeDamage(5);
 
             p.addStatusEffect(new Adrenaline(1,-10));
             p.addStatusEffect(new Rage(1,-5));

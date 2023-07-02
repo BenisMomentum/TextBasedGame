@@ -8,12 +8,12 @@ import main.Items.Effects.StatusEffects.Regen;
 public class Vulnus extends Boss {
 
     public Vulnus(){
-        super("VULNUS", 130, 50, 5, 10);
+        super("VULNUS", 130, 50, 5, 50);
 
         //SOUL DRAIN
         this.moveList.add(p -> {
             System.out.println(name + " attacks with INFERNO");
-            p.takeDamage(strength - (p.getInitiative() / 10));
+            p.takeDamage(2 * (strength - (p.getInitiative() / 10))); //2 * (THIS.STR - (Player Init / 10)
         });
 
         this.moveList.add(p -> {

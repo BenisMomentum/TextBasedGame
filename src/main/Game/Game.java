@@ -7,6 +7,7 @@ import main.Game.BattleExceptions.PlayerRanException;
 import main.Game.BattleExceptions.PlayerWonException;
 import main.Game.Cutscenes.Bench;
 import main.Game.Cutscenes.Cutscene;
+import main.Game.Cutscenes.HighSchool;
 import main.Game.Cutscenes.Track11;
 import main.Game.GameConditions.GameWon;
 import main.Items.Armour;
@@ -487,7 +488,13 @@ public class Game {
                     if(!Cutscene.VISITED_BENCH){
 
                         Bench b = new Bench(null); //Initializes the cutscene
-                        Cutscene.VISITED_BENCH = true; //Sets the cutscene status to true so that it doesn't proc every time.
+                    }
+                }
+                case(Cutscene.HIGHSCHOOL_ID) ->{
+                    if(!Cutscene.VISITED_HIGHSCHOOL){
+
+                        HighSchool h = new HighSchool(player);
+
                     }
                 }
 
