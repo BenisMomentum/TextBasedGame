@@ -28,7 +28,7 @@
 27 | CARTARA TRAIL | You're on Cartara Trail. Leads to the shoreside. | SOUTH-28 NORTH-26 | ARMOUR/Starry Cohors Spei/EPIC/25/VITALITY=40 SWIFTNESS=10 | BOSS/DESPERATO
 28 | BEACH | You're at the beach. Sunshine, water, and a fresh sea breeze... | EAST-25 NORTH-27 | null | null
 29 | SHORESIDE BENCH | You're a at a small bench you used to sit at. Back when she was there, at least. Watching the ships go heavenward and back to port, brings back good memories... | WEST-25 | null | BOSS/THECHILD
-30 | HIGH SCHOOL | You're at your old highschool...it was where you first met her wasn't it? Before the war, at least. Good to see the kids actually messing around during recess rather than just sitting there. | SOUTH-5 EAST-31 NORTH-32 | null | null
+30 | HIGH SCHOOL | You're at your old highschool...it was where you first met her wasn't it? Before the war, at least. Good to see the kids actually messing around during recess rather than just sitting there. | SOUTH-3 EAST-31 NORTH-32 | null | null
 31 | SOLTESSI ROAD | You're down Soltessi road | WEST-30 EAST-33 | null | MONSTER/Palvus Sanguis Mori/20/0/8/5/REGEN=3,4
-32 | SEMPTE LAKE | You're at Sempte Lake. Your father taught you how to fish here, I believe. Pleasant memories... | SOUTH-30 | HEAL_ITEM/Fish/UNCOMMON/10  | MONSTER/Palvus Sanguis Mori/20/0/8/5/REGEN=3,4
+32 | SEMPTE LAKE | You're at Sempte Lake. Your father taught you how to fish here, I believe. Pleasant memories... | SOUTH-30 | HEAL_ITEM/Fish/UNCOMMON/10  | MONSTER/Palvus Sanguis Mori/20/0/8/5/REGEN=3,2
 33 | SOLTESSI | You're at Soltessi, a small shopping centre, not quite like Eden but good enough. There's some ice cream if you want it though I doubt you're a kid anymore...? | WEST-31 | HEAL_ITEM/Bubblegum Ice Cream/LEGENDARY/10 / HEAL_ITEM/Bandage/COMMON/6 | null

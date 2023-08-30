@@ -312,4 +312,8 @@ public class Locations {
             //System.out.println(StatusEffect.readStatus(s)); //DEBUG USES ONLY
         }
     }
+
+    public static Location getLocation(int index){
+        return Locations.getInstance().locations.get(index);
+    }
 }

@@ -84,7 +84,7 @@ public class Game {
 
             try{
                 //Catches you in 4k with a monster if present
-                if(Locations.getInstance().getLocations().get(locationID).getM() != null){
+                if(Locations.getLocation(locationID).getM() != null){
                     Thread.sleep(500L);
                     System.out.println("Before you could do anything something comes up behind you...\n");
                     Thread.sleep(300L);
@@ -92,7 +92,7 @@ public class Game {
                     try{
                         //Initiates the Battle with the given monster and the player.
 
-                        Battle b = new Battle(this.player, Locations.getInstance().getLocations().get(locationID).getM(),this);
+                        Battle b = new Battle(this.player, Locations.getLocation(locationID).getM(),this);
                     }catch(PlayerLostException e){
 
                         //In case the player loses it just prints "YOU LOSE" and exits gracefully
@@ -108,7 +108,7 @@ public class Game {
 
                         Thread.sleep(500L);
 
-                        Locations.getInstance().getLocations().get(locationID).setM(null);
+                        Locations.getLocation(locationID).setM(null);
 
                         //Resumes standard game procedure and prints the last command you entered, as well as executes it.
 
@@ -128,8 +128,9 @@ public class Game {
                     }
                 }
                 //Executes the last command
-                standardCommandHandler(input, Locations.getInstance().getLocations().get(locationID));
+                standardCommandHandler(input, Locations.getLocation(locationID));
             } catch(NullPointerException | IllegalArgumentException | InterruptedException e){
+
                 /*  In case of stupid stuff happening, it catches it and just says Incorrect command
                     NPE from the switch case
                     Interrupted from all the Thread.sleep()'s
@@ -252,19 +253,31 @@ public class Game {
     }
 
     private void handleTALKCommand(String s) {
+
         /*
         *IF there is an NPC in the area and you try talking to it.
-        * Doesn't check with String as thats pretty much just for show and there's only 1 NPC in a location at a time
+        * Checks the String to see if it matches
         * Passes the NPC to a DialogueController as well as the player for the sake of Alignment.
          */
 
+        if(Locations.getLocation(locationID).getNPC() == null){ //Checks if its null
 
-        if(Locations.getInstance().getLocations().get(locationID).getNPC() != null){
-            NPC npc = Locations.getInstance().getLocations().get(locationID).getNPC();
-
-            DialogueController dC = new DialogueController(npc, this.player);
+            System.out.println("[NO NPC THERE]");
+            return;
         }
 
+
+        if(!s.equalsIgnoreCase(
+               Locations.getLocation(locationID).getNPC().getName()
+        )) {
+            System.out.println("[Enter the correct NPC name]");
+            return;
+        }
+
+
+        NPC npc = Locations.getLocation(locationID).getNPC();
+
+        DialogueController dC = new DialogueController(npc, this.player);
 
     }
 
@@ -418,7 +431,7 @@ public class Game {
 
         IF the ID is in the visitedLocations arraylist, it will be return the following:
 
-        " - [LOCATION_NAME]"
+        "DIRECTION - [LOCATION_NAME]"
 
         ELSE, it will just return "".
         */
@@ -426,7 +439,7 @@ public class Game {
         Integer id = currentLoc.getExits().get(desiredExit);
 
         if(this.visitedLocations.contains(id)){
-            return " - " + Locations.getInstance().getLocations().get(id).getName();
+            return " - " + Locations.getLocation(id).getName();
         }else{
             return "";
         }
@@ -468,44 +481,52 @@ public class Game {
 
         direction = direction.toUpperCase();
 
-        if(Locations.getInstance().getLocations().get(locationID).getExits().get(direction) != null){
+        if(Locations.getLocation(locationID).getExits().get(direction) != null){
 
-            previousLocationID = this.locationID; //Updates previous location
-            this.locationID = Locations.getInstance().getLocations().get(locationID).getExits().get(direction);
+            this.move(direction);
 
-            this.visitedLocations.add(this.previousLocationID); //Adds it to the list of visited locations if not there.
-
-            //The following are cutscene checks
-
-            switch(locationID){
-                case(0) -> {
-                    if(this.visitedLocations.size() == Locations.getInstance().getLocations().size()){
-                        Track11 t11 = new Track11(player);
-                    }
-                }
-
-                case(Cutscene.BENCH_ID) -> {
-                    if(!Cutscene.VISITED_BENCH){
-
-                        Bench b = new Bench(null); //Initializes the cutscene
-                    }
-                }
-                case(Cutscene.HIGHSCHOOL_ID) ->{
-                    if(!Cutscene.VISITED_HIGHSCHOOL){
-
-                        HighSchool h = new HighSchool(player);
-
-                    }
-                }
-
-                default -> {}
-            }
+            //Performs all cutscene checks
+            performCutsceneChecks();
 
         }else{
             System.out.println("[NOT A VALID COMMAND]");
         }
 
         //Plans to come for room entrance checks
+    }
+
+    private void move(String direction) {
+        previousLocationID = this.locationID; //Updates previous location
+        this.locationID = Locations.getLocation(locationID).getExits().get(direction);
+
+        this.visitedLocations.add(this.previousLocationID); //Adds it to the list of visited locations if not there.
+    }
+
+    private void performCutsceneChecks() throws GameWon {
+
+        //Function performs the cutscene checks for the locationID
+
+        switch(locationID){
+            case(0) -> {
+                if(this.visitedLocations.size() == Locations.getInstance().getLocations().size()){
+
+                    Track11 t11 = new Track11(player); //Inits the track11 cutscene
+                }
+            }
+            case(Cutscene.BENCH_ID) -> {
+                if(!Cutscene.VISITED_BENCH){
+
+                    Bench b = new Bench(player); //Initializes the bench cutscene
+                }
+            }
+            case(Cutscene.HIGHSCHOOL_ID) ->{
+                if(!Cutscene.VISITED_HIGHSCHOOL){
+
+                    HighSchool h = new HighSchool(player); //Inits the highschool cutscene
+                }
+            }
+            default -> {}
+        }
     }
 
     private void handleTakeItem(String itemName, Location location){
